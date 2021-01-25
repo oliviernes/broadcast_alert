@@ -31,6 +31,8 @@ import hmac
 import logging
 import re
 import sys
+import unidecode
+import json
 from pathlib import Path
 from typing import Any
 from typing import Dict
@@ -50,6 +52,7 @@ from requests import Response
 from requests import Session
 from requests.exceptions import RequestException
 
+import pdb
 
 class TeleramaException(Exception):
     """Base class for exceptions raised by the module."""
@@ -696,7 +699,7 @@ class Telerama:
 
     def _to_xmltv(
         self, channel_ids: List[str], days: int, offset: int
-    ) -> ElementTree:
+    ) -> Element:
         xmltv = self._xmltv_element(
             "tv",
             **{
@@ -723,22 +726,105 @@ class Telerama:
         xmltv.extend(xmltv_channels.values())
         xmltv.extend(xmltv_programs)
 
-        return ElementTree(xmltv)
+        # return ElementTree(xmltv)
+
+        return xmltv
 
     def write_xmltv(
         self, channel_ids: List[str], output_file: Path, days: int, offset: int
-    ) -> None:
+    ):
         """Grab Télérama programs in XMLTV format and write them to file."""
 
         logging.debug("Writing XMLTV program to file %s", output_file)
 
         xmltv_data = self._to_xmltv(channel_ids, days, offset)
-        xmltv_data.write(
-            str(output_file),
-            encoding="UTF-8",
-            xml_declaration=True,
-            pretty_print=True,
-        )
+        # xmltv_data.write(
+        #     str(output_file),
+        #     encoding="UTF-8",
+        #     xml_declaration=True,
+        #     pretty_print=True,
+        # )
+        return xmltv_data
+
+    def parser_json(self, xmltv_data, file):
+        """Parse xmltv_data to write only valuable data in a json file"""
+
+        json_data = {}
+
+        channels = []
+        programmes = []
+
+        infos = ['sub-title', 'desc', 'date', 'url', 'review', 'episode-num']
+
+        for item in xmltv_data:
+            if item.tag == "channel":
+                info_channel = {}
+                info_channel['id'] = item.attrib['id']
+                info_channel['nom'] = unidecode.unidecode(item[0].text).upper()
+                channels.append(info_channel)
+            elif item.tag == "programme":
+                info_programme = {}
+                info_programme['start'] = item.attrib['start']
+                info_programme['stop'] = item.attrib['stop']
+                info_programme['channel'] = item.attrib['channel']
+
+                info_programme['audio_subtitles'] = False
+
+                titles, directors, categories, actors = [], [], [], []
+                writers ,composers ,countries = [], [], []
+
+                for info in item:
+                    if info.tag in infos:
+                        info_programme[info.tag] = info.text
+                    elif info.tag == 'title':
+                        titles.append(info.text)
+                    elif info.tag == 'category':
+                        categories.append(info.text)
+                    elif info.tag == 'credits':
+                        for credit in info:
+                            if credit.tag == 'director' or credit.tag == 'presenter':
+                                directors.append(credit.text)
+                            elif credit.tag == 'actor' or credit.tag == 'guest':
+                                try:
+                                    actors.append({ 'actor': credit.text,
+                                                    'role': credit.attrib['role']
+                                                })
+                                except:
+                                    actors.append({ 'actor': credit.text })
+                            elif credit.tag == 'writer':
+                                writers.append(credit.text)
+                            elif credit.tag == 'composer':
+                                composers.append(credit.text)
+                    elif info.tag == 'country':
+                        countries.append(info.text)
+                    elif info.tag == 'rating':
+                        public = info[0].text
+                        if public[:12] == "Tous publics":
+                            age = 0
+                            info_programme['public'] = age
+                        elif public[:12] == "Interdit aux":
+                            age = int(public[22:-4])
+                            info_programme['public'] = age
+                    elif info.tag == 'subtitles':
+                        info_programme['audio_subtitles'] = True
+                    elif info.tag == 'icon':
+                        info_programme['icon'] = info.attrib['src']
+
+                info_programme['titles'] = titles
+                info_programme['directors'] = directors
+                info_programme['categories'] = categories
+                info_programme['actors'] = actors
+                info_programme['writers'] = writers
+                info_programme['composers'] = composers
+                info_programme['countries'] = countries
+
+                programmes.append(info_programme)
+
+        json_data['channels'] = channels
+        json_data['programmes'] = programmes
+
+        with open(file, "w") as write_file:
+            json.dump(json_data, write_file, ensure_ascii=False, indent = 4)
 
 
 _PROGRAM = "tv_grab_fr_telerama"
@@ -943,9 +1029,10 @@ def _main() -> None:
         sys.exit(1)
 
     try:
-        telerama.write_xmltv(
+        xmltv_data = telerama.write_xmltv(
             channel_ids, args.output, days=args.days, offset=args.offset
         )
+        telerama.parser_json(xmltv_data, args.output)
     except TeleramaException as ex:
         logging.error(ex)
 
