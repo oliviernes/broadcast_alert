@@ -15,11 +15,10 @@ def xmltv_data():
     return tree.getroot()
 
 def test_parser_json_telerama(xmltv_data):
-    fake_xmltv_data = xmltv_data
 
     json_file = 'xmltv_test_parser_json.json'
 
-    json_data = Telerama().parser_json(fake_xmltv_data, json_file)
+    json_data = Telerama().parser_json(xmltv_data, json_file)
 
     with open(json_file, "r") as read_file:
         data = json.load(read_file)
@@ -166,11 +165,10 @@ def test_parser_json_telerama(xmltv_data):
                                 }
 
 def test_parser_json_teleloisirs(xmltv_data):
-    fake_xmltv_data = xmltv_data
 
     json_file = 'xmltv_test_parser_json.json'
 
-    json_data = TeleLoisirs().parser_json(fake_xmltv_data, json_file)
+    json_data = TeleLoisirs().parser_json(xmltv_data, json_file)
 
     with open(json_file, "r") as read_file:
         data = json.load(read_file)
