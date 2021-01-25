@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<tv source-info-name="Télérama" source-info-url="http://www.telerama.fr/" source-data-url="https://api.telerama.fr" generator-info-name="tv_grab_fr_telerama" generator-info-url="https://github.com/melmorabity/tv_grab_fr_telerama">
+  <channel id="98.api.telerama.fr">
+    <display-name>Multisports</display-name>
+    <icon src="https://television.telerama.fr/sites/tr_master/files/sheet_media/tv/500x500/98.png"/>
+    <url>https://television.telerama.fr/tele/chaine-tv/multisports,98.php</url>
+  </channel>
+  <channel id="321.api-tel.programme-tv.net">
+    <display-name>Boomerang</display-name>
+    <icon src="https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F737335dc2fe15da5.2Epng/500x500/_/image.png" width="500" height="500"/>
+    <url>https://www.programme-tv.net/programme/chaine/programme-boomerang-34.html</url>
+  </channel>
+  <programme start="20210127230000 +0100" stop="20210128000500 +0100" channel="59.api.telerama.fr">
+    <title>L'amie prodigieuse</title>
+    <sub-title>Les fantômes</sub-title>
+    <desc>Les années passées à Pise ont fait d'Elena une jeune femme élégante, cultivée et désinhibée. En revenant pour les vacances à Luzzati, le quartier de son enfance, à Naples, elle trouve une Lila battue par son mari et découragée, entièrement dévouée à son rôle de mère. Terrifiée par Stefano, Lila confie ses journaux intimes à Elena...</desc>
+    <credits>
+      <director>Saverio Costanzo</director>
+      <actor role="Lila Cerullo">Gaia Girace</actor>
+      <actor role="Elena Greco">Margherita Mazzucco</actor>
+      <actor role="Stefano Carracci">Giovanni Amura</actor>
+      <actor role="Nunzia Cerullo">Valentina Acca</actor>
+      <actor role="Nadia Galiani">Giorgia Gargano</actor>
+      <actor role="Giuseppina Peluso">Lia Zinno</actor>
+      <actor role="Silvio Solara">Antonio Milo</actor>
+      <actor role="Antonio Cappuccio">Christian Giroso</actor>
+      <writer>Elena Ferrante</writer>
+      <writer>Francesco Piccolo</writer>
+      <writer>Laura Paolucci</writer>
+      <writer>Saverio Costanzo</writer>
+    </credits>
+    <category lang="fr">Série</category>
+    <category lang="fr">Série dramatique</category>
+    <category lang="en">Movie / Drama</category>
+    <icon src="https://television.telerama.fr/sites/tr_master/files/sheet_media/media/973e5c12-5168-454f-ad4a-91501017d3bb.jpg"/>
+    <url>https://television.telerama.fr/tele/serie/lamie-prodigieuse,n5953605,saison2,episode7.php</url>
+    <country lang="fr">Italie</country>
+    <episode-num system="xmltv_ns">1.6.0/1</episode-num>
+    <video>
+      <present>yes</present>
+      <aspect>4:3</aspect>
+    </video>
+    <audio>
+      <present>yes</present>
+      <stereo>dolby</stereo>
+    </audio>
+    <subtitles type="deaf-signed"/>
+    <rating>
+      <value>Interdit aux moins de 12 ans</value>
+      <icon src="https://television.telerama.fr/sites/tr_master/themes/tr/html/images/tv/-12.png"/>
+    </rating>
+  </programme>
+  <programme start="20210127230500 +0100" stop="20210128005000 +0100" channel="1399.api.telerama.fr">
+    <title>Crimes</title>
+    <sub-title>A Dijon</sub-title>
+    <desc>Au sommaire : Mystérieux incendie. Le 28 janvier 2010 les pompiers de Fontaine-lès-Dijon sont appelés pour un incendie. - Qui a tué la femme du maire ? Le 16 avril 2006, Marcelle est retrouvée assassinée. - La cavale du père de famille. Le 21 décembre 1996, à Dijon, un homme signale qu'un meurtre a sans doute été commis rue de la Prévôté.</desc>
+    <credits>
+      <presenter>Jean-Marc Morandini</presenter>
+    </credits>
+    <category lang="fr">Magazine</category>
+    <category lang="fr">Magazine de société</category>
+    <category lang="en">Magazines / Reports / Documentary</category>
+    <icon src="https://television.telerama.fr/sites/tr_master/files/sheet_media/media/9f2e217e14b228a19fd557bcfc44316e7df5ae84.jpg"/>
+    <url>https://television.telerama.fr/tele/magazine/crimes,12029897,emission76313169.php</url>
+    <country lang="fr">français</country>
+    <episode-num system="xmltv_ns">2..0/1</episode-num>
+    <video>
+      <present>yes</present>
+      <aspect>4:3</aspect>
+    </video>
+    <subtitles type="deaf-signed"/>
+    <rating>
+      <value>Interdit aux moins de 10 ans</value>
+      <icon src="https://television.telerama.fr/sites/tr_master/themes/tr/html/images/tv/-10.png"/>
+    </rating>
+  </programme>
+    <programme start="20210128235900 +0100" stop="20210129002200 +0100" channel="924.api.telerama.fr">
+    <title lang="fr">Trop cool, Scooby-Doo !</title>
+    <title>Be Cool Scooby-Doo</title>
+    <sub-title>Caniche contre gargouille</sub-title>
+    <desc>Alors qu'il tourne une série TV bas de gamme dans un vieil immeuble gothique empli de gargouilles, le tournage et la carrière de Daniel Valentino sont fortement compromis suite à l'attaque d'une gargouille qui semble avoir pris vie. Toute son équipe de techniciens démissionne, aussitôt remplacée par Scooby et ses amis qui prennent l'enquête an main : qui en veut au réalisateur au point de ruiner son film ?...</desc>
+    <credits>
+      <director>Shaunt Nigoghossian</director>
+      <writer>Joe Ballarini</writer>
+      <writer>Marly Halpern-Graser</writer>
+      <writer>Joe Ruby</writer>
+      <writer>Ken Spears</writer>
+    </credits>
+    <category lang="fr">Jeunesse</category>
+    <category lang="fr">Dessin animé</category>
+    <category lang="en">Children's / Youth programmes</category>
+    <icon src="https://television.telerama.fr/sites/tr_master/files/sheet_media/media/42c7e9b018c03ea3fe00406f1f51ccd37593b911.jpg"/>
+    <url>https://television.telerama.fr/tele/dessin-anime/trop-cool-scooby-doo,17734304,saison1,episode4.php</url>
+    <country lang="fr">américain</country>
+    <episode-num system="xmltv_ns">0.3.0/1</episode-num>
+    <video>
+      <present>yes</present>
+      <aspect>16:9</aspect>
+    </video>
+    <previously-shown/>
+    <rating>
+      <value>Tous publics</value>
+    </rating>
+  </programme>
+</tv>

@@ -2,3 +2,4 @@ lxml
 pytz
 requests
 html2text
+unidecode
