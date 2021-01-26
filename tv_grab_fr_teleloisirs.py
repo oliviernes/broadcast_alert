@@ -739,6 +739,8 @@ class TeleLoisirs:
                 info_channel = {}
                 info_channel['id'] = item.attrib['id']
                 info_channel['nom'] = unidecode.unidecode(item[0].text).upper()
+                info_channel['icon'] = item[1].attrib['src']
+                info_channel['url'] = item[2].text
                 channels.append(info_channel)
             elif item.tag == "programme":
                 info_programme = {}

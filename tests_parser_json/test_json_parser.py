@@ -25,10 +25,14 @@ def test_parser_json_telerama(xmltv_data):
 
     assert data['channels'] == [{
                                 "id": "98.api.telerama.fr",
-                                "nom": "MULTISPORTS"
+                                "nom": "MULTISPORTS",
+                                "icon": "https://television.telerama.fr/sites/tr_master/files/sheet_media/tv/500x500/98.png",
+                                "url": "https://television.telerama.fr/tele/chaine-tv/multisports,98.php"
                                 }, {
                                 "id" : "321.api-tel.programme-tv.net",
-                                "nom": "BOOMERANG"
+                                "nom": "BOOMERANG",
+                                "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F737335dc2fe15da5.2Epng/500x500/_/image.png",
+                                "url": "https://www.programme-tv.net/programme/chaine/programme-boomerang-34.html"
                                 }]
     assert data['programmes'][0] == {
                                     "start": "20210127230000 +0100",
@@ -175,10 +179,14 @@ def test_parser_json_teleloisirs(xmltv_data):
 
     assert data['channels'] == [{
                                 "id": "98.api.telerama.fr",
-                                "nom": "MULTISPORTS"
+                                "nom": "MULTISPORTS",
+                                "icon": "https://television.telerama.fr/sites/tr_master/files/sheet_media/tv/500x500/98.png",
+                                "url": "https://television.telerama.fr/tele/chaine-tv/multisports,98.php"
                                 }, {
                                 "id" : "321.api-tel.programme-tv.net",
-                                "nom": "BOOMERANG"
+                                "nom": "BOOMERANG",
+                                "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F737335dc2fe15da5.2Epng/500x500/_/image.png",
+                                "url": "https://www.programme-tv.net/programme/chaine/programme-boomerang-34.html"
                                 }]
     assert data['programmes'][0] == {
                                     "start": "20210127230000 +0100",
