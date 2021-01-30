@@ -21,8 +21,8 @@ class Programmes(models.Model):
     aide_sourd = models.BooleanField(null=True)
     note = models.IntegerField(null=True)
     critique = models.CharField(max_length=2000, null=True)
-    date_debut = models.DateField()
-    date_fin = models.DateField()
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
     chaines = models.ForeignKey(
         Chaines, on_delete=models.CASCADE
     )
@@ -149,4 +149,3 @@ class BouquetTv(models.Model):
     chaines = models.ManyToManyField(Chaines)
     def __str__(self):
         return self.nom
-
