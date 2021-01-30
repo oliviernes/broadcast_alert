@@ -787,6 +787,9 @@ class TeleLoisirs:
                             info_programme['public'] = age
                     elif info.tag == 'subtitles':
                         info_programme['audio_subtitles'] = True
+                    elif info.tag == 'star-rating':
+                        note = info[0].text
+                        info_programme['note'] = int(note[:1])
                     elif info.tag == 'icon':
                         info_programme['icon'] = info.attrib['src']
 
