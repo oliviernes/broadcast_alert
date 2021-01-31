@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Chaines(models.Model):
-    id_chaines = models.CharField(max_length=50)
+    id_chaine = models.CharField(max_length=50)
     nom = models.CharField(max_length=100)
     icon = models.CharField(max_length=500, null=True)
     url = models.CharField(max_length=500, null=True)
