@@ -1,0 +1,200 @@
+{
+    "channels": [
+        {
+            "id": "187.api-tel.programme-tv.net",
+            "nom": "TIPIK",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F8107d72a6d5971bf.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-tipik-143.html"
+        },
+        {
+            "id": "321.api-tel.programme-tv.net",
+            "nom": "BOOMERANG",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F737335dc2fe15da5.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-boomerang-34.html"
+        },
+        {
+            "id": "924.api-tel.programme-tv.net",
+            "nom": "BOING",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F0d38be6aa6f7bbd7.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-boing-233.html"
+        },
+        {
+            "id": "5.api-tel.programme-tv.net",
+            "nom": "AB 1",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2Fe23a6def410fa2d0.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-ab-1-31.html"
+        },
+        {
+            "id": "1785.api-tel.programme-tv.net",
+            "nom": "GOSPEL MUSIC TV",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F8d58cd3ce94e9ae8.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-gospel-music-tv-346.html"
+        }
+    ],
+    "programmes": [
+        {
+            "start": "20210205225900 +0000",
+            "stop": "20210205230600 +0000",
+            "channel": "187.api-tel.programme-tv.net",
+            "audio_subtitles": true,
+            "desc": "Vews propose des vidéos d'actualité destinées au web. Elles apportent un regard différent sur l'info avec un ton direct et authentique. L'expérience se prolonge sous la forme d'un JT basé sur les vidéos de la journée, enrichies avec des directs, du décryptage et de la découverte.",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Ffc2991d58d90eebd.2Ejpg/1280x720/_/image.jpg",
+            "url": "https://www.programme-tv.net/programme/culture-infos/r1549342607-vews/",
+            "titles": [
+                "Vews"
+            ],
+            "directors": [],
+            "categories": [
+                "Magazine",
+                "Magazine d'actualité",
+                "Magazines / Reports / Documentary"
+            ],
+            "actors": [],
+            "writers": [],
+            "composers": [],
+            "countries": []
+        },
+        {
+            "start": "20210205225900 +0000",
+            "stop": "20210205231000 +0000",
+            "channel": "321.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "sub-title": "Le train fou",
+            "desc": "La Force des Royaumes est une unité d'élite au service de la population des Cinq Royaumes. Composée de cinq membres, chacun étant un héros dans son propre royaume, elle protège les citoyens des Cinq Royaumes avec ses véhicules tout terrain pendant que le QG mobile patrouille à la recherche d'action et d'aventure.",
+            "date": "2019",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Fc72ed350e66e7be4.2Ejpg/1280x720/_/image.jpg",
+            "url": "https://www.programme-tv.net/programme/series-tv/r1549470925-kingdom-force/17394688-le-train-fou/",
+            "episode-num": "0/1.0.0/1",
+            "titles": [
+                "Kingdom Force"
+            ],
+            "directors": [],
+            "categories": [
+                "Série",
+                "Série d'animation",
+                "Movie / Drama"
+            ],
+            "actors": [],
+            "writers": [],
+            "composers": [],
+            "countries": [
+                "Canada"
+            ]
+        },
+        {
+            "start": "20210205225900 +0000",
+            "stop": "20210205232200 +0000",
+            "channel": "924.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "sub-title": "Battons le batteur",
+            "desc": "La bande à Scooby enquête sur le fantôme d'un ancien joueur de baseball, Chip Braverton, qui revient hanter son équipe ce qui risque de mener tout droit son propriétaire à dissoudre le club et vendre le stade...",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Fd4d0bfbe1be2fcfb.2Ejpg/1280x720/_/image.jpg",
+            "url": "https://www.programme-tv.net/programme/jeunesse/r300468-trop-cool-scooby-doo/6963132-battons-le-batteur/",
+            "episode-num": "0/2.4/26.0/1",
+            "titles": [
+                "Trop cool, Scooby-Doo !",
+                "Be Cool, Scooby-Doo !"
+            ],
+            "directors": [],
+            "categories": [
+                "Dessin animé",
+                "Children's / Youth programmes"
+            ],
+            "actors": [],
+            "writers": [],
+            "composers": [],
+            "countries": [
+                "Etats-Unis"
+            ]
+        },
+        {
+            "start": "20210205225000 +0000",
+            "stop": "20210205233500 +0000",
+            "channel": "5.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "sub-title": "Piégés",
+            "desc": "Un matin, l'équipe du Megan Doyle et des disciples de Jordan Collier se réveillent dans le bâtiment du NTAC. Ils ont été enfermés par l'un des employés, PJ. Celui-ci a développé un don particulier après une injection de promicine. Pris au piège dans un environnement hostile et confiné, Tom, Diana, Marco, Maia, Shawn, Kyle, Isabelle et Collier doivent s'entraider pour survivre malgré les tensions et les animosités.",
+            "date": "2007",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2F385511c17050bd82.2Ejpg/1280x720/_/image.jpg",
+            "url": "https://www.programme-tv.net/programme/series-tv/r1798-les-4400/854652-pieges/",
+            "episode-num": "3/4.7/13.0/1",
+            "public": 10,
+            "note": 1,
+            "review": "Un huis clos très tendu pour nos héros.",
+            "titles": [
+                "Les 4400",
+                "The 4400"
+            ],
+            "directors": [
+                "Tony Westman"
+            ],
+            "categories": [
+                "Série",
+                "Série fantastique",
+                "Movie / Drama"
+            ],
+            "actors": [
+                {
+                    "actor": "Bill Campbell",
+                    "role": "Jordan Collier"
+                },
+                {
+                    "actor": "Patrick Flueger",
+                    "role": "Shawn Farrell"
+                },
+                {
+                    "actor": "Chad Faust",
+                    "role": "Kyle Baldwin"
+                },
+                {
+                    "actor": "Joel Gretsch",
+                    "role": "Tom Baldwin"
+                },
+                {
+                    "actor": "Sean Devine",
+                    "role": "PJ"
+                },
+                {
+                    "actor": "Megalyn Echikunwoke",
+                    "role": "Isabelle Tyler"
+                },
+                {
+                    "actor": "Richard Kahan",
+                    "role": "Marco Pacella"
+                },
+                {
+                    "actor": "Carly Pope",
+                    "role": "Kara"
+                }
+            ],
+            "writers": [
+                "Adam Levy"
+            ],
+            "composers": [],
+            "countries": [
+                "Etats-Unis"
+            ]
+        },
+        {
+            "start": "20210204173000 +0000",
+            "stop": "20210204230000 +0000",
+            "channel": "1785.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "desc": "Highlights of business in the House of Lords.",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Fadea9af4458c235a.2Ejpg/1280x720/_/image.jpg",
+            "url": "https://www.programme-tv.net/programme/autre/19101743-house-of-lords-highlights-of-business-in-the-house-of-lords/",
+            "titles": [
+                "House of Lords"
+            ],
+            "directors": [],
+            "categories": [
+                "Autre",
+                "Emission politique"
+            ],
+            "actors": [],
+            "writers": [],
+            "composers": [],
+            "countries": []
+        }
+    ]
+}
