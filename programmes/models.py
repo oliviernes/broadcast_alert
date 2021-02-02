@@ -145,7 +145,12 @@ class RechercheSpecifique(models.Model):
 
 class BouquetTv(models.Model):
     nom = models.CharField(max_length=100)
-    numero =models.IntegerField()
-    chaines = models.ManyToManyField(Chaines)
+    chaines = models.ManyToManyField(Chaines, through='BouquetsChaines')
+
     def __str__(self):
         return self.nom
+
+class BouquetsChaines(models.Model):
+    chaines = models.ForeignKey(Chaines, on_delete=models.CASCADE)
+    bouquettv = models.ForeignKey(BouquetTv, on_delete=models.CASCADE)
+    numero = models.IntegerField(null=True)
