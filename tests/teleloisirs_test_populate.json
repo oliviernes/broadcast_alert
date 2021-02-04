@@ -25,11 +25,29 @@
             "url": "https://www.programme-tv.net/programme/chaine/programme-ab-1-31.html"
         },
         {
+            "nom": "TEVA",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F0989fcee33a19a8f.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-teva-23.html"
+        },
+        {
+            "id": "64.api-tel.programme-tv.net",
+            "nom": "EQUIDIA",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F57f850d8546962e8.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-equidia-59.html"
+        },
+        {
+            "id": "1785.api-tel.programme-tv.net",
+            "nom": "GOSPEL MUSIC TV",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F8d58cd3ce94e9ae8.2Epng/500x500/_/image.png",
+            "url": "https://www.programme-tv.net/programme/chaine/programme-gospel-music-tv-346.html"
+        },
+        {
             "id": "1785.api-tel.programme-tv.net",
             "nom": "GOSPEL MUSIC TV",
             "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fchannel.2F8d58cd3ce94e9ae8.2Epng/500x500/_/image.png",
             "url": "https://www.programme-tv.net/programme/chaine/programme-gospel-music-tv-346.html"
         }
+
     ],
     "programmes": [
         {
@@ -39,23 +57,13 @@
             "audio_subtitles": true,
             "desc": "Vews propose des vidéos d'actualité destinées au web. Elles apportent un regard différent sur l'info avec un ton direct et authentique. L'expérience se prolonge sous la forme d'un JT basé sur les vidéos de la journée, enrichies avec des directs, du décryptage et de la découverte.",
             "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Ffc2991d58d90eebd.2Ejpg/1280x720/_/image.jpg",
-            "url": "https://www.programme-tv.net/programme/culture-infos/r1549342607-vews/",
             "titles": [
                 "Vews"
             ],
-            "directors": [],
-            "categories": [
-                "Magazine",
-                "Magazine d'actualité",
-                "Magazines / Reports / Documentary"
-            ],
-            "actors": [],
-            "writers": [],
-            "composers": [],
-            "countries": []
+            "composers": ["cristal distorsion"]
         },
         {
-            "start": "20210205225900 +0000",
+            "start": 20210205225900,
             "stop": "20210205231000 +0000",
             "channel": "321.api-tel.programme-tv.net",
             "audio_subtitles": false,
@@ -64,26 +72,10 @@
             "date": "2019",
             "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Fc72ed350e66e7be4.2Ejpg/1280x720/_/image.jpg",
             "url": "https://www.programme-tv.net/programme/series-tv/r1549470925-kingdom-force/17394688-le-train-fou/",
-            "episode-num": "0/1.0.0/1",
-            "titles": [
-                "Kingdom Force"
-            ],
-            "directors": [],
-            "categories": [
-                "Série",
-                "Série d'animation",
-                "Movie / Drama"
-            ],
-            "actors": [],
-            "writers": [],
-            "composers": [],
-            "countries": [
-                "Canada"
-            ]
+            "episode-num": "0/1.0.0/1"
         },
         {
             "start": "20210205225900 +0000",
-            "stop": "20210205232200 +0000",
             "channel": "924.api-tel.programme-tv.net",
             "audio_subtitles": false,
             "sub-title": "Battons le batteur",
@@ -91,21 +83,17 @@
             "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Fd4d0bfbe1be2fcfb.2Ejpg/1280x720/_/image.jpg",
             "url": "https://www.programme-tv.net/programme/jeunesse/r300468-trop-cool-scooby-doo/6963132-battons-le-batteur/",
             "episode-num": "0/2.4/26.0/1",
-            "titles": [
-                "Trop cool, Scooby-Doo !",
-                "Be Cool, Scooby-Doo !"
-            ],
-            "directors": [],
-            "categories": [
-                "Dessin animé",
-                "Children's / Youth programmes"
-            ],
-            "actors": [],
-            "writers": [],
-            "composers": [],
             "countries": [
                 "Etats-Unis"
             ]
+        },
+        {
+            "stop": "20210205090000 +0000",
+            "channel": "66666.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "desc": "Lignes droites, arrivées, images fortes, interviews : le meilleur des courses de la journée.",
+            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Fd38e62e1b65727b1.2Ejpg/1280x720/_/image.jpg",
+            "url": "https://www.programme-tv.net/programme/culture-infos/r1549447548-top-courses/"
         },
         {
             "start": "20210205225000 +0000",
@@ -176,25 +164,72 @@
             ]
         },
         {
-            "start": "20210204173000 +0000",
-            "stop": "20210204230000 +0000",
-            "channel": "1785.api-tel.programme-tv.net",
+            "start": "20210205142900 +0000",
+            "stop": "20210205152700 +0000",
+            "channel": "187.api-tel.programme-tv.net",
             "audio_subtitles": false,
-            "desc": "Highlights of business in the House of Lords.",
-            "icon": "https://tel.img.pmdstatic.net/fit/https.3A.2F.2Fprd2-tel-epg-img.2Es3-eu-west-1.2Eamazonaws.2Ecom.2Fprogram.2Fadea9af4458c235a.2Ejpg/1280x720/_/image.jpg",
-            "url": "https://www.programme-tv.net/programme/autre/19101743-house-of-lords-highlights-of-business-in-the-house-of-lords/",
+            "date": "deux mille deux"
+        },
+        {
+            "start": "20210205123000 +0000",
+            "stop": "20210205130300 +0000",
+            "channel": "187.api-tel.programme-tv.net",
+            "audio_subtitles": true,
+            "episode-num": "16/17.4210/260.0/1",
             "titles": [
-                "House of Lords"
+                "Plus belle la vie"
             ],
-            "directors": [],
+            "countries": [
+                "France",
+                "Etats-Unis"                
+            ],
             "categories": [
-                "Autre",
-                "Emission politique"
-            ],
-            "actors": [],
+                "Série",
+                "Série fantastique",
+                "Movie / Drama"
+            ]
+        },
+        {
+            "start": "20210205123000 +0000",
+            "stop": "20210205130300 +0000",
+            "channel": "187.api-tel.programme-tv.net",
+            "audio_subtitles": true,
             "writers": [],
             "composers": [],
-            "countries": []
+            "countries": [
+                "France"
+            ]
+        },
+        {
+            "start": "20210205112500 +0000",
+            "stop": "20210205113500 +0000",
+            "channel": "321.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "sub-title": 9999999,
+            "desc": 9999999,
+            "icon": 9999999,
+            "url": 9999999,
+            "review": 9999999
+        },
+        {
+            "start": "20210205103500 +0000",
+            "stop": "20210205105000 +0000",
+            "channel": "924.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "episode-num": ".."
+        },
+        {
+            "start": "20210205103500 +0000",
+            "stop": "20210205105000 +0000",
+            "channel": "321.api-tel.programme-tv.net",
+            "audio_subtitles": false,
+            "episode-num": "dd.."
+        },
+        {
+            "start": "20210205116000 +0000",
+            "stop": "20210205126000 +0000",
+            "channel": "321.api-tel.programme-tv.net",
+            "audio_subtitles": false
         }
     ]
 }
