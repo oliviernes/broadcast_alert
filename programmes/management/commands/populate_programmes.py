@@ -41,44 +41,73 @@ class Command(BaseCommand):
             data = json.load(broadcast)
 
         for channel in data["channels"]:
-            chan = Chaines(id_chaine=channel["id"],
-                            nom=channel["nom"],
-                            icon=channel.get("icon"),
-                            url=channel.get("url")
+            try:
+                chan = Chaines(id_chaine=channel["id"],
+                                nom=channel["nom"],
+                                icon=channel.get("icon"),
+                                url=channel.get("url")
                             )
+            except:
+                "The channel could not be inserted in the DB"
+                continue
             if len(Chaines.objects.filter(id_chaine=channel["id"])) == 0:
-                chan.save()
+                self.save(chan)
                 print(f"The channel {chan.nom} has been inserted in the DB")
             else:
                 print(f"The channel {chan.nom} has already been inserted in the DB")
 
         for programme in data['programmes']:
-            chaine = Chaines.objects.get(id_chaine=programme["channel"])
+            try:
+                chaine = Chaines.objects.get(id_chaine=programme["channel"])
+            except:
+                print("The programme doesn't have a channel registered in the DB")
+                continue
             
             date_d, date_f = programme.get("start", ""), programme.get("stop", "")
+
+            try:
+                date_de = [int(date_d[4:12][i:i + 2]) for i in range(0, 8, 2)]
+                date_de.insert(0, int(date_d[:4]))
+                """The time sent by the teleloisirs API display 60mn instead
+                of 1 hour and cannot be use by datetime hence the quick
+                fix removing 1mn:"""
+                if date_de[4] == 60:
+                    date_de[4] = 59
+                date_deb = datetime.datetime(date_de[0],
+                                            date_de[1],
+                                            date_de[2],
+                                            date_de[3],
+                                            date_de[4]
+                                            )
+                date_deb = make_aware(date_deb)
+            except:
+                continue
+            try:
+                date_fi = [int(date_f[4:12][i:i + 2]) for i in range(0, 8, 2)]
+                date_fi.insert(0, int(date_f[:4]))
+                if date_fi[4] == 60:
+                    date_fi[4] = 59
+                date_fin = datetime.datetime(date_fi[0],
+                                            date_fi[1],
+                                            date_fi[2],
+                                            date_fi[3],
+                                            date_fi[4]
+                                            )
+                date_fin = make_aware(date_fin)
+            except:
+                continue
             
-            date_de = [int(date_d[4:12][i:i + 2]) for i in range(0, 8, 2)]
-            date_fi = [int(date_f[4:12][i:i + 2]) for i in range(0, 8, 2)]
-            date_de.insert(0, int(date_d[:4]))
-            date_fi.insert(0, int(date_f[:4]))
-            date_deb = datetime.datetime(date_de[0],
-                                         date_de[1],
-                                         date_de[2],
-                                         date_de[3],
-                                         date_de[4]
-                                         )
-            date_fin = datetime.datetime(date_fi[0],
-                                         date_fi[1],
-                                         date_fi[2],
-                                         date_fi[3],
-                                         date_fi[4]
-                                         )
-            date_deb = make_aware(date_deb)
-            date_fin = make_aware(date_fin)
+            date_realisation = programme.get("date")
+
+            if date_realisation is not None:
+                try:
+                    date_realisation = int(date_realisation)
+                except:
+                    continue
 
             prog = Programmes(titre_informatif=programme.get("sub-title"),
                                 description=programme.get("desc"),
-                                date_realisation=programme.get("date"),
+                                date_realisation=date_realisation,
                                 icon=programme.get("icon"),
                                 url=programme.get("url"),
                                 public=programme.get("public"),
@@ -89,26 +118,35 @@ class Command(BaseCommand):
                                 date_fin=date_fin,
                                 chaines_id=chaine.id
                                 )
-            prog.save()
-            pro = Programmes.objects.get(date_debut=date_deb,
-                                date_fin=date_fin,
-                                chaines_id=chaine.id
-            )
+
+            self.save(prog)
+
+            try:
+                pro = Programmes.objects.get(date_debut=date_deb,
+                                    date_fin=date_fin,
+                                    chaines_id=chaine.id
+                )
+            except:
+                continue
+
             titles = programme.get("titles")
             if titles is not None:
                 for title in titles:
                     titre = Titres(programmes_id=pro.id, nom=title)
-                    titre.save()
+                    self.save(titre)
+
             directors = programme.get("directors")
             if directors is not None:
                 for director in directors:
                     realisateur = Realisateur(programmes_id=pro.id, nom=director)
-                    realisateur.save()
+                    self.save(realisateur)
+
             writers = programme.get("writers")
             if writers is not None:
                 for writer in writers:
                     scenariste = Scenariste(programmes_id=pro.id, nom=writer)
-                    scenariste.save()
+                    self.save(scenariste)
+
             actors = programme.get("actors")
             if actors is not None:
                 for actor in actors:
@@ -116,36 +154,43 @@ class Command(BaseCommand):
                                         nom=actor["actor"],
                                         role=actor.get("role")
                     )
-                    acteur.save()
+                    self.save(acteur)
+
             episode_num = programme.get("episode-num")
+
             if episode_num is not None:
-                episodes = re.split('\.', episode_num)
-                serie = re.split('/', episodes[0])[0]
-                episode = re.split('/', episodes[1])[0]
-                partie = re.split('/', episodes[2])[0]
-                if serie == "":
-                    serie = None
-                else:
-                    serie = int(serie)
-                if episode == "":
-                    episode = None
-                else:
-                    episode = int(episode)
-                if partie == "":
-                    partie = None
-                else:
-                    partie = int(partie)
+                try:
+                    episodes = re.split(r'\.', episode_num)
+                    serie = re.split('/', episodes[0])[0]
+                    episode = re.split('/', episodes[1])[0]
+                    partie = re.split('/', episodes[2])[0]
+                    if serie == "":
+                        serie = None
+                    else:
+                        serie = int(serie)
+                    if episode == "":
+                        episode = None
+                    else:
+                        episode = int(episode)
+                    if partie == "":
+                        partie = None
+                    else:
+                        partie = int(partie)
+                except:
+                    continue
                 series = Series(programmes_id=pro.id,
                                 serie=serie,
                                 episode=episode,
                                 partie=partie
                 )
-                series.save()
+                self.save(series)
+
             composers = programme.get("composers")
             if composers is not None:
                 for composer in composers:
                     compositeur = Compositeurs(programmes_id=pro.id, nom=composer)
-                    compositeur.save()
+                    self.save(compositeur)
+
             categories = programme.get("categories")
             if categories is not None:
                 for categorie in categories:
@@ -154,9 +199,10 @@ class Command(BaseCommand):
                         cat.programmes.add(pro.id)
                     elif categorie.find("/") == -1 and len(Categories.objects.filter(nom=categorie)) == 0:
                         cat = Categories(nom=categorie)
-                        cat.save()
+                        self.save(cat)
                         cat.programmes.add(pro.id)
                         print(f"The categorie {categorie} has been inserted in the DB.")
+
             countries = programme.get("countries")
             if countries is not None:
                 for countrie in countries:
@@ -165,7 +211,7 @@ class Command(BaseCommand):
                         pays.programmes.add(pro.id)
                     elif countrie.find("/") == -1 and len(PaysRealisation.objects.filter(nom=countrie)) == 0:
                         pays = PaysRealisation(nom=countrie)
-                        pays.save()
+                        self.save(pays)
                         pays.programmes.add(pro.id)
                         print(f"The countrie {countrie} has been inserted in the DB.")
 
