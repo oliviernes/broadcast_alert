@@ -73,6 +73,8 @@ class Package:
                 channels[n] = (channel[0], "BBC WORLD NEWS")
             elif channel[1] == "TELE NANTES":
                 channels[n] = (channel[0], "TELENANTES")
+            elif channel[1] == "FRANCEINFO:":
+                channels[n] = (channel[0], "FRANCEINFO")
 
             n+=1
 
