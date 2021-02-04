@@ -7,17 +7,32 @@ from django.conf import settings
 from django.utils.timezone import make_aware
 from django.core.management.base import BaseCommand, CommandError
 
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE","broadcast_alert.settings")
 import django
 django.setup()
 
 from programmes.models import Chaines, Programmes, Titres, Realisateur, Scenariste, Acteurs, Series, Categories, PaysRealisation, Compositeurs
 
+import pdb
+
 class Command(BaseCommand):
     help = "Populate the db with programmes from grabber json file"
 
     def add_arguments(self, parser):
         parser.add_argument('file', nargs='+', type=str)
+
+    def save(self, data):
+        """ Methode to save data to the DB. The try except block is in a
+        while loop to be able to use the loop control statement continue
+         which can be used only in a loop"""
+        while True:
+            try:
+                data.save()
+                break
+            except:
+                "The data could not be inserted in the DB"
+                continue
 
     def populate(self, file):
         """Populate the db with the channels and programmes"""
