@@ -60,3 +60,19 @@ def test_populate_package_bouygues(db_feed):
     assert bouquet.nom == "bouygues"
     assert arte.bouquettv_set.all()[0].nom == "bouygues"
     assert bouquets_chaines[0].numero == 7
+
+@mark.django_db
+def test_populate_package_tnt(db_feed):
+
+    france5 = Chaines(id_chaine="5_test", nom="FRANCE 5")
+    france5.save()
+
+    db_feed.populate("tnt")
+
+    bouquet = BouquetTv.objects.get(nom="tnt")
+    france5 = Chaines.objects.get(nom="FRANCE 5")
+    bouquets_chaines = BouquetsChaines.objects.all()
+
+    assert bouquet.nom == "tnt"
+    assert france5.bouquettv_set.all()[0].nom == "tnt"
+    assert bouquets_chaines[0].numero == 5
