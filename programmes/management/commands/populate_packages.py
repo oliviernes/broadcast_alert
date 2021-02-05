@@ -50,13 +50,15 @@ class Command(BaseCommand):
         else:
             bouquet = BouquetTv.objects.get(nom=package)
 
-        # for channel in channels:
-        #     chaines = Chaines.objects.filter(nom=channel[1])
-        #     if len(chaines) != 0:
-        #         for chaine in chaines:
-        #             bouquet_chaine = BouquetsChaines(chaines=chaine.id,
-        #                                             bouquettv=
-        #                                             )
+        for channel in channels:
+            chaines = Chaines.objects.filter(nom=channel[1])
+            if len(chaines) != 0:
+                for chaine in chaines:
+                    bouquet_chaine = BouquetsChaines(chaines=chaine,
+                                                    bouquettv=bouquet,
+                                                    numero=channel[0]
+                                                    )
+                    self.save(bouquet_chaine)
 
     def handle(self, *args, **options):
         
