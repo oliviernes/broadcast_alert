@@ -16,8 +16,13 @@ def db_feed():
 @mark.django_db
 def test_populate_package_free(db_feed):
     
+    tf1 = Chaines(id_chaine="1_test", nom="TF1")
+    tf1.save()
+
     db_feed.populate("free")
 
     bouquet = BouquetTv.objects.get(nom="free")
+    tf1 = Chaines.objects.get(nom="TF1")
 
     assert bouquet.nom == "free"
+    assert tf1.bouquettv_set.all()[0].nom == "free"
