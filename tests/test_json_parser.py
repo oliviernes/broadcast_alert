@@ -10,7 +10,7 @@ from tv_grab_fr_teleloisirs import TeleLoisirs
 def xmltv_data():
     """Mock grabber write_xmltv method"""
 
-    tree = ET.parse('xmltv_data.xml')
+    tree = ET.parse('xmltv_test_data.xml')
     
     return tree.getroot()
 
