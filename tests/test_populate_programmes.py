@@ -41,6 +41,11 @@ def test_populate_programmes_insertion(db_feed):
     prog_60 = Programmes.objects.filter(date_debut=datetime.datetime(2021, 2, 5, 11, 59, tzinfo=pytz.UTC),
                                         date_fin=datetime.datetime(2021, 2, 5, 12, 59, tzinfo=pytz.UTC),
                                         chaines=chaine_boomerang.id)
+    prog_review_too_long = Programmes.objects.filter(date_debut=datetime.datetime(2021, 2, 10, 22, 50, tzinfo=pytz.UTC),
+                                                    date_fin=datetime.datetime(2021, 2, 11, 0, 15, tzinfo=pytz.UTC),
+                                                    chaines=chaine_boomerang.id
+                                                    )
+
 
     assert chaine.id == 1
     assert chaine.id_chaine == "187.api-tel.programme-tv.net"
@@ -91,7 +96,7 @@ def test_populate_programmes_insertion(db_feed):
     assert prog_piege.series_set.all()[0].partie == 0
     assert len(prog_9999999) == 1
     assert len(prog_60) == 1
-
+    assert len(prog_review_too_long) == 0
 
 
 # @mark.django_db
