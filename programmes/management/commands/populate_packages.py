@@ -62,5 +62,5 @@ class Command(BaseCommand):
                     self.save(bouquet_chaine)
 
     def handle(self, *args, **options):
-        
-        self.populate(options['file'][0])
+
+        self.populate(options['package'][0])
