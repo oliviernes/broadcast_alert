@@ -31,7 +31,6 @@ class Command(BaseCommand):
                 data.save()
         except:
             print("The data could not be inserted in the DB.")
-            data.delete()
 
     def populate(self, file):
         """Populate the db with the channels and programmes"""
