@@ -230,6 +230,34 @@
             "stop": "20210205126000 +0000",
             "channel": "321.api-tel.programme-tv.net",
             "audio_subtitles": false
+        },
+        {
+            "start": "20210210225000 +0100",
+            "stop": "20210211001500 +0100",
+            "channel": "321.api-tel.programme-tv.net",
+            "audio_subtitles": true,
+            "desc": "Surnommé CSG par tout le monde, Cédric Saint Guérande est l'animateur préféré des Français. Son journal télévisé domine largement les audiences, il est proche des plus grandes célébrités du pays. Il croit que tout lui est permis, mais son succès fait en réalité des jaloux. Même au sein de La Grande Chaîne pour laquelle il officie. Le nouveau président de l'entreprise est d'ailleurs bien décidé à brider l'ambition apparemment sans limite du journaliste. Pour cela, il demande à son entourage de mener l'enquête sur Saint Guérande, afin de trouver de quoi le menacer. Bientôt, la guerre est déclarée entre les deux hommes...",
+            "date": "2019",
+            "icon": "https://television.telerama.fr/sites/tr_master/files/sheet_media/media/129e1a4f678a5b5284194ad87e13965917d53b7c.jpg",
+            "url": "https://television.telerama.fr/cinema/films/toute-ressemblance,n6307487.php",
+            "public": 0,
+            "note": 1,
+            "review": "Il faut se méfier de la voix off au cinéma : entre des mains malhabiles, c’est de la nitroglycérine. Ou du chloroforme. Chez le débutant Michel Denisot, qui signe avec Toute ressemblance… son premier long métrage, Franck Dubosc commente quasiment chaque séquence sur un ton de confidence cynique, lestant de ses explications des images déjà platement explicites, dans un ersatz de complicité avec le spectateur. Loin de l’attachant Chirac de Camping, il incarne un journaliste star du 20 heures, Cédric Saint Guérande, qui se livre à une guéguerre ouverte avec le nouveau président de sa chaîne (Denis Podalydès), un « coupeur de têtes » désireux de rajeunir l’antenne. On espérait que cette intrigue minimaliste serait au moins nourrie des quarante ans de métier de l’homme de télé Denisot. Elle ne l’est, en fait, que d’un ramassis d’anecdotes périmées et de son carnet d’adresses.\n\nPeuplé de figurants célèbres (Michel Drucker, Claire Chazal, Patrick Poivre d’Arvor, Marc-Olivier Fogiel, Nikos Aliagas, Béatrice Dalle, JoeyStarr…), Toute ressemblance… se vend comme une immersion dans les coulisses de la télévision. Où, surprise, on croiserait des monstres d’ego, des hommes accros au pouvoir, à la drogue, à la célébrité (mais pas tellement au travail, apparemment, puisque personne n’a jamais l’air de bosser). Le scénario, étique, ressemble in fine a un agglomérat de péripéties plus ou moins salées, voire salaces – bonjour l’humour franchouillard des scènes de sexe – et les personnages n’existent que par la somme des clichés qu’ils condensent.\n\nOn est un peu triste pour Franck Dubosc, dont on persiste à penser qu’il pourrait devenir notre Steve Carell. On est un peu content pour Jérôme Commandeur, le plus drôle de la bande, qui se sort par miracle d’un rôle piégeux de producteur gay à la libido en roue libre. On est surpris, enfin, par la brièveté de l’affaire : une heure vingt-trois minutes. Pas parce que ce serait une épure, non, plutôt parce que le film n’a rien à dire, en fait, et qu’il le dit mal. Pour preuve, cette séquence royale avec Alain Delon, qui aurait pu donner matière à une parenthèse magique. Invité du JT de Saint Guérande, l’acteur se soumet à un exercice gonflé : « l’interview sans paroles ». Las, au lieu d’appliquer ce programme – filmer, en silence, le visage de Delon pendant plusieurs minutes, et peut-être laisser au spectateur le loisir de projeter soixante ans de souvenirs sur ce vieux visage aimé –, la voix off, encore elle, vient saborder la scène. Le film cavale d’un bout à l’autre. La peur du vide, sans doute. En tout cas, toute ressemblance avec du cinéma serait purement fortuite.",
+            "titles": [
+                "Toute ressemblance..."
+            ],
+            "directors": [],
+            "categories": [
+                "Film",
+                "Comédie dramatique",
+                "Movie / Drama"
+            ],
+            "actors": [],
+            "writers": [],
+            "composers": [],
+            "countries": [
+                "France"
+            ]
         }
     ]
 }
