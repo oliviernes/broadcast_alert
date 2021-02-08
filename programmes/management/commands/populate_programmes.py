@@ -6,7 +6,7 @@ import os
 from django.conf import settings
 from django.utils.timezone import make_aware
 from django.core.management.base import BaseCommand, CommandError
-
+from django.db import transaction
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE","broadcast_alert.settings")
 import django
@@ -23,16 +23,15 @@ class Command(BaseCommand):
         parser.add_argument('file', nargs='+', type=str)
 
     def save(self, data):
-        """ Methode to save data to the DB. The try except block is in a
-        while loop to be able to use the loop control statement continue
-         which can be used only in a loop"""
-        while True:
-            try:
+        """ Method to save data to the DB. The code that might raise
+         an integrity error is wrapped in an atomic block to avoid a 
+         TransactionManagementError"""
+        try:
+            with transaction.atomic():
                 data.save()
-                break
-            except:
-                "The data could not be inserted in the DB"
-                continue
+        except:
+            print("The data could not be inserted in the DB.")
+            data.delete()
 
     def populate(self, file):
         """Populate the db with the channels and programmes"""
@@ -118,8 +117,10 @@ class Command(BaseCommand):
                                 date_fin=date_fin,
                                 chaines_id=chaine.id
                                 )
-
-            self.save(prog)
+            try:
+                self.save(prog)
+            except:
+                continue
 
             try:
                 pro = Programmes.objects.get(date_debut=date_deb,
@@ -199,9 +200,12 @@ class Command(BaseCommand):
                         cat.programmes.add(pro.id)
                     elif categorie.find("/") == -1 and len(Categories.objects.filter(nom=categorie)) == 0:
                         cat = Categories(nom=categorie)
-                        self.save(cat)
-                        cat.programmes.add(pro.id)
-                        print(f"The categorie {categorie} has been inserted in the DB.")
+                        try:
+                            self.save(cat)
+                            cat.programmes.add(pro.id)
+                            print(f"The categorie {categorie} has been inserted in the DB.")
+                        except:
+                            continue
 
             countries = programme.get("countries")
             if countries is not None:
@@ -211,9 +215,12 @@ class Command(BaseCommand):
                         pays.programmes.add(pro.id)
                     elif countrie.find("/") == -1 and len(PaysRealisation.objects.filter(nom=countrie)) == 0:
                         pays = PaysRealisation(nom=countrie)
-                        self.save(pays)
-                        pays.programmes.add(pro.id)
-                        print(f"The countrie {countrie} has been inserted in the DB.")
+                        try:
+                            self.save(pays)
+                            pays.programmes.add(pro.id)
+                            print(f"The countrie {countrie} has been inserted in the DB.")
+                        except:
+                            continue
 
     def handle(self, *args, **options):
         
