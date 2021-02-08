@@ -3,6 +3,8 @@ import os
 from django.core.management.base import BaseCommand, CommandError
 from config import CHANNELS_TNT
 from scraper_alloforfait import Package
+from django.db import transaction
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE","broadcast_alert.settings")
 import django
@@ -17,16 +19,15 @@ class Command(BaseCommand):
         parser.add_argument('package', nargs='+', type=str)
 
     def save(self, data):
-        """ Methode to save data to the DB. The try except block is in a
-        while loop to be able to use the loop control statement continue
-         which can be used only in a loop"""
-        while True:
-            try:
+        """ Method to save data to the DB. The code that might raise
+         an integrity error is wrapped in an atomic block to avoid a 
+         TransactionManagementError"""
+        try:
+            with transaction.atomic():
                 data.save()
-                break
-            except:
-                "The data could not be inserted in the DB"
-                continue
+        except:
+            print("The data could not be inserted in the DB.")
+            data.delete()
 
 
     def populate(self, package):
