@@ -19,13 +19,16 @@ class Programmes(models.Model):
     url = models.CharField(max_length=500, null=True)
     public = models.IntegerField(null=True)
     aide_sourd = models.BooleanField(null=True)
-    note = models.IntegerField(null=True)
+    note = models.SmallIntegerField(null=True)
     critique = models.CharField(max_length=2000, null=True)
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
     chaines = models.ForeignKey(
         Chaines, on_delete=models.CASCADE
     )
+
+    # class Meta:
+    #     ordering = ['date_debut']
 
     # def __str__(self):
     #     return self.??????????????
@@ -71,9 +74,9 @@ class Series(models.Model):
     programmes = models.ForeignKey(
         Programmes, on_delete=models.CASCADE
     )
-    serie = models.IntegerField(null=True)
-    episode = models.IntegerField(null=True)
-    partie = models.IntegerField(null=True)
+    serie = models.SmallIntegerField(null=True)
+    episode = models.SmallIntegerField(null=True)
+    partie = models.SmallIntegerField(null=True)
 
     # def __str__(self):
     #     return self.???????????
@@ -104,7 +107,7 @@ class Compositeurs(models.Model):
 class Recherche(models.Model):
     recherche = models.CharField(max_length=200, null=True)
     match_all = models.BooleanField()
-    max_resultats = models.IntegerField()
+    max_resultats = models.SmallIntegerField()
     programmes = models.ManyToManyField(Programmes)
     chaines = models.ManyToManyField(Chaines)
     # utilisateurs = models.ForeignKey(
@@ -123,15 +126,15 @@ class RechercheSpecifique(models.Model):
     acteur = models.CharField(max_length=200, null=True)
     role = models.CharField(max_length=200, null=True)
     scenariste = models.CharField(max_length=200, null=True)
-    date_realisation = models.IntegerField(null=True)
+    date_realisation = models.SmallIntegerField(null=True)
     categories = models.CharField(max_length=150, null=True)
-    serie = models.IntegerField(null=True)
-    episode = models.IntegerField(null=True)
-    partie = models.IntegerField(null=True)
+    serie = models.SmallIntegerField(null=True)
+    episode = models.SmallIntegerField(null=True)
+    partie = models.SmallIntegerField(null=True)
     pays_realisation = models.CharField(max_length=200, null=True)
-    public = models.IntegerField(null=True)
+    public = models.SmallIntegerField(null=True)
     aide_sourd = models.BooleanField(null=True)
-    note = models.IntegerField(null=True)
+    note = models.SmallIntegerField(null=True)
     critique = models.CharField(max_length=100, null=True)
     date_debut = models.DateField(null=True)
     date_fin = models.DateField(null=True)
