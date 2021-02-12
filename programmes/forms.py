@@ -1,28 +1,34 @@
 from django import forms
 from django.db.models import fields
-from django.forms import ModelForm, CheckboxSelectMultiple
+from django.forms import ModelForm
 from .models import BouquetTv, Recherche, Chaines
 
 
 class RechercheForm(ModelForm):
     chaines_tv = forms.ModelMultipleChoiceField(queryset=Chaines.objects.all().order_by("nom"),
                                                  widget=forms.CheckboxSelectMultiple,
-                                                #  initial={'chaines':[chan for chan in Chaines.objects.all().values_list('id_chaine', flat=True)]}
-                                                # initial={'nom': Chaines.objects.filter(nom="6TER")}
                                                  )
     class Meta:
         model = Recherche
         fields = ['recherche', 'match_all', 'max_resultats', 'chaines_tv']
         # fields = '__all__'
-        # widgets = {
-        #     'chaines': CheckboxSelectMultiple(),
-        #     'field2': CheckboxSelectMultiple()
-        # }
 
 # class RechercheForm(forms.Form):
 #     recherche = forms.CharField(max_length=30)
 
 class BouquetTvForm(ModelForm):
+    # bouquets = forms.ChoiceField(widget=forms.RadioSelect, choices=[nom.nom for nom in BouquetTv.objects.all()])
+    bouquets = forms.ChoiceField(widget=forms.RadioSelect(attrs={'onchange': 'this.form.submit();'}),
+                                 choices=[(1, 'Aucunes'),
+                                        (2, 'Free'),
+                                        (3, 'Sfr'),
+                                        (4, 'Bouygues'),
+                                        (5, 'TNT'),
+                                        (6, 'Toutes les chaînes')]
+                                )
+
+    # bouquets = forms.ChoiceField(widget=forms.RadioSelect)
+
     class Meta:
         model = BouquetTv
-        fields = ['nom']
+        fields = ['bouquets']
