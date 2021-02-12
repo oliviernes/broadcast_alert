@@ -11,6 +11,7 @@ from django.urls import reverse
 
 from .models import Recherche, Programmes
 from .forms import RechercheForm, BouquetTvForm, Chaines
+from config import CHOICES
 
 def welcome(request):
     """Display welcome page"""
@@ -30,20 +31,37 @@ def search(request):
     if request.method == "POST":
         form_recherche = RechercheForm(request.POST)
         form_bouquet = BouquetTvForm(request.POST)
-        if form_recherche.is_valid() and form_bouquet.is_valid():
-            recherche = form_recherche.cleaned_data['recherche']
-            nom = form_bouquet.cleaned_data['nom']
-            # match_all = form.cleaned_data['match_all']
-            # max_resultats = form.cleaned_data['max_resultats']
-            # programmes = form.cleaned_data['programmes']
-            # chaines = form.cleaned_data['chaines']
-            prog = Programmes.objects.filter(titre_informatif=recherche)
+        if form_bouquet.is_valid():
+            bouquet = form_bouquet.cleaned_data['bouquets']
+            if int(bouquet) == 6:
+                form_recherche = RechercheForm(initial={'chaines_tv': [chan for chan in Chaines.objects.all()]})
+            else:
+                form_recherche = RechercheForm(initial={'chaines_tv': [chan for chan in Chaines.objects.filter(bouquettv__nom=CHOICES[int(bouquet)-1])]})
+            return render(request, "programmes/welcome.html", {'form_bouquet': form_bouquet,
+                                                                'form_recherche': form_recherche
+                                                                })
 
-            return render(request, "programmes/results.html", {"prog": prog[0]})
+        elif form_recherche.is_valid():
+            recherche = form_recherche.cleaned_data['recherche']
+            match_all = form_recherche.cleaned_data['match_all']
+            max_resultats = form_recherche.cleaned_data['max_resultats']
+            chaines = form_recherche.cleaned_data['chaines_tv']
+            print(chaines)
+            match = []
+            for chaine in chaines:
+                prog = Programmes.objects.filter(titre_informatif__contains=recherche,
+                                                chaines=chaine.id)
+                if len(prog) > 0:
+                    match.append(prog)
+            context = {
+                "match": match,
+                "recherche": f"La recherche {recherche} n'a donnée aucun résultat pour les 7 prochains jours"
+            }
+            return render(request, "programmes/results.html", context)
 
     else:
-        form_recherche = RechercheForm(initial={'chaines_tv': [chan for chan in Chaines.objects.filter(nom="6TER")]})
         form_bouquet = BouquetTvForm()
+        form_recherche = RechercheForm()
     
     return render(request, "programmes/welcome.html", {'form_bouquet': form_bouquet,
                                                         'form_recherche': form_recherche
