@@ -1,0 +1,39 @@
+{% extends 'programmes/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block welcome %}
+
+<div class="row">
+    <div class="col-md-12 col-lg-14 col-xl-12 mx-auto text-align: justify">
+      <form action="" method="POST">
+        {% csrf_token %}
+
+        {{ form_bouquet }}
+
+      </form>
+      <form action="" method="POST">
+        <div class='row'>
+          {% for field in form_recherche %}
+              <div class='col-lg-12 col-md-12'>
+                {{ field|as_crispy_field }}
+              </div>
+          {% endfor %}
+          {% csrf_token %}
+        </div>
+          <input type="submit" value="Chercher" />
+          <input type="submit" value="Enregistrer la recherche" />
+      </form>
+
+    </div>
+        <!-- <div class="col-12 col-md-9 mb-2 mb-md-0">
+        <input class="form-control form-control-lg" placeholder="Entrez votre recherche..." action="{% url 'results' %}" method="get" name="query">
+      </div>
+      <div class="col-12 col-md-3">
+        <button type="submit" class="btn btn-block btn-lg btn-primary" href="{% url 'results' %}" method="get">Cherche ton programme!</button>
+        <a class="btn btn-primary" href="{% url 'results' %}">results</a>
+      </div> -->
+  </div>
+
+{% endblock %}

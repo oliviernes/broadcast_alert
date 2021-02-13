@@ -1,0 +1,40 @@
+{% extends 'programmes/base.html' %}
+
+{% load static %}
+    
+{% block search %}
+
+<div class="row">
+  <div class="col-xl-9 mx-auto">
+    <h1 class="mb-5">Build a landing page for your business or project and generate more leads!</h1>
+  </div>
+  <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+    <form>
+      <div class="form-row">
+        <!-- <form action="" method="POST">
+          {% csrf_token %}
+
+          {{ form_recherche }}
+
+          <input type="submit" value="Submit" />
+        </form> -->
+        <div class="col-12 col-md-9 mb-2 mb-md-0">
+          {% if match|length > 0 %}
+            {% for prog in match %}
+              {% for programme in prog %}
+                {{ programme.date_realisation }}
+              {% endfor %}
+            {% endfor %}
+          {% else %}
+            {{ recherche }}
+          {% endif %}
+        </div>
+        <div class="col-12 col-md-3">
+          <button type="submit" class="btn btn-block btn-lg btn-primary">Cherche ton programme!</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
