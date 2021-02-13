@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'rest_framework', # new
     #local
     'programmes.apps.ProgrammesConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
