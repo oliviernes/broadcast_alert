@@ -13,7 +13,10 @@
         {{ form_bouquet }}
 
       </form>
-      <form action="" method="POST">
+      <form action="results/" method="POST">
+        <input type="submit" value="Chercher (recherche rapide)" />
+        <input type="submit" value="Enregistrer la recherche" />
+
         <div class='row'>
           {% for field in form_recherche %}
               <div class='col-lg-12 col-md-12'>
@@ -21,10 +24,22 @@
               </div>
           {% endfor %}
           {% csrf_token %}
+
         </div>
-          <input type="submit" value="Chercher" />
-          <input type="submit" value="Enregistrer la recherche" />
+        {{ form_recherche_specifique }}
+
+        <input type="submit" value="Chercher (recherche rapide)" />
+        <input type="submit" value="Enregistrer la recherche" />
+
       </form>
+      <!-- <form action="results/" method="POST">
+        {% csrf_token %}
+
+
+        <input type="submit" value="Chercher (recherche spécifique)" />
+        <input type="submit" value="Enregistrer la recherche spécifique" />
+
+      </form> -->
 
     </div>
         <!-- <div class="col-12 col-md-9 mb-2 mb-md-0">

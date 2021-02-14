@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import fields
 from django.forms import ModelForm
-from .models import BouquetTv, Recherche, Chaines
+from .models import BouquetTv, Recherche, RechercheSpecifique, Chaines
 
 
 class RechercheForm(ModelForm):
@@ -32,3 +32,11 @@ class BouquetTvForm(ModelForm):
     class Meta:
         model = BouquetTv
         fields = ['bouquets']
+
+class RechercheSpecifiqueForm(ModelForm):
+
+    class Meta:
+        model = RechercheSpecifique
+        exclude = ['recherche']
+        # fields = '__all__'
+        # fields = ['titre']
