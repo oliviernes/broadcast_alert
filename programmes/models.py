@@ -105,7 +105,7 @@ class Compositeurs(models.Model):
         return self.nom
 
 class Recherche(models.Model):
-    recherche = models.CharField(max_length=200, null=True)
+    recherche = models.CharField(max_length=200, null=True, blank=True)
     match_all = models.BooleanField()
     max_resultats = models.SmallIntegerField()
     programmes = models.ManyToManyField(Programmes)
@@ -119,25 +119,25 @@ class Recherche(models.Model):
 
 
 class RechercheSpecifique(models.Model):
-    titre = models.CharField(max_length=150, null=True)
-    titre_informatif = models.CharField(max_length=200, null=True)
-    description = models.CharField(max_length=200, null=True)
-    realisateur = models.CharField(max_length=200, null=True)
-    acteur = models.CharField(max_length=200, null=True)
-    role = models.CharField(max_length=200, null=True)
-    scenariste = models.CharField(max_length=200, null=True)
-    date_realisation = models.SmallIntegerField(null=True)
-    categories = models.CharField(max_length=150, null=True)
-    serie = models.SmallIntegerField(null=True)
-    episode = models.SmallIntegerField(null=True)
-    partie = models.SmallIntegerField(null=True)
-    pays_realisation = models.CharField(max_length=200, null=True)
-    public = models.SmallIntegerField(null=True)
-    aide_sourd = models.BooleanField(null=True)
-    note = models.SmallIntegerField(null=True)
-    critique = models.CharField(max_length=100, null=True)
-    date_debut = models.DateField(null=True)
-    date_fin = models.DateField(null=True)
+    titre = models.CharField(max_length=150, null=True, blank=True)
+    titre_informatif = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    realisateur = models.CharField(max_length=200, null=True, blank=True)
+    acteur = models.CharField(max_length=200, null=True, blank=True)
+    role = models.CharField(max_length=200, null=True, blank=True)
+    scenariste = models.CharField(max_length=200, null=True, blank=True)
+    date_realisation = models.SmallIntegerField(null=True, blank=True)
+    categories = models.CharField(max_length=150, null=True, blank=True)
+    serie = models.SmallIntegerField(null=True, blank=True)
+    episode = models.SmallIntegerField(null=True, blank=True)
+    partie = models.SmallIntegerField(null=True, blank=True)
+    pays_realisation = models.CharField(max_length=200, null=True, blank=True)
+    public = models.SmallIntegerField(null=True, blank=True)
+    aide_sourd = models.BooleanField(null=True, blank=True)
+    note = models.SmallIntegerField(null=True, blank=True)
+    critique = models.CharField(max_length=100, null=True, blank=True)
+    date_debut = models.DateField(null=True, blank=True)
+    date_fin = models.DateField(null=True, blank=True)
     recherche = models.ForeignKey(
         Recherche, on_delete=models.CASCADE
     )
