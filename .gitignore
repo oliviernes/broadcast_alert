@@ -129,4 +129,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-xmltv_test_parser_json.json
+# files:
+
+populate_programmes.sh
+programmes_download.sh
