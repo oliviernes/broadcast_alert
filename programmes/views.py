@@ -6,12 +6,14 @@ from functools import reduce
 from django.utils.timezone import make_aware
 from django.shortcuts import render
 from django.db.models import Q
+from django.shortcuts import redirect
 
 # Create your views here.
 
-from .models import Acteurs, Realisateur, Recherche, Programmes, Titres, Scenariste, Series
-from .forms import RechercheForm, RechercheSpecifiqueForm, BouquetTvForm, Chaines
+from .models import Programmes, Chaines
+from .forms import RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
 from config import CHOICES
+
 
 def welcome(request):
     """Display welcome page"""
@@ -32,6 +34,7 @@ def search(request):
         form_recherche = RechercheForm(request.POST)
         form_bouquet = BouquetTvForm(request.POST)
         form_recherche_specifique = RechercheSpecifiqueForm(request.POST)
+        breakpoint()
         if form_bouquet.is_valid():
             bouquet = form_bouquet.cleaned_data['bouquets']
             if int(bouquet) == 6:
@@ -43,13 +46,24 @@ def search(request):
                                                                 'form_recherche_specifique' : form_recherche_specifique
                                                                 })
 
+        # elif form_recherche.is_valid():
         elif form_recherche.is_valid() and form_recherche_specifique.is_valid():
         # elif form_recherche_specifique.is_valid():
-
             recherche = form_recherche.cleaned_data['recherche']
-            match_all = form_recherche.cleaned_data['match_all']
             max_resultats = form_recherche.cleaned_data['max_resultats']
             chaines = form_recherche.cleaned_data['chaines_tv']
+
+            Q_recherche = [Q(titres__nom__icontains=recherche),
+                            Q(titre_informatif__contains=recherche),
+                            Q(description__contains=recherche),
+                            Q(realisateur__nom__icontains=recherche),
+                            Q(acteurs__nom__icontains=recherche),
+                            Q(acteurs__role__icontains=recherche),
+                            Q(scenariste__nom__icontains=recherche),
+                            Q(categories__nom__icontains=recherche),
+                            Q(paysrealisation__nom__icontains=recherche),
+                            Q(critique__contains=recherche),
+                            ]
 
             Q_list = []
 
@@ -59,11 +73,11 @@ def search(request):
 
             titre_informatif = form_recherche_specifique.cleaned_data['titre_informatif']
             if titre_informatif is not None:
-                Q_list.append(Q(titre_informatif__contains=titre_informatif))
+                Q_list.append(Q(titre_informatif__icontains=titre_informatif))
               
             description = form_recherche_specifique.cleaned_data['description']
             if description is not None:
-                 Q_list.append(Q(description__contains=description))
+                 Q_list.append(Q(description__icontains=description))
 
             realisateur = form_recherche_specifique.cleaned_data['realisateur']
             if realisateur is not None:
@@ -129,11 +143,26 @@ def search(request):
             if date_fin is not None:
                 Q_list.append(Q(date_fin__lte=date_fin))
 
+            if len(Q_list) > 0:
+                programmes = Programmes.objects.filter(
+                    reduce(operator.and_, Q_list),
+                    chaines__in=[chaine.id for chaine in chaines]
+                ).order_by('date_debut')
 
-            programmes = Programmes.objects.filter(
-                reduce(operator.and_, Q_list),
-                chaines__in=[chaine.id for chaine in chaines]
-            ).order_by('date_debut')
+            if recherche and len(Q_list) == 0:
+                programmes = Programmes.objects.filter(
+                    reduce(operator.or_, Q_recherche),
+                    chaines__in=[chaine.id for chaine in chaines]
+                ).order_by('date_debut')
+            elif recherche and len(Q_list) > 0:
+                programmes_recherche = Programmes.objects.filter(
+                    reduce(operator.or_, Q_recherche),
+                    id__in=[prog.id for prog in programmes],
+                    chaines__in=[chaine.id for chaine in chaines]
+                ).order_by('date_debut')
+                programmes = programmes_recherche
+            else:
+                programmes = []
 
             programmes = list(dict.fromkeys(programmes))
 
@@ -145,18 +174,25 @@ def search(request):
 
             programmes_7D = programmes_7D[:max_resultats]
 
+
             context = {
                 "match": programmes_7D,
-                "recherche": f"La recherche {recherche} n'a donnée aucun résultat pour les 7 prochains jours"
             }
             return render(request, "programmes/results.html", context)
+
+        else:
+            form_bouquet = BouquetTvForm()
+            form_recherche = RechercheForm()
+            form_recherche_specifique = RechercheSpecifiqueForm()
+
+            return redirect('welcome')
 
     else:
         form_bouquet = BouquetTvForm()
         form_recherche = RechercheForm()
         form_recherche_specifique = RechercheSpecifiqueForm()
 
-    return render(request, "programmes/welcome.html", {'form_bouquet': form_bouquet,
-                                                        'form_recherche': form_recherche,
-                                                        'form_recherche_specifique': form_recherche_specifique
-                                                         })
+        return render(request, "programmes/welcome.html", {'form_bouquet': form_bouquet,
+                                                            'form_recherche': form_recherche,
+                                                            'form_recherche_specifique': form_recherche_specifique
+                                                            })
