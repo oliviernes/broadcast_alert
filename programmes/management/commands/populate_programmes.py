@@ -191,6 +191,7 @@ class Command(BaseCommand):
                     compositeur = Compositeurs(programmes_id=pro.id, nom=composer)
                     self.save(compositeur)
 
+            """Remove categories with '/' to simplify coding"""
             categories = programme.get("categories")
             if categories is not None:
                 for categorie in categories:
