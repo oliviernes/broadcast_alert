@@ -42,24 +42,26 @@ class Command(BaseCommand):
         try:
             channels = packages[package]
         except:
+            channels = False
             print("You have to choose one of these selected packages: free,"
             "sfr, bouygues or tnt")
 
-        if channels and len(BouquetTv.objects.filter(nom=package)) == 0:
-            bouquet = BouquetTv(nom=package)
-            self.save(bouquet)
-        else:
-            bouquet = BouquetTv.objects.get(nom=package)
+        if channels:
+            if channels and len(BouquetTv.objects.filter(nom=package)) == 0:
+                bouquet = BouquetTv(nom=package)
+                self.save(bouquet)
+            else:
+                bouquet = BouquetTv.objects.get(nom=package)
 
-        for channel in channels:
-            chaines = Chaines.objects.filter(nom=channel[1])
-            if len(chaines) != 0:
-                for chaine in chaines:
-                    bouquet_chaine = BouquetsChaines(chaines=chaine,
-                                                    bouquettv=bouquet,
-                                                    numero=channel[0]
-                                                    )
-                    self.save(bouquet_chaine)
+            for channel in channels:
+                chaines = Chaines.objects.filter(nom=channel[1])
+                if len(chaines) != 0:
+                    for chaine in chaines:
+                        bouquet_chaine = BouquetsChaines(chaines=chaine,
+                                                        bouquettv=bouquet,
+                                                        numero=channel[0]
+                                                        )
+                        self.save(bouquet_chaine)
 
     def handle(self, *args, **options):
 
