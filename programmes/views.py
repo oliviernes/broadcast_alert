@@ -135,14 +135,6 @@ def search(request):
             if critique is not None:
                 Q_list.append(Q(critique__contains=critique))
 
-            date_debut = form_recherche_specifique.cleaned_data['date_debut']
-            if date_debut is not None:
-                Q_list.append(Q(date_debut__gte=date_debut))
-
-            date_fin = form_recherche_specifique.cleaned_data['date_fin']
-            if date_fin is not None:
-                Q_list.append(Q(date_fin__lte=date_fin))
-
 
             if len(Q_list) > 0:
                 programmes = Programmes.objects.filter(
