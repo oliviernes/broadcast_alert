@@ -1,7 +1,3 @@
-import json
-import datetime
-import pytz
-
 from unittest.mock import patch
 
 from pytest import fixture, mark
@@ -94,6 +90,25 @@ def test_bad_package_name(db_feed, capsys):
         == "You have to choose one of these selected packages: free,"
             "sfr, bouygues or tnt\n"
     )
+
+@mark.django_db
+def test_package_already_in_DB(db_feed, capsys):
+
+    tf1 = Chaines(id_chaine="1_test", nom="TF1")
+    tf1.save()
+    free = BouquetTv(nom="free")
+    free.save()
+
+    db_feed.populate("free")
+
+    bouquet = BouquetTv.objects.get(nom="free")
+    tf1 = Chaines.objects.get(nom="TF1")
+    bouquets_chaines = BouquetsChaines.objects.all()
+
+    assert bouquet.nom == "free"
+    assert tf1.bouquettv_set.all()[0].nom == "free"
+    assert bouquets_chaines[0].numero == 1
+
 
 # @mark.django_db
 # @patch('programmes.models.BouquetsChaines')
