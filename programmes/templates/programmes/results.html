@@ -19,14 +19,96 @@
           <input type="submit" value="Submit" />
         </form> -->
         <div class="col-12 col-md-9 mb-2 mb-md-0">
-          {% if match|length > 0 %}
-            {% for prog in match %}
-              {% for programme in prog %}
-                {{ programme.date_realisation }}
+          {% if info_programmes|length > 0 %}
+            {% for prog in info_programmes %}
+              <p>##################################</p>
+              <p>Chaine: {{ prog.chaine }}</p>
+              <p>Date début: {{ prog.programme.date_debut }}</p>
+              <p>Date fin: {{ prog.programme.date_fin }}</p>
+              {% if prog.titres|length > 0 %}
+                <p>Titres:</p>
+                {% for titre in prog.titres %}
+                  <p>{{ titre.nom }}</p>
+                {% endfor %}
+              {% endif %}
+              {% if prog.programme.titre_informatif %}
+                <p>-------------------------------------------</p>
+                <p>Titre informatif:</p>
+                <p>{{ prog.programme.titre_informatif}}</p>
+              {% endif %}
+              {% if prog.programme.description %}
+                <p>-------------------------------------------</p>
+                <p>Description:</p>
+                <p>{{ prog.programme.description}}</p>
+              {% endif %}
+              {% if prog.realisateur|length > 0 %}
+                <p>-------------------------------------------</p>
+                <p>Réalisateurs:</p>
+                {% for realisateur in prog.realisateur %}
+                  <p>{{ realisateur.nom }}</p>
+                {% endfor %}
+              {% endif %}
+              {% if prog.acteurs|length > 0 %}
+                <p>-------------------------------------------</p>
+              {% for acteur in prog.acteurs %}
+                {% if acteur.role %}
+                  <p>Acteur: {{ acteur.nom }}---Rôle: {{ acteur.role }}</p>
+                {% else %}
+                <p>Acteur: {{ acteur.nom }}</p>
+                {% endif %}
               {% endfor %}
+              {% endif %}
+              {% if prog.scenariste|length > 0 %}
+                <p>-------------------------------------------</p>
+                <p>Scenarites:</p>
+                {% for scenariste in prog.scenariste %}
+                  <p>{{ scenariste.nom }}</p>
+                {% endfor %}
+              {% endif %}
+              {% if prog.programme.date_realisation %}
+                <p>-------------------------------------------</p>
+                <p>Année de réalisation: {{ prog.programme.date_realisation }}</p>
+              {% endif %}
+              {% if prog.categories|length > 0 %}
+                <p>-------------------------------------------</p>
+                <p>Categories:</p>
+                {% for categorie in prog.categories %}
+                  <p>{{ categorie.nom }}</p>
+                {% endfor %}
+              {% endif %}
+              {% if prog.series|length > 0 %}
+                <p>-------------------------------------------</p>
+                <p>Serie: {{ prog.series.0.serie }}</p>
+                <p>Episode: {{ prog.series.0.episode }}</p>
+                <p>Partie: {{ prog.series.0.partie }}</p>
+              {% endif %}
+              {% if prog.pays|length > 0 %}
+                <p>-------------------------------------------</p>
+                <p>Pays de réalisation:</p>
+                {% for pays in prog.pays %}
+                  <p>{{ pays.nom }}</p>
+                {% endfor %}
+              {% endif %}
+              {% if prog.programme.public %}
+                <p>-------------------------------------------</p>
+                <p>public: {{ prog.programme.public}} ans</p>
+              {% endif %}
+              {% if prog.programme.aide_sourd %}
+                <p>-------------------------------------------</p>
+                <p>sous-titres malentendants: Oui</p>
+              {% endif %}
+              {% if prog.programme.note %}
+                <p>-------------------------------------------</p>
+                <p>Note: {{ prog.programme.note}}/5</p>
+              {% endif %}
+              {% if prog.programme.critique %}
+                <p>-------------------------------------------</p>
+                <p>critique:</p>
+                <p>{{ prog.programme.critique}}</p>
+              {% endif %}
             {% endfor %}
           {% else %}
-            {{ recherche }}
+            <p>La recherche n'a donnée aucun résultat pour les 7 prochains jours</p>
           {% endif %}
         </div>
         <div class="col-12 col-md-3">

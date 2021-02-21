@@ -10,14 +10,14 @@ from django.shortcuts import redirect
 
 # Create your views here.
 
-from .models import Programmes, Chaines
+from .models import Categories, PaysRealisation, Programmes, Chaines, Scenariste, Series, Titres, Realisateur, Acteurs
 from .forms import RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
 from config import CHOICES
 
 
-def welcome(request):
-    """Display welcome page"""
-    return render(request, "programmes/welcome.html")
+# def welcome(request):
+#     """Display welcome page"""
+#     return render(request, "programmes/welcome.html")
 
 
 # class Results(APIView):
@@ -34,7 +34,7 @@ def search(request):
         form_recherche = RechercheForm(request.POST)
         form_bouquet = BouquetTvForm(request.POST)
         form_recherche_specifique = RechercheSpecifiqueForm(request.POST)
-        breakpoint()
+
         if form_bouquet.is_valid():
             bouquet = form_bouquet.cleaned_data['bouquets']
             if int(bouquet) == 6:
@@ -46,13 +46,12 @@ def search(request):
                                                                 'form_recherche_specifique' : form_recherche_specifique
                                                                 })
 
-        # elif form_recherche.is_valid():
         elif form_recherche.is_valid() and form_recherche_specifique.is_valid():
-        # elif form_recherche_specifique.is_valid():
             recherche = form_recherche.cleaned_data['recherche']
             max_resultats = form_recherche.cleaned_data['max_resultats']
             chaines = form_recherche.cleaned_data['chaines_tv']
 
+            """Add a Q object to search all related fields"""
             Q_recherche = [Q(titres__nom__icontains=recherche),
                             Q(titre_informatif__contains=recherche),
                             Q(description__contains=recherche),
@@ -65,6 +64,7 @@ def search(request):
                             Q(critique__contains=recherche),
                             ]
 
+            """Add a Q list with Q objects for all related specifique recherches"""
             Q_list = []
 
             titre = form_recherche_specifique.cleaned_data['titre']
@@ -143,11 +143,13 @@ def search(request):
             if date_fin is not None:
                 Q_list.append(Q(date_fin__lte=date_fin))
 
+
             if len(Q_list) > 0:
                 programmes = Programmes.objects.filter(
                     reduce(operator.and_, Q_list),
                     chaines__in=[chaine.id for chaine in chaines]
                 ).order_by('date_debut')
+
 
             if recherche and len(Q_list) == 0:
                 programmes = Programmes.objects.filter(
@@ -161,9 +163,11 @@ def search(request):
                     chaines__in=[chaine.id for chaine in chaines]
                 ).order_by('date_debut')
                 programmes = programmes_recherche
-            else:
+            elif recherche is None and len(Q_list) == 0:
                 programmes = []
 
+
+            """To remove duplicates:"""
             programmes = list(dict.fromkeys(programmes))
 
             programmes_7D = []
@@ -174,9 +178,25 @@ def search(request):
 
             programmes_7D = programmes_7D[:max_resultats]
 
+            info_programmes = []
+
+            if len(programmes_7D) > 0:
+                for prog in programmes_7D:
+                    info_prog = {}
+                    info_prog['programme'] = prog
+                    info_prog['chaine'] = prog.chaines.nom
+                    info_prog['titres'] = Titres.objects.filter(programmes_id=prog.id)
+                    info_prog['realisateur'] = Realisateur.objects.filter(programmes_id=prog.id)
+                    info_prog['scenariste'] = Scenariste.objects.filter(programmes_id=prog.id)
+                    info_prog['acteurs'] = Acteurs.objects.filter(programmes_id=prog.id)
+                    info_prog['series'] = Series.objects.filter(programmes_id=prog.id)
+                    info_prog['categories'] = Categories.objects.filter(programmes__id=prog.id)
+                    info_prog['pays'] = PaysRealisation.objects.filter(programmes__id=prog.id)
+                    info_programmes.append(info_prog)
+
 
             context = {
-                "match": programmes_7D,
+                'info_programmes': info_programmes
             }
             return render(request, "programmes/results.html", context)
 
