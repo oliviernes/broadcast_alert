@@ -2,6 +2,8 @@ import json
 import datetime
 import pytz
 
+from unittest.mock import patch
+
 from pytest import fixture, mark
 
 from programmes.management.commands.populate_packages import Command
@@ -76,3 +78,37 @@ def test_populate_package_tnt(db_feed):
     assert bouquet.nom == "tnt"
     assert france5.bouquettv_set.all()[0].nom == "tnt"
     assert bouquets_chaines[0].numero == 5
+
+@mark.django_db
+def test_bad_package_name(db_feed, capsys):
+
+    france5 = Chaines(id_chaine="47.api-tel.programme-tv.net", nom="FRANCE 5")
+    france5.save()
+
+    db_feed.populate("freeeeeeeeee")
+
+    out, err = capsys.readouterr()
+
+    assert (
+        out
+        == "You have to choose one of these selected packages: free,"
+            "sfr, bouygues or tnt\n"
+    )
+
+# @mark.django_db
+# @patch('programmes.models.BouquetsChaines')
+# def test_saving_failure(mock_bouquet, db_feed, capsys):
+
+#     france5 = Chaines(id_chaine="47.api-tel.programme-tv.net", nom="FRANCE 5")
+#     france5.save()
+
+#     mock_bouquet.numero.return_value = "5"
+
+#     db_feed.populate("free")
+
+#     out, err = capsys.readouterr()
+
+#     assert (
+#         out
+#         == "The data could not be inserted in the DB."
+#     )
