@@ -74,7 +74,7 @@ def search(request):
             titre_informatif = form_recherche_specifique.cleaned_data['titre_informatif']
             if titre_informatif is not None:
                 Q_list.append(Q(titre_informatif__icontains=titre_informatif))
-              
+
             description = form_recherche_specifique.cleaned_data['description']
             if description is not None:
                  Q_list.append(Q(description__icontains=description))
@@ -152,7 +152,6 @@ def search(request):
                 programmes_recherche = Programmes.objects.filter(
                     reduce(operator.or_, Q_recherche),
                     id__in=[prog.id for prog in programmes],
-                    chaines__in=[chaine.id for chaine in chaines]
                 ).order_by('date_debut')
                 programmes = programmes_recherche
             elif recherche is None and len(Q_list) == 0:
