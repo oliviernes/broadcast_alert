@@ -30,8 +30,15 @@
   <!-- Navigation -->
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
-      <a class="btn btn-primary" href="#">Sign In</a>
+      <a class="navbar-brand" href="{% url 'welcome' %}">Broadcast alert</a>
+      {% if user.is_authenticated %}
+        <a class="btn btn-primary" href="{% url 'my_search' %}">Mes recherches</a>
+        <a class="btn btn-primary" href="{% url 'my_account' %}">Mon compte</a>
+        <a class="btn btn-primary" href="{% url 'logout' %}">Se déconnecter</a>
+      {% else %}
+        <a class="btn btn-primary" href="{% url 'login' %}">Se connecter</a>
+        <a class="btn btn-primary" href="{% url 'signup' %}">Créer un compte</a>
+      {% endif %}
     </div>
   </nav>
 
