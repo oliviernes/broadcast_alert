@@ -1,0 +1,18 @@
+{% extends "programmes/base.html" %}
+
+{% block welcome %}
+
+  <div class="col-lg-12">
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="login" />
+  </form>
+  <br>
+  </div>
+  <div class="col-lg-12">
+  <p>Pas encore de compte? <a id="signup" href="{% url 'signup' %}"> Créez un compte!</a></p>
+  <p>Mot de passe oublié? <a id="reset" href="{% url 'reset_password' %}"> Créez un nouveau mot de passe.</a></p>
+</div>
+
+{% endblock %}

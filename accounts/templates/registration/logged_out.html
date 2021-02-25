@@ -1,0 +1,9 @@
+{% extends "programmes/base.html" %}
+
+{% block welcome %}
+  <div class="col-lg-push-3 col-lg-9">
+    <p>Vous êtes déconnecté.  </p>
+    <br>
+    <a href="{% url 'login' %}">Cliquez ici pour vous reconnecter.</a>
+  </div>
+{% endblock %}
