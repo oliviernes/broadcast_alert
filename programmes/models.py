@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -106,13 +107,12 @@ class Compositeurs(models.Model):
 
 class Recherche(models.Model):
     recherche = models.CharField(max_length=200, null=True, blank=True)
-    match_all = models.BooleanField()
     max_resultats = models.SmallIntegerField()
     programmes = models.ManyToManyField(Programmes)
     chaines = models.ManyToManyField(Chaines)
-    # utilisateurs = models.ForeignKey(
-    #     Users, on_delete=models.CASCADE
-    # )
+    utilisateur = models.ForeignKey(
+        User, on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.recherche
