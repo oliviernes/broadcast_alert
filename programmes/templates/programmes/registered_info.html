@@ -1,0 +1,23 @@
+{% extends 'programmes/base.html' %}
+
+{% load static %}
+    
+{% block welcome %}
+
+<div class="row">
+    <div class="col-xl-9 mx-auto">
+        <h1 class="mb-5">Build a landing page for your business or project and generate more leads!</h1>
+    </div>
+    <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+        {% if saved %}
+            <p>Votre recherche a bien été enregistrée.</p>
+        {% else %}
+            <p>Votre recherche n'a pas pu être enregistrée. Essayez de nouveau ou contactez l'admistrateur sur site web si le problème persiste</p>
+        {% endif %}
+    </div>
+    <div class="col-12 col-md-3">
+        <a class="btn btn-block btn-lg btn-primary" href="{% url 'welcome' %}">Chercher un autre programme</a>
+    </div>
+</div>
+
+{% endblock %}

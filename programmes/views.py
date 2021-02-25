@@ -7,13 +7,15 @@ from django.utils.timezone import make_aware
 from django.shortcuts import render
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.contrib.auth.models import User
 
 # Create your views here.
 
-from .models import Categories, PaysRealisation, Programmes, Chaines, Scenariste, Series, Titres, Realisateur, Acteurs
+from .models import Categories, PaysRealisation, Programmes, Chaines, Recherche, RechercheSpecifique, Scenariste, Series, Titres, Realisateur, Acteurs
 from .forms import RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
 from config import CHOICES
 
+import pdb
 
 # def welcome(request):
 #     """Display welcome page"""
@@ -27,6 +29,11 @@ from config import CHOICES
 #     def get(self, request):
 #         queryset = Programmes.objects.filter((name__contains=query))
 #         return Response({'results': queryset[0]})
+
+def my_search(request):
+    """Display my registered search"""
+    return render(request, "programmes/welcome.html")
+
 
 def search(request):
 
@@ -47,149 +54,206 @@ def search(request):
                                                                 })
 
         elif form_recherche.is_valid() and form_recherche_specifique.is_valid():
+
             recherche = form_recherche.cleaned_data['recherche']
             max_resultats = form_recherche.cleaned_data['max_resultats']
             chaines = form_recherche.cleaned_data['chaines_tv']
-
-            """Add a Q object to search all related fields"""
-            Q_recherche = [Q(titres__nom__icontains=recherche),
-                            Q(titre_informatif__contains=recherche),
-                            Q(description__contains=recherche),
-                            Q(realisateur__nom__icontains=recherche),
-                            Q(acteurs__nom__icontains=recherche),
-                            Q(acteurs__role__icontains=recherche),
-                            Q(scenariste__nom__icontains=recherche),
-                            Q(categories__nom__icontains=recherche),
-                            Q(paysrealisation__nom__icontains=recherche),
-                            Q(critique__contains=recherche),
-                            ]
-
-            """Add a Q list with Q objects for all related specifique recherches"""
-            Q_list = []
-
             titre = form_recherche_specifique.cleaned_data['titre']
-            if titre is not None:
-                Q_list.append(Q(titres__nom__icontains=titre))
-
             titre_informatif = form_recherche_specifique.cleaned_data['titre_informatif']
-            if titre_informatif is not None:
-                Q_list.append(Q(titre_informatif__icontains=titre_informatif))
-
             description = form_recherche_specifique.cleaned_data['description']
-            if description is not None:
-                 Q_list.append(Q(description__icontains=description))
-
             realisateur = form_recherche_specifique.cleaned_data['realisateur']
-            if realisateur is not None:
-                Q_list.append(Q(realisateur__nom__icontains=realisateur))
-
             acteur = form_recherche_specifique.cleaned_data['acteur']
-            if acteur is not None:
-                Q_list.append(Q(acteurs__nom__icontains=acteur))
-
             role = form_recherche_specifique.cleaned_data['role']
-            if role is not None:
-                Q_list.append(Q(acteurs__role__icontains=role))
-
             scenariste = form_recherche_specifique.cleaned_data['scenariste']
-            if scenariste is not None:
-                Q_list.append(Q(scenariste__nom__icontains=scenariste))
-
             date_realisation = form_recherche_specifique.cleaned_data['date_realisation']
-            if date_realisation is not None:
-                Q_list.append(Q(date_realisation=date_realisation))
-
             categorie = form_recherche_specifique.cleaned_data['categories']
-            if categorie is not None:
-                Q_list.append(Q(categories__nom__icontains=categorie))
-
             serie = form_recherche_specifique.cleaned_data['serie']
-            if serie is not None:
-                Q_list.append(Q(series__serie__icontains=serie))
-
             episode = form_recherche_specifique.cleaned_data['episode']
-            if episode is not None:
-                Q_list.append(Q(series__episode__icontains=episode))
-            
             partie = form_recherche_specifique.cleaned_data['partie']
-            if partie is not None:
-                Q_list.append(Q(series__partie__icontains=partie))
-
             pays_realisation = form_recherche_specifique.cleaned_data['pays_realisation']
-            if pays_realisation is not None:
-                Q_list.append(Q(paysrealisation__nom__icontains=pays_realisation))
-
             public = form_recherche_specifique.cleaned_data['public']
-            if public is not None:
-                Q_list.append(Q(public__lte=public))
-
             aide_sourd = form_recherche_specifique.cleaned_data['aide_sourd']
-            if aide_sourd is not None:
-                Q_list.append(Q(aide_sourd=aide_sourd))
-
             note = form_recherche_specifique.cleaned_data['note']
-            if note is not None:
-                Q_list.append(Q(note__gte=note))
-
             critique = form_recherche_specifique.cleaned_data['critique']
-            if critique is not None:
-                Q_list.append(Q(critique__contains=critique))
 
 
-            if len(Q_list) > 0:
-                programmes = Programmes.objects.filter(
-                    reduce(operator.and_, Q_list),
-                    chaines__in=[chaine.id for chaine in chaines]
-                ).order_by('date_debut')
+            if 'my_search' in request.POST:
+
+                if request.user.is_authenticated:
+
+                    user_id = request.user.id
+                    search = Recherche(recherche=recherche,
+                                                max_resultats=max_resultats,
+                                                utilisateur_id=user_id
+                                                )
+
+                    saved = True
+
+                    try:
+                        search.save()
+                    except:
+                        saved = False
+
+                    if saved == True:
+                        specific_search = RechercheSpecifique(recherche_id=search.id,
+                                                        titre=titre,
+                                                        titre_informatif=titre_informatif,
+                                                        description=description,
+                                                        realisateur=realisateur,
+                                                        acteur=acteur,
+                                                        role=role,
+                                                        scenariste=scenariste,
+                                                        date_realisation=date_realisation,
+                                                        categories=categorie,
+                                                        serie=serie,
+                                                        episode=episode,
+                                                        partie=partie,
+                                                        pays_realisation=pays_realisation,
+                                                        public=public,
+                                                        aide_sourd=aide_sourd,
+                                                        note=note,
+                                                        critique=critique,
+                        )
+
+                        try:
+                            specific_search.save()
+                        except:
+                            saved = False
+
+                    if saved == True:
+                        for chaine in chaines:
+                            search.chaines.add(chaine.id)
+
+                    context = {
+                        'saved': saved
+                    }
+
+                    return render(request, "programmes/registered_info.html", context)
+
+                return redirect("login")
+
+            else:
+                """Add a Q object to search all related fields"""
+                Q_recherche = [Q(titres__nom__icontains=recherche),
+                                Q(titre_informatif__contains=recherche),
+                                Q(description__contains=recherche),
+                                Q(realisateur__nom__icontains=recherche),
+                                Q(acteurs__nom__icontains=recherche),
+                                Q(acteurs__role__icontains=recherche),
+                                Q(scenariste__nom__icontains=recherche),
+                                Q(categories__nom__icontains=recherche),
+                                Q(paysrealisation__nom__icontains=recherche),
+                                Q(critique__contains=recherche),
+                                ]
+
+                """Add a Q list with Q objects for all related specifique recherches"""
+                Q_list = []
+
+                if titre is not None:
+                    Q_list.append(Q(titres__nom__icontains=titre))
+
+                if titre_informatif is not None:
+                    Q_list.append(Q(titre_informatif__icontains=titre_informatif))
+
+                if description is not None:
+                    Q_list.append(Q(description__icontains=description))
+
+                if realisateur is not None:
+                    Q_list.append(Q(realisateur__nom__icontains=realisateur))
+
+                if acteur is not None:
+                    Q_list.append(Q(acteurs__nom__icontains=acteur))
+
+                if role is not None:
+                    Q_list.append(Q(acteurs__role__icontains=role))
+
+                if scenariste is not None:
+                    Q_list.append(Q(scenariste__nom__icontains=scenariste))
+
+                if date_realisation is not None:
+                    Q_list.append(Q(date_realisation=date_realisation))
+
+                if categorie is not None:
+                    Q_list.append(Q(categories__nom__icontains=categorie))
+
+                if serie is not None:
+                    Q_list.append(Q(series__serie__icontains=serie))
+
+                if episode is not None:
+                    Q_list.append(Q(series__episode__icontains=episode))
+
+                if partie is not None:
+                    Q_list.append(Q(series__partie__icontains=partie))
+
+                if pays_realisation is not None:
+                    Q_list.append(Q(paysrealisation__nom__icontains=pays_realisation))
+
+                if public is not None:
+                    Q_list.append(Q(public__lte=public))
+
+                if aide_sourd is not None:
+                    Q_list.append(Q(aide_sourd=aide_sourd))
+
+                if note is not None:
+                    Q_list.append(Q(note__gte=note))
+
+                if critique is not None:
+                    Q_list.append(Q(critique__contains=critique))
 
 
-            if recherche and len(Q_list) == 0:
-                programmes = Programmes.objects.filter(
-                    reduce(operator.or_, Q_recherche),
-                    chaines__in=[chaine.id for chaine in chaines]
-                ).order_by('date_debut')
-            elif recherche and len(Q_list) > 0:
-                programmes_recherche = Programmes.objects.filter(
-                    reduce(operator.or_, Q_recherche),
-                    id__in=[prog.id for prog in programmes],
-                ).order_by('date_debut')
-                programmes = programmes_recherche
-            elif recherche is None and len(Q_list) == 0:
-                programmes = []
+                if len(Q_list) > 0:
+                    programmes = Programmes.objects.filter(
+                        reduce(operator.and_, Q_list),
+                        chaines__in=[chaine.id for chaine in chaines]
+                    ).order_by('date_debut')
 
 
-            """To remove duplicates:"""
-            programmes = list(dict.fromkeys(programmes))
-
-            programmes_7D = []
-
-            for progs in programmes:
-                if progs.date_debut >= make_aware(datetime.datetime.now()):
-                    programmes_7D.append(progs)
-
-            programmes_7D = programmes_7D[:max_resultats]
-
-            info_programmes = []
-
-            if len(programmes_7D) > 0:
-                for prog in programmes_7D:
-                    info_prog = {}
-                    info_prog['programme'] = prog
-                    info_prog['chaine'] = prog.chaines.nom
-                    info_prog['titres'] = Titres.objects.filter(programmes_id=prog.id)
-                    info_prog['realisateur'] = Realisateur.objects.filter(programmes_id=prog.id)
-                    info_prog['scenariste'] = Scenariste.objects.filter(programmes_id=prog.id)
-                    info_prog['acteurs'] = Acteurs.objects.filter(programmes_id=prog.id)
-                    info_prog['series'] = Series.objects.filter(programmes_id=prog.id)
-                    info_prog['categories'] = Categories.objects.filter(programmes__id=prog.id)
-                    info_prog['pays'] = PaysRealisation.objects.filter(programmes__id=prog.id)
-                    info_programmes.append(info_prog)
+                if recherche and len(Q_list) == 0:
+                    programmes = Programmes.objects.filter(
+                        reduce(operator.or_, Q_recherche),
+                        chaines__in=[chaine.id for chaine in chaines]
+                    ).order_by('date_debut')
+                elif recherche and len(Q_list) > 0:
+                    programmes_recherche = Programmes.objects.filter(
+                        reduce(operator.or_, Q_recherche),
+                        id__in=[prog.id for prog in programmes],
+                    ).order_by('date_debut')
+                    programmes = programmes_recherche
+                elif recherche is None and len(Q_list) == 0:
+                    programmes = []
 
 
-            context = {
-                'info_programmes': info_programmes
-            }
-            return render(request, "programmes/results.html", context)
+                """To remove duplicates:"""
+                programmes = list(dict.fromkeys(programmes))
+
+                programmes_7D = []
+
+                for progs in programmes:
+                    if progs.date_debut >= make_aware(datetime.datetime.now()):
+                        programmes_7D.append(progs)
+
+                programmes_7D = programmes_7D[:max_resultats]
+
+                info_programmes = []
+
+                if len(programmes_7D) > 0:
+                    for prog in programmes_7D:
+                        info_prog = {}
+                        info_prog['programme'] = prog
+                        info_prog['chaine'] = prog.chaines.nom
+                        info_prog['titres'] = Titres.objects.filter(programmes_id=prog.id)
+                        info_prog['realisateur'] = Realisateur.objects.filter(programmes_id=prog.id)
+                        info_prog['scenariste'] = Scenariste.objects.filter(programmes_id=prog.id)
+                        info_prog['acteurs'] = Acteurs.objects.filter(programmes_id=prog.id)
+                        info_prog['series'] = Series.objects.filter(programmes_id=prog.id)
+                        info_prog['categories'] = Categories.objects.filter(programmes__id=prog.id)
+                        info_prog['pays'] = PaysRealisation.objects.filter(programmes__id=prog.id)
+                        info_programmes.append(info_prog)
+
+                context = {
+                    'info_programmes': info_programmes
+                }
+                return render(request, "programmes/results.html", context)
 
         else:
             form_bouquet = BouquetTvForm()
@@ -207,3 +271,10 @@ def search(request):
                                                             'form_recherche': form_recherche,
                                                             'form_recherche_specifique': form_recherche_specifique
                                                             })
+
+def my_search(request):
+    """Display user's recorded search"""
+    user_id = request.user.id
+    user = get_object_or_404(User, id=user_id)
+
+    recherches = Recherche.objects.filter(utilisateur_id=user_id)
