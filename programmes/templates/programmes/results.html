@@ -2,7 +2,7 @@
 
 {% load static %}
     
-{% block search %}
+{% block welcome %}
 
 <div class="row">
   <div class="col-xl-9 mx-auto">
@@ -112,7 +112,7 @@
           {% endif %}
         </div>
         <div class="col-12 col-md-3">
-          <button type="submit" class="btn btn-block btn-lg btn-primary">Cherche ton programme!</button>
+          <a class="btn btn-block btn-lg btn-primary" href="{% url 'welcome' %}">Chercher un autre programme</a>
         </div>
       </div>
     </form>
