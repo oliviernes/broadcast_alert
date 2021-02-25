@@ -1,6 +1,6 @@
 import os
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from config import CHANNELS_TNT
 from scraper_alloforfait import Package
 from django.db import transaction
