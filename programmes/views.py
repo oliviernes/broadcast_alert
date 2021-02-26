@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 from .models import Categories, PaysRealisation, Programmes, Chaines, Recherche, RechercheSpecifique, Scenariste, Series, Titres, Realisateur, Acteurs
-from .forms import RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
+from .forms import DeleteForm, RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
 from config import CHOICES
 
 import pdb
@@ -252,7 +252,7 @@ def search(request):
                     programmes = []
 
 
-                """To remove duplicates:"""
+                """To  remove duplicates:"""
                 programmes = list(dict.fromkeys(programmes))
 
                 programmes_7D = []
@@ -302,8 +302,37 @@ def search(request):
                                                             })
 
 def my_search(request):
-    """Display user's recorded search"""
+    """Display user's recorded searches and delete selected searches"""
     user_id = request.user.id
-    user = get_object_or_404(User, id=user_id)
 
     recherches = Recherche.objects.filter(utilisateur_id=user_id)
+
+    searches=[]
+
+    for recherche in recherches:
+        recherche_specifique = RechercheSpecifique.objects.filter(recherche_id=recherche.id)
+        if len(recherche_specifique) > 0:
+            searches.append({'recherche': recherche, 'recherche_specifique': recherche_specifique[0]})
+        else:
+            searches.append({'recherche': recherche, 'recherche_specifique': None})
+
+    if request.method == "POST":
+        form_delete = DeleteForm(request.POST)
+
+        if form_delete.is_valid() and 'delete' in request.POST:
+            for selected_search in form_delete.cleaned_data['choices']:
+                selected_search.delete()
+
+            return redirect('my_search')
+        else:
+            return redirect('my_search')
+    else:
+        form_delete = DeleteForm()
+
+        context = {
+            'searches': searches,
+            'form_delete': form_delete
+        }
+
+        return render(request, "programmes/my_search.html", context)
+

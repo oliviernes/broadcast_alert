@@ -124,3 +124,11 @@ footer.footer {
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
+
+/* my custom styles: */
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}

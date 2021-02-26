@@ -42,3 +42,11 @@ class RechercheSpecifiqueForm(ModelForm):
         exclude = ['recherche', 'date_debut', 'date_fin']
         # fields = '__all__'
         # fields = ['titre']
+
+
+class DeleteForm(forms.Form):
+
+    choices = forms.ModelMultipleChoiceField(queryset=Recherche.objects.all(),
+                                widget=forms.CheckboxSelectMultiple,
+                                required=False
+                                )

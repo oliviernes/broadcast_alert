@@ -1,0 +1,163 @@
+{% extends 'programmes/base.html' %}
+
+{% load static %}
+    
+{% block welcome %}
+
+<div class="row">
+  <div class="col-xl-9 mx-auto">
+    <h1 class="mb-5">Build a landing page for your business or project and generate more leads!</h1>
+  </div>
+
+  <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+    <form action="." method="POST">
+      {% csrf_token %}
+
+      <input type="submit" name="delete" value="Supprimer les recherches sélectionnées" />
+
+
+    {% for search in searches %}
+
+    <p>Recherche enregistrée le: {{ search.recherche.date_creation }}</p>
+
+
+    <table class="table table-bordered table-striped table-condensed">
+
+        <thead>
+        <tr>
+        <th>Selectionner pour suppression:</th>
+        <th><input type="checkbox" value="{{ search.recherche.id }}" name="choices"></input></th>
+        </tr>
+        {% if search.recherche.recherche is not None %}
+          <tr>
+            <th>Recherche</th>
+            <th>{{ search.recherche.recherche }}</th>
+          </tr>
+        {% endif %}
+        {% if search.recherche.max_resultats is not None %}
+          <tr>
+            <th>Nombre de résultat maximum</th>
+            <th>{{ search.recherche.max_resultats }}</th>
+          </tr>
+        {% endif %}
+        {% if search.recherche_specifique is not None %}
+          {% if search.recherche_specifique.titre is not None %}
+          <tr>
+            <th>Titre:</th>
+            <th>{{ search.recherche_specifique.titre }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.titre_informatif is not None %}
+          <tr>
+            <th>Titre informatif</th>
+            <th>{{ search.recherche_specifique.titre_informatif }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.description is not None %}
+          <tr>
+            <th>Description:</th>
+            <th>{{ search.recherche_specifique.description }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.realisateur is not None %}
+          <tr>
+            <th>Realisateur:</th>
+            <th>{{ search.recherche_specifique.realisateur }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.acteur is not None %}
+          <tr>
+            <th>Acteur:</th>
+            <th>{{ search.recherche_specifique.acteur }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.role is not None %}
+          <tr>
+            <th>Rôle:</th>
+            <th>{{ search.recherche_specifique.role }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.scenariste is not None %}
+          <tr>
+            <th>Scenariste:</th>
+            <th>{{ search.recherche_specifique.scenariste }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.date_realisation is not None %}
+          <tr>
+            <th>Date de réalisation:</th>
+            <th>{{ search.recherche_specifique.date_realisation }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.categories is not None %}
+          <tr>
+            <th>Categorie:</th>
+            <th>{{ search.recherche_specifique.categories }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.serie is not None %}
+          <tr>
+            <th>Serie:</th>
+            <th>{{ search.recherche_specifique.serie }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.episode is not None %}
+          <tr>
+            <th>Episode:</th>
+            <th>{{ search.recherche_specifique.episode }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.partie is not None %}
+          <tr>
+            <th>Partie:</th>
+            <th>{{ search.recherche_specifique.partie }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.pays_realisation is not None %}
+          <tr>
+            <th>Pays de réalisation:</th>
+            <th>{{ search.recherche_specifique.pays_realisation }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.public is not None %}
+          <tr>
+            <th>Public:</th>
+            <th>{{ search.recherche_specifique.public }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.aide_sourd is not None %}
+          <tr>
+            <th>Sous titres malentendants:</th>
+            {% if search.recherche_specifique.aide_sourd %}
+              <th>Oui</th>
+            {% else %}
+              <th>Non</th>
+            {% endif %}
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.note is not None %}
+          <tr>
+            <th>Note:</th>
+            <th>{{ search.recherche_specifique.note }}</th>
+          </tr>
+          {% endif %}
+          {% if search.recherche_specifique.critique is not None %}
+          <tr>
+            <th>Critique:</th>
+            <th>{{ search.recherche_specifique.critique }}</th>
+          </tr>
+          {% endif %}
+        {% endif %}
+
+      </thead>
+
+    </table>
+  
+    {% endfor %}
+
+    </form>
+ 
+  </div>
+</div>
+
+{% endblock %}
