@@ -30,9 +30,9 @@ import pdb
 #         queryset = Programmes.objects.filter((name__contains=query))
 #         return Response({'results': queryset[0]})
 
-def my_search(request):
-    """Display my registered search"""
-    return render(request, "programmes/welcome.html")
+# def my_search(request):
+#     """Display my registered search"""
+#     return render(request, "programmes/welcome.html")
 
 
 def search(request):
@@ -87,14 +87,40 @@ def search(request):
                                                 utilisateur_id=user_id
                                                 )
 
-                    saved = True
+                    search_list = [ recherche,
+                                    titre,
+                                    titre_informatif,
+                                    description,
+                                    realisateur,
+                                    acteur,
+                                    role,
+                                    scenariste,
+                                    date_realisation,
+                                    categorie,
+                                    serie,
+                                    episode,
+                                    partie,
+                                    pays_realisation,
+                                    public,
+                                    aide_sourd,
+                                    note,
+                                    critique,
+                                    ]
 
-                    try:
-                        search.save()
-                    except:
-                        saved = False
+                    if all(item is None for item in search_list):
 
-                    if saved == True:
+                        return render(request, "programmes/no_search.html")        
+
+                    else:
+
+                        saved = True
+
+                        try:
+                            search.save()
+                        except:
+                            saved = False
+
+
                         specific_search = RechercheSpecifique(recherche_id=search.id,
                                                         titre=titre,
                                                         titre_informatif=titre_informatif,
@@ -113,22 +139,25 @@ def search(request):
                                                         aide_sourd=aide_sourd,
                                                         note=note,
                                                         critique=critique,
-                        )
+                                                        )
 
-                        try:
-                            specific_search.save()
-                        except:
-                            saved = False
 
-                    if saved == True:
-                        for chaine in chaines:
-                            search.chaines.add(chaine.id)
+                        if saved == True:
 
-                    context = {
-                        'saved': saved
-                    }
+                            try:
+                                specific_search.save()
+                            except:
+                                saved = False
 
-                    return render(request, "programmes/registered_info.html", context)
+                        if saved == True:
+                            for chaine in chaines:
+                                search.chaines.add(chaine.id)
+
+                        context = {
+                            'saved': saved
+                        }
+
+                        return render(request, "programmes/registered_info.html", context)
 
                 return redirect("login")
 

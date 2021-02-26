@@ -1,0 +1,44 @@
+{% extends 'programmes/base.html' %}
+
+{% load static %}
+    
+{% block welcome %}
+
+<div class="row">
+  <div class="col-xl-9 mx-auto">
+    <h1 class="mb-5">Build a landing page for your business or project and generate more leads!</h1>
+  </div>
+  <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+
+    <p> La recherche n'a pas été enregistrée car aucun champs n'a été saisi. Il faut au moins saisir un des champs suivants:</p>
+    <ul>
+        <li>recherche</li>
+        <li>titre</li>
+        <li>titre_informatif</li>
+        <li>description</li>
+        <li>realisateur</li>
+        <li>acteur</li>
+        <li>role</li>
+        <li>scenariste</li>
+        <li>date_realisation</li>
+        <li>categories</li>
+        <li>serie</li>
+        <li>episode</li>
+        <li>partie</li>
+        <li>pays_realisation</li>
+        <li>public</li>
+        <li>aide_sourd</li>
+        <li>note</li>
+        <li>critique</li>
+
+    </ul>
+</div>
+<div class="col-12 col-md-3">
+  <a class="btn btn-block btn-lg btn-primary" href="{% url 'welcome' %}">Chercher un autre programme</a>
+</div>
+</div>
+</form>
+</div>
+</div>
+
+{% endblock %}
