@@ -110,6 +110,7 @@ class Recherche(models.Model):
     max_resultats = models.SmallIntegerField()
     programmes = models.ManyToManyField(Programmes)
     chaines = models.ManyToManyField(Chaines)
+    date_creation = models.DateTimeField(auto_now=True)
     utilisateur = models.ForeignKey(
         User, on_delete=models.CASCADE
     )
