@@ -225,11 +225,11 @@ def test_logout_view():
 
 
 ####################
-#   search view      #
+#   search view    #
 ####################
 
 
-class TestResult:
+class TestSearch:
 
     client = Client()
 
@@ -463,3 +463,47 @@ class TestResult:
         response_post = self.client.post(reverse('results'), data, content_type="application/x-www-form-urlencoded")
         assert response_post.status_code == 200
         assert response_post.templates[0].name == "programmes/registered_info.html"
+
+    @mark.django_db
+    def test_saving_with_all_None_search_fields(self):
+
+        User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+        self.client.login(
+            username="lennon@thebeatles.com", password="johnpassword"
+        )
+
+        france_3 = Chaines.objects.create(id_chaine="france_3", nom="FRANCE 3")
+        france_3.save()
+        id_france_3 = france_3.id
+
+        data = urlencode({'chaines_tv': id_france_3,
+                         'max_resultats': 4,
+                         'my_search': ['Enregistrer la recherche']
+                         })
+
+        response_post = self.client.post(reverse('results'), data, content_type="application/x-www-form-urlencoded")
+        assert response_post.status_code == 200
+        assert response_post.templates[0].name == "programmes/no_search.html"
+
+
+######################
+#   my_search view   #
+######################
+
+class TestMySearch:
+
+    client = Client()
+
+    @mark.django_db
+    def test_display_registered_search(self):
+
+        User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+        self.client.login(
+            username="lennon@thebeatles.com", password="johnpassword"
+        )
+
+        response_get = self.client.get(reverse('my_search'))
+        assert response_get.status_code == 200
+        assert response_get.templates[0].name == "programmes/my_search.html"
