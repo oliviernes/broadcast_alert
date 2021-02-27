@@ -1,5 +1,6 @@
 """Test views in broadcast app"""
 import datetime
+
 from io import DEFAULT_BUFFER_SIZE
 
 from django.utils.timezone import make_aware
@@ -11,7 +12,7 @@ from django.urls import reverse
 from unittest.mock import patch
 from pytest import mark
 
-from programmes.models import Categories, PaysRealisation, Programmes, Chaines, Scenariste, Series, Titres, Realisateur, Acteurs
+from programmes.models import Categories, PaysRealisation, Programmes, Chaines, Scenariste, Series, Titres, Realisateur, Acteurs, Recherche, RechercheSpecifique
 
 from urllib.parse import urlencode
 
@@ -507,3 +508,79 @@ class TestMySearch:
         response_get = self.client.get(reverse('my_search'))
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/my_search.html"
+
+    @mark.django_db
+    def test_display_registered_search_info_without_recherche_specifique(self):
+
+        user = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+        self.client.login(
+            username="lennon@thebeatles.com", password="johnpassword"
+        )
+
+        recherche = Recherche(recherche="gloire de mon père",
+                    max_resultats=3,
+                    utilisateur_id=user.id
+                    )
+
+        recherche.save()
+
+        response_get = self.client.get(reverse('my_search'))
+        assert response_get.status_code == 200
+        assert response_get.templates[0].name == "programmes/my_search.html"
+
+    @mark.django_db
+    def test_display_registered_search_info_with_recherche_specifique(self):
+
+        user = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+        self.client.login(
+            username="lennon@thebeatles.com", password="johnpassword"
+        )
+
+        recherche = Recherche(recherche="gloire de mon père",
+                    max_resultats=3,
+                    utilisateur_id=user.id
+                    )
+
+        recherche.save()
+
+        recherche_specifique = RechercheSpecifique(titre="La gloire de mon père",
+                                                    description="un film...",
+                                                    recherche_id=recherche.id
+        )
+
+        recherche_specifique.save()
+
+        response_get = self.client.get(reverse('my_search'))
+        assert response_get.status_code == 200
+        assert response_get.templates[0].name == "programmes/my_search.html"
+
+    @mark.django_db
+    def test_delete_registered_searches(self):
+
+        user = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+        self.client.login(
+            username="lennon@thebeatles.com", password="johnpassword"
+        )
+
+        recherche = Recherche(recherche="gloire de mon père",
+                    max_resultats=3,
+                    utilisateur_id=user.id
+                    )
+
+        recherche.save()
+
+        recherche_specifique = RechercheSpecifique(titre="La gloire de mon père",
+                                                    description="un film...",
+                                                    recherche_id=recherche.id
+        )
+
+        recherche_specifique.save()
+
+        data = urlencode({'delete': ['Supprimer les recherches sélectionnées'], 'choices': ['1']})
+
+        response_post = self.client.post(reverse('my_search'), data, content_type="application/x-www-form-urlencoded")
+
+        assert response_post.status_code == 302
