@@ -311,10 +311,20 @@ def my_search(request):
 
     for recherche in recherches:
         recherche_specifique = RechercheSpecifique.objects.filter(recherche_id=recherche.id)
+        chaines_list = recherche.chaines.all().order_by("nom")
+        chaines_name = [chaine.nom for chaine in chaines_list]
+        chaines_string = '-'.join(chaines_name)
+
         if len(recherche_specifique) > 0:
-            searches.append({'recherche': recherche, 'recherche_specifique': recherche_specifique[0]})
+            searches.append({'recherche': recherche,
+                             'recherche_specifique': recherche_specifique[0],
+                             'chaines_string': chaines_string
+                             })
         else:
-            searches.append({'recherche': recherche, 'recherche_specifique': None})
+            searches.append({'recherche': recherche,
+                             'recherche_specifique': None,
+                             'chaines_string': chaines_string
+                             })
 
     if request.method == "POST":
         form_delete = DeleteForm(request.POST)

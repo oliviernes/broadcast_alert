@@ -28,16 +28,21 @@
         <th>Selectionner pour suppression:</th>
         <th><input type="checkbox" value="{{ search.recherche.id }}" name="choices"></input></th>
         </tr>
+        <tr>
+          <th>Nombre de résultat maximum</th>
+          <th>{{ search.recherche.max_resultats }}</th>
+        </tr>
+        <tr>
+          <th>Chaines</th>
+          <th><div class="popup" onclick="myFunction{{ search.recherche.id }}()">Clickez pour voir les chaînes correspondantes
+                <span class="popuptext" id="myPopup{{ search.recherche.id }}">{{ search.chaines_string }}</span>
+              </div>
+          </th>
+        </tr>
         {% if search.recherche.recherche is not None %}
           <tr>
             <th>Recherche</th>
             <th>{{ search.recherche.recherche }}</th>
-          </tr>
-        {% endif %}
-        {% if search.recherche.max_resultats is not None %}
-          <tr>
-            <th>Nombre de résultat maximum</th>
-            <th>{{ search.recherche.max_resultats }}</th>
           </tr>
         {% endif %}
         {% if search.recherche_specifique is not None %}
@@ -159,5 +164,14 @@
  
   </div>
 </div>
+
+{% for search in searches %}
+  <script>
+    function myFunction{{ search.recherche.id }}() {
+      var popup = document.getElementById("myPopup{{ search.recherche.id }}");
+      popup.classList.toggle("show");
+    }
+</script>
+{% endfor %}
 
 {% endblock %}
