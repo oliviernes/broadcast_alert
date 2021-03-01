@@ -78,7 +78,7 @@ def search(request):
 
 
             if 'my_search' in request.POST:
-
+                """To register user's searches"""
                 if request.user.is_authenticated:
 
                     user_id = request.user.id
@@ -162,17 +162,20 @@ def search(request):
                 return redirect("login")
 
             else:
+                """To search the programmes and display the results
+                in a new page"""
+
                 """Add a Q object to search all related fields"""
                 Q_recherche = [Q(titres__nom__icontains=recherche),
-                                Q(titre_informatif__contains=recherche),
-                                Q(description__contains=recherche),
+                                Q(titre_informatif__icontains=recherche),
+                                Q(description__icontains=recherche),
                                 Q(realisateur__nom__icontains=recherche),
                                 Q(acteurs__nom__icontains=recherche),
                                 Q(acteurs__role__icontains=recherche),
                                 Q(scenariste__nom__icontains=recherche),
                                 Q(categories__nom__icontains=recherche),
                                 Q(paysrealisation__nom__icontains=recherche),
-                                Q(critique__contains=recherche),
+                                Q(critique__icontains=recherche),
                                 ]
 
                 """Add a Q list with Q objects for all related specifique recherches"""
@@ -227,7 +230,7 @@ def search(request):
                     Q_list.append(Q(note__gte=note))
 
                 if critique is not None:
-                    Q_list.append(Q(critique__contains=critique))
+                    Q_list.append(Q(critique__icontains=critique))
 
 
                 if len(Q_list) > 0:
@@ -252,7 +255,7 @@ def search(request):
                     programmes = []
 
 
-                """To  remove duplicates:"""
+                """To remove duplicates:"""
                 programmes = list(dict.fromkeys(programmes))
 
                 programmes_7D = []
