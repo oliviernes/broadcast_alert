@@ -166,47 +166,47 @@ def search(request):
                 in a new page"""
 
                 """Add a Q object to search all related fields"""
-                Q_recherche = [Q(titres__nom__icontains=recherche),
-                                Q(titre_informatif__icontains=recherche),
-                                Q(description__icontains=recherche),
-                                Q(realisateur__nom__icontains=recherche),
-                                Q(acteurs__nom__icontains=recherche),
-                                Q(acteurs__role__icontains=recherche),
-                                Q(scenariste__nom__icontains=recherche),
-                                Q(categories__nom__icontains=recherche),
-                                Q(paysrealisation__nom__icontains=recherche),
-                                Q(critique__icontains=recherche),
+                Q_recherche = [Q(titres__nom__unaccent__icontains=recherche),
+                                Q(titre_informatif__unaccent__icontains=recherche),
+                                Q(description__unaccent__icontains=recherche),
+                                Q(realisateur__nom__unaccent__icontains=recherche),
+                                Q(acteurs__nom__unaccent__icontains=recherche),
+                                Q(acteurs__role__unaccent__icontains=recherche),
+                                Q(scenariste__nom__unaccent__icontains=recherche),
+                                Q(categories__nom__unaccent__icontains=recherche),
+                                Q(paysrealisation__nom__unaccent__icontains=recherche),
+                                Q(critique__unaccent__icontains=recherche),
                                 ]
 
                 """Add a Q list with Q objects for all related specifique recherches"""
                 Q_list = []
 
                 if titre is not None:
-                    Q_list.append(Q(titres__nom__icontains=titre))
+                    Q_list.append(Q(titres__nom__unaccent__icontains=titre))
 
                 if titre_informatif is not None:
-                    Q_list.append(Q(titre_informatif__icontains=titre_informatif))
+                    Q_list.append(Q(titre_informatif__unaccent__icontains=titre_informatif))
 
                 if description is not None:
-                    Q_list.append(Q(description__icontains=description))
+                    Q_list.append(Q(description__unaccent__icontains=description))
 
                 if realisateur is not None:
-                    Q_list.append(Q(realisateur__nom__icontains=realisateur))
+                    Q_list.append(Q(realisateur__nom__unaccent__icontains=realisateur))
 
                 if acteur is not None:
-                    Q_list.append(Q(acteurs__nom__icontains=acteur))
+                    Q_list.append(Q(acteurs__nom__unaccent__icontains=acteur))
 
                 if role is not None:
-                    Q_list.append(Q(acteurs__role__icontains=role))
+                    Q_list.append(Q(acteurs__role__unaccent__icontains=role))
 
                 if scenariste is not None:
-                    Q_list.append(Q(scenariste__nom__icontains=scenariste))
+                    Q_list.append(Q(scenariste__nom__unaccent__icontains=scenariste))
 
                 if date_realisation is not None:
                     Q_list.append(Q(date_realisation=date_realisation))
 
                 if categorie is not None:
-                    Q_list.append(Q(categories__nom__icontains=categorie))
+                    Q_list.append(Q(categories__nom__unaccent__icontains=categorie))
 
                 if serie is not None:
                     Q_list.append(Q(series__serie__icontains=serie))
@@ -218,7 +218,7 @@ def search(request):
                     Q_list.append(Q(series__partie__icontains=partie))
 
                 if pays_realisation is not None:
-                    Q_list.append(Q(paysrealisation__nom__icontains=pays_realisation))
+                    Q_list.append(Q(paysrealisation__nom__unaccent__icontains=pays_realisation))
 
                 if public is not None:
                     Q_list.append(Q(public__lte=public))
@@ -230,7 +230,7 @@ def search(request):
                     Q_list.append(Q(note__gte=note))
 
                 if critique is not None:
-                    Q_list.append(Q(critique__icontains=critique))
+                    Q_list.append(Q(critique__unaccent__icontains=critique))
 
 
                 if len(Q_list) > 0:
