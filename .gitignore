@@ -129,8 +129,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# files:
+# my files:
 
 populate_programmes.sh
 programmes_download.sh
 tests/xmltv_test_parser_json.json
+broadcast_alert/settings.py
+
+# my folder:
+
+staticfiles/
