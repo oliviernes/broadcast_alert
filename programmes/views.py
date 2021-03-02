@@ -151,7 +151,11 @@ def search(request):
 
                         if saved == True:
                             for chaine in chaines:
-                                search.chaines.add(chaine.id)
+                                try:
+                                    search.chaines.add(chaine.id)
+                                except:
+                                    saved = False
+                                    break
 
                         context = {
                             'saved': saved
