@@ -31,8 +31,6 @@ class Programmes(models.Model):
     # class Meta:
     #     ordering = ['date_debut']
 
-    # def __str__(self):
-    #     return self.??????????????
 
 class Titres(models.Model):
     programmes = models.ForeignKey(
@@ -79,8 +77,6 @@ class Series(models.Model):
     episode = models.SmallIntegerField(null=True)
     partie = models.SmallIntegerField(null=True)
 
-    # def __str__(self):
-    #     return self.???????????
 
 class Categories(models.Model):
     nom = models.CharField(max_length=150)
@@ -92,6 +88,7 @@ class Categories(models.Model):
 class PaysRealisation(models.Model):
     nom = models.CharField(max_length=60)
     programmes = models.ManyToManyField(Programmes)
+
     def __str__(self):
         return self.nom
 
@@ -114,9 +111,6 @@ class Recherche(models.Model):
     utilisateur = models.ForeignKey(
         User, on_delete=models.CASCADE
     )
-
-    def __str__(self):
-        return self.recherche
 
 
 class RechercheSpecifique(models.Model):
@@ -142,9 +136,6 @@ class RechercheSpecifique(models.Model):
     recherche = models.ForeignKey(
         Recherche, on_delete=models.CASCADE
     )
-
-    def __str__(self):
-        return self.recherche
 
 
 class BouquetTv(models.Model):
