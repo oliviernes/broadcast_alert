@@ -161,19 +161,13 @@ class TeleLoisirs:
         try:
             response.raise_for_status()
         except RequestException as ex:
-            logging.debug(
-                "Error while retrieving URL %s", response.request.url
-            )
+            logging.debug("Error while retrieving URL %s", response.request.url)
             try:
-                raise TeleLoisirsException(
-                    response.json().get("message") or ex
-                )
+                raise TeleLoisirsException(response.json().get("message") or ex)
             except ValueError:
                 raise TeleLoisirsException(ex)
 
-    def _query_api(
-        self, path: str, **query: Union[int, str]
-    ) -> Dict[str, Any]:
+    def _query_api(self, path: str, **query: Union[int, str]) -> Dict[str, Any]:
         url = "{}/{}".format(self._API_URL, path.strip("/"))
         response = self._session.get(url, params=query)
 
@@ -185,9 +179,7 @@ class TeleLoisirs:
         if next_url := data.get("next"):
             parsed_url = urllib.parse.urlparse(next_url)
             query = dict(urllib.parse.parse_qs(parsed_url.query))
-            data["items"] += self._query_api(parsed_url.path, **query).get(
-                "items", []
-            )
+            data["items"] += self._query_api(parsed_url.path, **query).get("items", [])
 
         return data
 
@@ -270,9 +262,7 @@ class TeleLoisirs:
         **attributes: Union[None, int, str],
     ) -> Element:
         attributes = {
-            k: w
-            for k, v in attributes.items()
-            if (w := TeleLoisirs._to_string(v))
+            k: w for k, v in attributes.items() if (w := TeleLoisirs._to_string(v))
         }
 
         element = Element(tag, **attributes)
@@ -293,9 +283,7 @@ class TeleLoisirs:
         if not TeleLoisirs._to_string(text):
             return None
 
-        return TeleLoisirs._xmltv_element(
-            tag, text=text, parent=parent, **attributes
-        )
+        return TeleLoisirs._xmltv_element(tag, text=text, parent=parent, **attributes)
 
     def _to_xmltv_channel(self, channel_id: str) -> Optional[Element]:
         xmltv_channel = Element("channel", id=channel_id)
@@ -377,19 +365,19 @@ class TeleLoisirs:
             broadcast.get("channel", {}).get("id")
         )
         if not channel_id:
-            logging.debug(
-                "Broadcast %s has no channel ID, skipping", broadcast_id
-            )
+            logging.debug("Broadcast %s has no channel ID, skipping", broadcast_id)
             return None
 
         # Start time
         try:
             start = datetime.strptime(
-                broadcast.get("startedAt", ""), self._API_DATETIME_FORMAT,
+                broadcast.get("startedAt", ""),
+                self._API_DATETIME_FORMAT,
             ).strftime(self._XMLTV_DATETIME_FORMAT)
         except ValueError:
             logging.debug(
-                "Broadcast %s has no valid start time, skipping", broadcast_id,
+                "Broadcast %s has no valid start time, skipping",
+                broadcast_id,
             )
             return None
 
@@ -412,22 +400,16 @@ class TeleLoisirs:
             "title", title, parent=xmltv_program
         )
         if xmltv_title is None:
-            logging.warning(
-                "Program %s has no title, skipping", broadcast.get("id")
-            )
+            logging.warning("Program %s has no title, skipping", broadcast.get("id"))
             return None
 
         if original_title := program.get("originalTitle"):
             xmltv_title.set("lang", "fr")
-            self._xmltv_element_with_text(
-                "title", original_title, parent=xmltv_program
-            )
+            self._xmltv_element_with_text("title", original_title, parent=xmltv_program)
 
         # Sub-title or episode title
         if title != (item_title := program.get("collectionItemTitle")):
-            self._xmltv_element_with_text(
-                "sub-title", item_title, parent=xmltv_program
-            )
+            self._xmltv_element_with_text("sub-title", item_title, parent=xmltv_program)
 
         # Description of the programme or episode
         self._xmltv_element_with_text(
@@ -455,7 +437,8 @@ class TeleLoisirs:
             if not credit:
                 if position:
                     logging.debug(
-                        'No XMLTV credit defined for function "%s"', position,
+                        'No XMLTV credit defined for function "%s"',
+                        position,
                     )
                 continue
 
@@ -466,32 +449,39 @@ class TeleLoisirs:
                     role=people.get("role") if credit == "actor" else None,
                 )
 
-        xmltv_credits.extend(
-            [e for s in _credits.values() for e in s.values()]
-        )
+        xmltv_credits.extend([e for s in _credits.values() for e in s.values()])
         if len(xmltv_credits) > 0:
             xmltv_program.append(xmltv_credits)
 
         # Date the programme or film was finished
         self._xmltv_element_with_text(
-            "date", program.get("releasedYear"), parent=xmltv_program,
+            "date",
+            program.get("releasedYear"),
+            parent=xmltv_program,
         )
 
         # Type of programme
         genres = program.get("formatGenre", {})
         genre = genres.get("format", {}).get("title", "").capitalize()
         self._xmltv_element_with_text(
-            "category", genre, parent=xmltv_program, lang="fr",
+            "category",
+            genre,
+            parent=xmltv_program,
+            lang="fr",
         )
-        if genre != (
-            sub_genre := genres.get("genre", {}).get("name", "").capitalize()
-        ):
+        if genre != (sub_genre := genres.get("genre", {}).get("name", "").capitalize()):
             self._xmltv_element_with_text(
-                "category", sub_genre, parent=xmltv_program, lang="fr",
+                "category",
+                sub_genre,
+                parent=xmltv_program,
+                lang="fr",
             )
         etsi_category = self._API_ETSI_CATEGORIES.get(genre)
         self._xmltv_element_with_text(
-            "category", etsi_category, parent=xmltv_program, lang="en",
+            "category",
+            etsi_category,
+            parent=xmltv_program,
+            lang="en",
         )
         if genre and not etsi_category:
             logging.debug('No ETSI category found for genre "%s"', genre)
@@ -511,7 +501,9 @@ class TeleLoisirs:
                 "icon",
                 parent=xmltv_program,
                 src=self._get_icon_url(
-                    url_template, image.get("width"), image.get("height"),
+                    url_template,
+                    image.get("width"),
+                    image.get("height"),
                 ),
                 width=image.get("width"),
                 height=image.get("height"),
@@ -519,7 +511,9 @@ class TeleLoisirs:
 
         # URL where you can find out more about the programme
         self._xmltv_element_with_text(
-            "url", program.get("_links", {}).get("url"), parent=xmltv_program,
+            "url",
+            program.get("_links", {}).get("url"),
+            parent=xmltv_program,
         )
 
         # Country where the programme was made or one of the countries in a
@@ -527,7 +521,10 @@ class TeleLoisirs:
         if countries := program.get("country", ""):
             for country in countries.split(" - "):
                 self._xmltv_element_with_text(
-                    "country", country, parent=xmltv_program, lang="fr",
+                    "country",
+                    country,
+                    parent=xmltv_program,
+                    lang="fr",
                 )
 
         # Episode number
@@ -556,9 +553,7 @@ class TeleLoisirs:
             "aspect", broadcast.get("aspectRatio"), parent=xmltv_video
         )
         if broadcast.get("isHD"):
-            self._xmltv_element_with_text(
-                "quality", "HDTV", parent=xmltv_video
-            )
+            self._xmltv_element_with_text("quality", "HDTV", parent=xmltv_video)
 
         # Audio details
         xmltv_audio = self._xmltv_element("audio")
@@ -577,7 +572,8 @@ class TeleLoisirs:
         # Previously shown programme?
         if broadcast.get("isRebroadcast"):
             self._xmltv_element(
-                "previously-shown", parent=xmltv_program,
+                "previously-shown",
+                parent=xmltv_program,
             )
         # Premiere programme?
         elif broadcast.get("isNew"):
@@ -585,13 +581,9 @@ class TeleLoisirs:
 
         # Subtitles
         if broadcast.get("hasDeafSubtitles"):
-            self._xmltv_element(
-                "subtitles", parent=xmltv_program, type="deaf-signed"
-            )
+            self._xmltv_element("subtitles", parent=xmltv_program, type="deaf-signed")
         if broadcast.get("isVOST"):
-            self._xmltv_element(
-                "subtitles", parent=xmltv_program, type="onscreen"
-            )
+            self._xmltv_element("subtitles", parent=xmltv_program, type="onscreen")
 
         # Rating
         if csa_age_restriction := broadcast.get("CSAAgeRestriction"):
@@ -661,9 +653,7 @@ class TeleLoisirs:
                         self._query_api,
                         projection=",".join(self._API_PROGRAM_PROJECTION),
                     ),
-                    "v2/programs/{}.json".format(
-                        b.get("program", {}).get("id")
-                    ),
+                    "v2/programs/{}.json".format(b.get("program", {}).get("id")),
                 )
                 for b in broadcasts.values()
             ]
@@ -672,9 +662,7 @@ class TeleLoisirs:
                 program = future.result().get("item", {})
                 yield self._to_xmltv_program(broadcast, program)
 
-    def _to_xmltv(
-        self, channel_ids: List[str], days: int, offset: int
-    ) -> ElementTree:
+    def _to_xmltv(self, channel_ids: List[str], days: int, offset: int) -> ElementTree:
         xmltv = self._xmltv_element(
             "tv",
             **{
@@ -689,9 +677,7 @@ class TeleLoisirs:
         xmltv_channels = {}  # type: Dict[str, Element]
         xmltv_programs = []
 
-        for xmltv_program in self._get_xmltv_programs(
-            channel_ids, days, offset
-        ):
+        for xmltv_program in self._get_xmltv_programs(channel_ids, days, offset):
             if xmltv_program is None:
                 continue
             channel_id = xmltv_program.get("channel")
@@ -732,82 +718,86 @@ class TeleLoisirs:
         channels = []
         programmes = []
 
-        infos = ['sub-title', 'desc', 'date', 'url', 'review', 'episode-num']
+        infos = ["sub-title", "desc", "date", "url", "review", "episode-num"]
 
         for item in xmltv_data:
             if item.tag == "channel":
                 info_channel = {}
-                info_channel['id'] = item.attrib['id']
-                info_channel['nom'] = unidecode.unidecode(item[0].text).upper()
-                info_channel['icon'] = item[1].attrib['src']
-                info_channel['url'] = item[2].text
+                info_channel["id"] = item.attrib["id"]
+                info_channel["nom"] = unidecode.unidecode(item[0].text).upper()
+                info_channel["icon"] = item[1].attrib["src"]
+                info_channel["url"] = item[2].text
                 channels.append(info_channel)
             elif item.tag == "programme":
                 info_programme = {}
-                info_programme['start'] = item.attrib['start']
-                info_programme['stop'] = item.attrib['stop']
-                info_programme['channel'] = item.attrib['channel']
+                info_programme["start"] = item.attrib["start"]
+                info_programme["stop"] = item.attrib["stop"]
+                info_programme["channel"] = item.attrib["channel"]
 
-                info_programme['audio_subtitles'] = False
+                info_programme["audio_subtitles"] = False
 
                 titles, directors, categories, actors = [], [], [], []
-                writers ,composers ,countries = [], [], []
+                writers, composers, countries = [], [], []
 
                 for info in item:
                     if info.tag in infos:
                         info_programme[info.tag] = info.text
-                    elif info.tag == 'title':
+                    elif info.tag == "title":
                         titles.append(info.text)
-                    elif info.tag == 'category':
+                    elif info.tag == "category":
                         categories.append(info.text)
-                    elif info.tag == 'credits':
+                    elif info.tag == "credits":
                         for credit in info:
-                            if credit.tag == 'director' or credit.tag == 'presenter':
+                            if credit.tag == "director" or credit.tag == "presenter":
                                 directors.append(credit.text)
-                            elif credit.tag == 'actor' or credit.tag == 'guest':
+                            elif credit.tag == "actor" or credit.tag == "guest":
                                 try:
-                                    actors.append({ 'actor': credit.text,
-                                                    'role': credit.attrib['role']
-                                                })
+                                    actors.append(
+                                        {
+                                            "actor": credit.text,
+                                            "role": credit.attrib["role"],
+                                        }
+                                    )
                                 except:
-                                    actors.append({ 'actor': credit.text })
-                            elif credit.tag == 'writer':
+                                    actors.append({"actor": credit.text})
+                            elif credit.tag == "writer":
                                 writers.append(credit.text)
-                            elif credit.tag == 'composer':
+                            elif credit.tag == "composer":
                                 composers.append(credit.text)
-                    elif info.tag == 'country':
+                    elif info.tag == "country":
                         countries.append(info.text)
-                    elif info.tag == 'rating':
+                    elif info.tag == "rating":
                         public = info[0].text
                         if public[:12] == "Tous publics":
                             age = 0
-                            info_programme['public'] = age
+                            info_programme["public"] = age
                         elif public[:12] == "Interdit aux":
                             age = int(public[22:-4])
-                            info_programme['public'] = age
-                    elif info.tag == 'subtitles':
-                        info_programme['audio_subtitles'] = True
-                    elif info.tag == 'star-rating':
+                            info_programme["public"] = age
+                    elif info.tag == "subtitles":
+                        info_programme["audio_subtitles"] = True
+                    elif info.tag == "star-rating":
                         note = info[0].text
-                        info_programme['note'] = int(note[:1])
-                    elif info.tag == 'icon':
-                        info_programme['icon'] = info.attrib['src']
+                        info_programme["note"] = int(note[:1])
+                    elif info.tag == "icon":
+                        info_programme["icon"] = info.attrib["src"]
 
-                info_programme['titles'] = titles
-                info_programme['directors'] = directors
-                info_programme['categories'] = categories
-                info_programme['actors'] = actors
-                info_programme['writers'] = writers
-                info_programme['composers'] = composers
-                info_programme['countries'] = countries
+                info_programme["titles"] = titles
+                info_programme["directors"] = directors
+                info_programme["categories"] = categories
+                info_programme["actors"] = actors
+                info_programme["writers"] = writers
+                info_programme["composers"] = composers
+                info_programme["countries"] = countries
 
                 programmes.append(info_programme)
 
-        json_data['channels'] = channels
-        json_data['programmes'] = programmes
+        json_data["channels"] = channels
+        json_data["programmes"] = programmes
 
         with open(file, "w") as write_file:
-            json.dump(json_data, write_file, ensure_ascii=False, indent = 4)
+            json.dump(json_data, write_file, ensure_ascii=False, indent=4)
+
 
 _PROGRAM = "tv_grab_fr_teleloisirs"
 __version__ = "1.0"
@@ -896,8 +886,7 @@ def _parse_cli_args() -> Namespace:
     log_level_group.add_argument(
         "--debug",
         action="store_true",
-        help="provide more information on progress to stderr to help in"
-        "debugging",
+        help="provide more information on progress to stderr to help in" "debugging",
     )
 
     return parser.parse_args()
@@ -983,7 +972,8 @@ def _main() -> None:
     elif args.debug:
         logging_level = logging.DEBUG
     logging.basicConfig(
-        level=logging_level, format="%(levelname)s: %(message)s",
+        level=logging_level,
+        format="%(levelname)s: %(message)s",
     )
 
     try:

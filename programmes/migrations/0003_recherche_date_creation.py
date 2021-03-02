@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('programmes', '0002_remove_recherche_match_all'),
+        ("programmes", "0002_remove_recherche_match_all"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='recherche',
-            name='date_creation',
+            model_name="recherche",
+            name="date_creation",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

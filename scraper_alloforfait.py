@@ -5,45 +5,53 @@ import unidecode
 
 class Package:
     """Class showing channel packages"""
-    
+
     def __init__(self, package):
         self.package = package
 
     def channels(self):
 
-        response = requests.get("https://alloforfait.fr/tv/"+self.package+"/")
+        response = requests.get("https://alloforfait.fr/tv/" + self.package + "/")
 
         if response.status_code == 200:
 
             channels = []
             if self.package == "free":
-                selected = re.findall("<td>[0-9]*</td>\n<td>.*\n<td>Freebox TV</td>", response.text)
+                selected = re.findall(
+                    "<td>[0-9]*</td>\n<td>.*\n<td>Freebox TV</td>", response.text
+                )
                 for channel in selected:
                     channel = unidecode.unidecode(channel[4:-25]).upper()
                     index = channel.find("</TD>\n<TD>")
-                    channels.append((int(channel[:index]), channel[index+10:]))
+                    channels.append((int(channel[:index]), channel[index + 10 :]))
                 channels = channels[1:]
                 channels.sort()
 
             elif self.package == "sfr":
-                selected_hd = re.findall("<td>[0-9]*</td>\n<td>.*</td>\n<td>HD</td>", response.text)
+                selected_hd = re.findall(
+                    "<td>[0-9]*</td>\n<td>.*</td>\n<td>HD</td>", response.text
+                )
                 for channel in selected_hd:
                     channel = unidecode.unidecode(channel[4:-17]).upper()
                     index = channel.find("</TD>\n<TD>")
-                    channels.append((int(channel[:index]), channel[index+10:]))
-                selected = re.findall("<td>[0-9]*</td>\n<td>.*</td>\n<td></td>", response.text)
+                    channels.append((int(channel[:index]), channel[index + 10 :]))
+                selected = re.findall(
+                    "<td>[0-9]*</td>\n<td>.*</td>\n<td></td>", response.text
+                )
                 for channel in selected:
                     channel = unidecode.unidecode(channel[4:-15]).upper()
                     index = channel.find("</TD>\n<TD>")
-                    channels.append((int(channel[:index]), channel[index+10:]))
+                    channels.append((int(channel[:index]), channel[index + 10 :]))
                 channels.sort()
 
             elif self.package == "bbox-bouygues-telecom":
-                selected = re.findall("<tr>\n<td>[0-9]*</td>\n<td>.*</td>\n</tr>", response.text)
+                selected = re.findall(
+                    "<tr>\n<td>[0-9]*</td>\n<td>.*</td>\n</tr>", response.text
+                )
                 for channel in selected[1:]:
                     channel = unidecode.unidecode(channel[9:-11]).upper()
                     index = channel.find("</TD>\n<TD>")
-                    channels.append((int(channel[:index]), channel[index+10:]))
+                    channels.append((int(channel[:index]), channel[index + 10 :]))
                 channels.sort()
         else:
             channels = []
@@ -67,7 +75,9 @@ class Package:
                 al_jazeera = False
             elif channel[1] == "TV5" or channel[1] == "TV5 MONDE":
                 channels[n] = (channel[0], "TV5MONDE")
-            elif channel[1] == "CANAL + (EN CLAIR)" or channel[1] == "CANAL+ (EN CLAIR)":
+            elif (
+                channel[1] == "CANAL + (EN CLAIR)" or channel[1] == "CANAL+ (EN CLAIR)"
+            ):
                 channels[n] = (channel[0], "CANAL+")
             elif channel[1] == "BBC WORLD":
                 channels[n] = (channel[0], "BBC WORLD NEWS")
@@ -76,6 +86,6 @@ class Package:
             elif channel[1] == "FRANCEINFO:":
                 channels[n] = (channel[0], "FRANCEINFO")
 
-            n+=1
+            n += 1
 
         return channels

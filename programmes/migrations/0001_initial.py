@@ -15,161 +15,348 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='BouquetsChaines',
+            name="BouquetsChaines",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('numero', models.IntegerField(null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("numero", models.IntegerField(null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Chaines',
+            name="Chaines",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('id_chaine', models.CharField(max_length=50)),
-                ('nom', models.CharField(max_length=100)),
-                ('icon', models.CharField(max_length=500, null=True)),
-                ('url', models.CharField(max_length=500, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("id_chaine", models.CharField(max_length=50)),
+                ("nom", models.CharField(max_length=100)),
+                ("icon", models.CharField(max_length=500, null=True)),
+                ("url", models.CharField(max_length=500, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Programmes',
+            name="Programmes",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('titre_informatif', models.CharField(max_length=200, null=True)),
-                ('description', models.CharField(max_length=3000, null=True)),
-                ('date_realisation', models.IntegerField(null=True)),
-                ('icon', models.CharField(max_length=500, null=True)),
-                ('url', models.CharField(max_length=500, null=True)),
-                ('public', models.IntegerField(null=True)),
-                ('aide_sourd', models.BooleanField(null=True)),
-                ('note', models.SmallIntegerField(null=True)),
-                ('critique', models.CharField(max_length=2000, null=True)),
-                ('date_debut', models.DateTimeField()),
-                ('date_fin', models.DateTimeField()),
-                ('chaines', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.chaines')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("titre_informatif", models.CharField(max_length=200, null=True)),
+                ("description", models.CharField(max_length=3000, null=True)),
+                ("date_realisation", models.IntegerField(null=True)),
+                ("icon", models.CharField(max_length=500, null=True)),
+                ("url", models.CharField(max_length=500, null=True)),
+                ("public", models.IntegerField(null=True)),
+                ("aide_sourd", models.BooleanField(null=True)),
+                ("note", models.SmallIntegerField(null=True)),
+                ("critique", models.CharField(max_length=2000, null=True)),
+                ("date_debut", models.DateTimeField()),
+                ("date_fin", models.DateTimeField()),
+                (
+                    "chaines",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.chaines",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Recherche',
+            name="Recherche",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('recherche', models.CharField(blank=True, max_length=200, null=True)),
-                ('match_all', models.BooleanField()),
-                ('max_resultats', models.SmallIntegerField()),
-                ('chaines', models.ManyToManyField(to='programmes.Chaines')),
-                ('programmes', models.ManyToManyField(to='programmes.Programmes')),
-                ('utilisateur', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("recherche", models.CharField(blank=True, max_length=200, null=True)),
+                ("match_all", models.BooleanField()),
+                ("max_resultats", models.SmallIntegerField()),
+                ("chaines", models.ManyToManyField(to="programmes.Chaines")),
+                ("programmes", models.ManyToManyField(to="programmes.Programmes")),
+                (
+                    "utilisateur",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Titres',
+            name="Titres",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=150)),
-                ('programmes', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=150)),
+                (
+                    "programmes",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.programmes",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Series',
+            name="Series",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('serie', models.SmallIntegerField(null=True)),
-                ('episode', models.SmallIntegerField(null=True)),
-                ('partie', models.SmallIntegerField(null=True)),
-                ('programmes', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("serie", models.SmallIntegerField(null=True)),
+                ("episode", models.SmallIntegerField(null=True)),
+                ("partie", models.SmallIntegerField(null=True)),
+                (
+                    "programmes",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.programmes",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Scenariste',
+            name="Scenariste",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=200)),
-                ('programmes', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=200)),
+                (
+                    "programmes",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.programmes",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='RechercheSpecifique',
+            name="RechercheSpecifique",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('titre', models.CharField(blank=True, max_length=150, null=True)),
-                ('titre_informatif', models.CharField(blank=True, max_length=200, null=True)),
-                ('description', models.CharField(blank=True, max_length=200, null=True)),
-                ('realisateur', models.CharField(blank=True, max_length=200, null=True)),
-                ('acteur', models.CharField(blank=True, max_length=200, null=True)),
-                ('role', models.CharField(blank=True, max_length=200, null=True)),
-                ('scenariste', models.CharField(blank=True, max_length=200, null=True)),
-                ('date_realisation', models.SmallIntegerField(blank=True, null=True)),
-                ('categories', models.CharField(blank=True, max_length=150, null=True)),
-                ('serie', models.SmallIntegerField(blank=True, null=True)),
-                ('episode', models.SmallIntegerField(blank=True, null=True)),
-                ('partie', models.SmallIntegerField(blank=True, null=True)),
-                ('pays_realisation', models.CharField(blank=True, max_length=200, null=True)),
-                ('public', models.SmallIntegerField(blank=True, null=True)),
-                ('aide_sourd', models.BooleanField(blank=True, null=True)),
-                ('note', models.SmallIntegerField(blank=True, null=True)),
-                ('critique', models.CharField(blank=True, max_length=100, null=True)),
-                ('date_debut', models.DateField(blank=True, null=True)),
-                ('date_fin', models.DateField(blank=True, null=True)),
-                ('recherche', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.recherche')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("titre", models.CharField(blank=True, max_length=150, null=True)),
+                (
+                    "titre_informatif",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "description",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "realisateur",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ("acteur", models.CharField(blank=True, max_length=200, null=True)),
+                ("role", models.CharField(blank=True, max_length=200, null=True)),
+                ("scenariste", models.CharField(blank=True, max_length=200, null=True)),
+                ("date_realisation", models.SmallIntegerField(blank=True, null=True)),
+                ("categories", models.CharField(blank=True, max_length=150, null=True)),
+                ("serie", models.SmallIntegerField(blank=True, null=True)),
+                ("episode", models.SmallIntegerField(blank=True, null=True)),
+                ("partie", models.SmallIntegerField(blank=True, null=True)),
+                (
+                    "pays_realisation",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ("public", models.SmallIntegerField(blank=True, null=True)),
+                ("aide_sourd", models.BooleanField(blank=True, null=True)),
+                ("note", models.SmallIntegerField(blank=True, null=True)),
+                ("critique", models.CharField(blank=True, max_length=100, null=True)),
+                ("date_debut", models.DateField(blank=True, null=True)),
+                ("date_fin", models.DateField(blank=True, null=True)),
+                (
+                    "recherche",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.recherche",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Realisateur',
+            name="Realisateur",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=200)),
-                ('programmes', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=200)),
+                (
+                    "programmes",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.programmes",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='PaysRealisation',
+            name="PaysRealisation",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=60)),
-                ('programmes', models.ManyToManyField(to='programmes.Programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=60)),
+                ("programmes", models.ManyToManyField(to="programmes.Programmes")),
             ],
         ),
         migrations.CreateModel(
-            name='Compositeurs',
+            name="Compositeurs",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=200)),
-                ('programmes', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=200)),
+                (
+                    "programmes",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.programmes",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Categories',
+            name="Categories",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=150)),
-                ('programmes', models.ManyToManyField(to='programmes.Programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=150)),
+                ("programmes", models.ManyToManyField(to="programmes.Programmes")),
             ],
         ),
         migrations.CreateModel(
-            name='BouquetTv',
+            name="BouquetTv",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=100)),
-                ('chaines', models.ManyToManyField(through='programmes.BouquetsChaines', to='programmes.Chaines')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=100)),
+                (
+                    "chaines",
+                    models.ManyToManyField(
+                        through="programmes.BouquetsChaines", to="programmes.Chaines"
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='bouquetschaines',
-            name='bouquettv',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.bouquettv'),
+            model_name="bouquetschaines",
+            name="bouquettv",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="programmes.bouquettv"
+            ),
         ),
         migrations.AddField(
-            model_name='bouquetschaines',
-            name='chaines',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.chaines'),
+            model_name="bouquetschaines",
+            name="chaines",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="programmes.chaines"
+            ),
         ),
         migrations.CreateModel(
-            name='Acteurs',
+            name="Acteurs",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(max_length=200)),
-                ('role', models.CharField(max_length=200, null=True)),
-                ('programmes', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='programmes.programmes')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(max_length=200)),
+                ("role", models.CharField(max_length=200, null=True)),
+                (
+                    "programmes",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="programmes.programmes",
+                    ),
+                ),
             ],
         ),
     ]

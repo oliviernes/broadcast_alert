@@ -10,6 +10,7 @@ from django.db.models import Q
 
 from programmes.models import Programmes, Recherche, RechercheSpecifique
 
+
 class Command(BaseCommand):
     help = "Search programmes in the database meeting requirements"
 
@@ -27,20 +28,21 @@ class Command(BaseCommand):
                 recherche = search.recherche
 
                 """Add a Q object to search all related fields"""
-                Q_recherche = [Q(titres__nom__unaccent__icontains=recherche),
-                                Q(titre_informatif__unaccent__icontains=recherche),
-                                Q(description__unaccent__icontains=recherche),
-                                Q(realisateur__nom__unaccent__icontains=recherche),
-                                Q(acteurs__nom__unaccent__icontains=recherche),
-                                Q(acteurs__role__unaccent__icontains=recherche),
-                                Q(scenariste__nom__unaccent__icontains=recherche),
-                                Q(categories__nom__unaccent__icontains=recherche),
-                                Q(paysrealisation__nom__unaccent__icontains=recherche),
-                                Q(critique__unaccent__icontains=recherche),
-                                ]
+                Q_recherche = [
+                    Q(titres__nom__unaccent__icontains=recherche),
+                    Q(titre_informatif__unaccent__icontains=recherche),
+                    Q(description__unaccent__icontains=recherche),
+                    Q(realisateur__nom__unaccent__icontains=recherche),
+                    Q(acteurs__nom__unaccent__icontains=recherche),
+                    Q(acteurs__role__unaccent__icontains=recherche),
+                    Q(scenariste__nom__unaccent__icontains=recherche),
+                    Q(categories__nom__unaccent__icontains=recherche),
+                    Q(paysrealisation__nom__unaccent__icontains=recherche),
+                    Q(critique__unaccent__icontains=recherche),
+                ]
 
             recherche_spe = RechercheSpecifique.objects.get(recherche_id=search.id)
-            
+
             titre = recherche_spe.titre
             titre_informatif = recherche_spe.titre_informatif
             description = recherche_spe.description
@@ -99,7 +101,9 @@ class Command(BaseCommand):
                 Q_list.append(Q(series__partie__icontains=partie))
 
             if pays_realisation is not None:
-                Q_list.append(Q(paysrealisation__nom__unaccent__icontains=pays_realisation))
+                Q_list.append(
+                    Q(paysrealisation__nom__unaccent__icontains=pays_realisation)
+                )
 
             if public is not None:
                 Q_list.append(Q(public__lte=public))
@@ -113,23 +117,22 @@ class Command(BaseCommand):
             if critique is not None:
                 Q_list.append(Q(critique__unaccent__icontains=critique))
 
-
             if len(Q_list) > 0:
                 programmes = Programmes.objects.filter(
                     reduce(operator.and_, Q_list),
                     chaines__in=[chaine.id for chaine in chaines],
-                ).order_by('date_debut')
+                ).order_by("date_debut")
 
             if recherche and len(Q_list) == 0:
                 programmes = Programmes.objects.filter(
                     reduce(operator.or_, Q_recherche),
-                    chaines__in=[chaine.id for chaine in chaines]
-                ).order_by('date_debut')
+                    chaines__in=[chaine.id for chaine in chaines],
+                ).order_by("date_debut")
             elif recherche and len(Q_list) > 0:
                 programmes_recherche = Programmes.objects.filter(
                     reduce(operator.or_, Q_recherche),
                     id__in=[prog.id for prog in programmes],
-                ).order_by('date_debut')
+                ).order_by("date_debut")
                 programmes = programmes_recherche
             elif recherche is None and len(Q_list) == 0:
                 programmes = []
@@ -149,5 +152,5 @@ class Command(BaseCommand):
                 search.programmes.add(prog.id)
 
     def handle(self, *args, **options):
-        
+
         self.search_progs()

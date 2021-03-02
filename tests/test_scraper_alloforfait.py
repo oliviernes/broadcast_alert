@@ -14,6 +14,7 @@ def response_free():
 
     return response
 
+
 @fixture
 def response_sfr():
     """Mock requests response of alloforfait sfr package"""
@@ -22,6 +23,7 @@ def response_sfr():
         response = reader.read()
 
     return response
+
 
 @fixture
 def response_bouygues():
@@ -32,29 +34,34 @@ def response_bouygues():
 
     return response
 
+
 def test_scrapper_alloforfait_free(response_free):
     with requests_mock.Mocker() as mock_request:
-        mock_request.get("https://alloforfait.fr/tv/free/", text = response_free)
+        mock_request.get("https://alloforfait.fr/tv/free/", text=response_free)
         free = Package("free").channels()
 
-    assert free[0] == (1, 'TF1')
-    assert free[-1] == (944, 'AS TV')
+    assert free[0] == (1, "TF1")
+    assert free[-1] == (944, "AS TV")
     assert len(free) == 224
+
 
 def test_scrapper_alloforfait_sfr(response_sfr):
     with requests_mock.Mocker() as mock_request:
-        mock_request.get("https://alloforfait.fr/tv/sfr/", text = response_sfr)
+        mock_request.get("https://alloforfait.fr/tv/sfr/", text=response_sfr)
         sfr = Package("sfr").channels()
 
-    assert sfr[0] == (1, 'TF1')
-    assert sfr[-1] == (945, 'NET VIET')
+    assert sfr[0] == (1, "TF1")
+    assert sfr[-1] == (945, "NET VIET")
     assert len(sfr) == 172
+
 
 def test_scrapper_alloforfait_bouygues(response_bouygues):
     with requests_mock.Mocker() as mock_request:
-        mock_request.get("https://alloforfait.fr/tv/bbox-bouygues-telecom/", text = response_bouygues)
+        mock_request.get(
+            "https://alloforfait.fr/tv/bbox-bouygues-telecom/", text=response_bouygues
+        )
         bouygues = Package("bbox-bouygues-telecom").channels()
 
-    assert bouygues[0] == (1, 'TF1')
-    assert bouygues[-1] == (802, 'NTD')
+    assert bouygues[0] == (1, "TF1")
+    assert bouygues[-1] == (802, "NTD")
     assert len(bouygues) == 191

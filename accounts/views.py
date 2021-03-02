@@ -18,7 +18,9 @@ def signup_view(request, backend="django.contrib.auth.backends.ModelBackend"):
         if form.is_valid():
             user = form.save()
             login(
-                request, user, backend="django.contrib.auth.backends.ModelBackend",
+                request,
+                user,
+                backend="django.contrib.auth.backends.ModelBackend",
             )
             return redirect("my_account")
     else:

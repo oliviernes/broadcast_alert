@@ -48,7 +48,8 @@ class EmailLoginForm(AuthenticationForm):
     """Class to add label to username field"""
 
     username = UsernameField(
-        label="Adresse Email", widget=forms.TextInput(attrs={"autofocus": True}),
+        label="Adresse Email",
+        widget=forms.TextInput(attrs={"autofocus": True}),
     )
 
     def clean(self):

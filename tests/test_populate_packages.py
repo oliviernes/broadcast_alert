@@ -27,6 +27,7 @@ def test_populate_package_free(db_feed):
     assert tf1.bouquettv_set.all()[0].nom == "free"
     assert bouquets_chaines[0].numero == 1
 
+
 @mark.django_db
 def test_populate_package_sfr(db_feed):
 
@@ -42,6 +43,7 @@ def test_populate_package_sfr(db_feed):
     assert bouquet.nom == "sfr"
     assert france2.bouquettv_set.all()[0].nom == "sfr"
     assert bouquets_chaines[0].numero == 2
+
 
 @mark.django_db
 def test_populate_package_bouygues(db_feed):
@@ -59,6 +61,7 @@ def test_populate_package_bouygues(db_feed):
     assert arte.bouquettv_set.all()[0].nom == "bouygues"
     assert bouquets_chaines[0].numero == 7
 
+
 @mark.django_db
 def test_populate_package_tnt(db_feed):
 
@@ -75,6 +78,7 @@ def test_populate_package_tnt(db_feed):
     assert france5.bouquettv_set.all()[0].nom == "tnt"
     assert bouquets_chaines[0].numero == 5
 
+
 @mark.django_db
 def test_bad_package_name(db_feed, capsys):
 
@@ -86,10 +90,10 @@ def test_bad_package_name(db_feed, capsys):
     out, err = capsys.readouterr()
 
     assert (
-        out
-        == "You have to choose one of these selected packages: free,"
-            "sfr, bouygues or tnt\n"
+        out == "You have to choose one of these selected packages: free,"
+        "sfr, bouygues or tnt\n"
     )
+
 
 @mark.django_db
 def test_package_already_in_DB(db_feed, capsys):

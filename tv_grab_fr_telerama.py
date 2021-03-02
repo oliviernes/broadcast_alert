@@ -54,6 +54,7 @@ from requests.exceptions import RequestException
 
 import pdb
 
+
 class TeleramaException(Exception):
     """Base class for exceptions raised by the module."""
 
@@ -161,9 +162,9 @@ class Telerama:
         self._session.headers.update({"User-Agent": self._API_USER_AGENT})
         self._session.hooks = {"response": [self._requests_raise_status]}
 
-        initialization_data = self._query_api(
-            "/v1/application/initialisation"
-        ).get("donnees", {})
+        initialization_data = self._query_api("/v1/application/initialisation").get(
+            "donnees", {}
+        )
         self._genres = {
             genre_id: label
             for g in initialization_data.get("genres", [])
@@ -192,9 +193,7 @@ class Telerama:
         try:
             response.raise_for_status()
         except RequestException as ex:
-            logging.debug(
-                "Error while retrieving URL %s", response.request.url
-            )
+            logging.debug("Error while retrieving URL %s", response.request.url)
             try:
                 raise TeleramaException(response.json().get("message") or ex)
             except ValueError:
@@ -207,16 +206,15 @@ class Telerama:
         # https://github.com/zubrick/tv_grab_fr_telerama
         query["appareil"] = self._API_DEVICE
 
-        signature = path + "".join(
-            sorted([k + str(v) for k, v in query.items()])
-        )
+        signature = path + "".join(sorted([k + str(v) for k, v in query.items()]))
         query["api_signature"] = hmac.new(
             self._API_SECRET.encode(), signature.encode(), hashlib.sha1
         ).hexdigest()
         query["api_cle"] = self._API_KEY
 
         response = self._session.get(
-            "{}/{}".format(self._API_URL, path.lstrip("/")), params=query,
+            "{}/{}".format(self._API_URL, path.lstrip("/")),
+            params=query,
         )
 
         logging.debug("Retrieved URL %s", response.request.url)
@@ -317,9 +315,7 @@ class Telerama:
         if not text:
             return None
 
-        return Telerama._xmltv_element(
-            tag, text=text, parent=parent, **attributes
-        )
+        return Telerama._xmltv_element(tag, text=text, parent=parent, **attributes)
 
     def _to_xmltv_channel(self, channel_id: str) -> Optional[Element]:
         xmltv_channel = Element("channel", id=channel_id)
@@ -380,9 +376,7 @@ class Telerama:
         # Replace in a string all Windows-1252 specific chars to UTF-8 and
         # delete non XML-compatible characters
         fixed_text = "".join([cls._WINDOWS_1252_UTF_8.get(c, c) for c in text])
-        fixed_text = re.sub(
-            r"[\x00-\x08\x0b\x0E-\x1F\x7F\x90]", "", fixed_text
-        )
+        fixed_text = re.sub(r"[\x00-\x08\x0b\x0E-\x1F\x7F\x90]", "", fixed_text)
 
         return fixed_text
 
@@ -419,7 +413,8 @@ class Telerama:
             ).strftime(self._XMLTV_DATETIME_FORMAT)
         except ValueError:
             logging.debug(
-                "Program %s has no valid start time, skipping", program_id,
+                "Program %s has no valid start time, skipping",
+                program_id,
             )
             return None
 
@@ -455,14 +450,14 @@ class Telerama:
         if original_title := program.get("titre_original"):
             xmltv_title.set("lang", "fr")
             self._xmltv_element_with_text(
-                "title", original_title, parent=xmltv_program,
+                "title",
+                original_title,
+                parent=xmltv_program,
             )
 
         # Sub-title or episode title
         if title != (sub_title := program.get("soustitre")):
-            self._xmltv_element_with_text(
-                "sub-title", sub_title, parent=xmltv_program
-            )
+            self._xmltv_element_with_text("sub-title", sub_title, parent=xmltv_program)
 
         # Description of the programme or episode
         self._xmltv_element_with_text(
@@ -491,7 +486,8 @@ class Telerama:
             if not credit:
                 if label:
                     logging.debug(
-                        'No XMLTV credit defined for function "%s"', label,
+                        'No XMLTV credit defined for function "%s"',
+                        label,
                     )
                 continue
 
@@ -507,9 +503,7 @@ class Telerama:
                 role=people.get("role") if credit == "actor" else None,
             )
 
-        xmltv_credits.extend(
-            [e for s in _credits.values() for e in s.values()]
-        )
+        xmltv_credits.extend([e for s in _credits.values() for e in s.values()])
         if len(xmltv_credits) > 0:
             xmltv_program.append(xmltv_credits)
 
@@ -540,12 +534,16 @@ class Telerama:
         icons = program.get("vignettes", {})
         if icon := (icons.get("grande") or icons.get("grande169")):
             self._xmltv_element(
-                "icon", parent=xmltv_program, src=icon,
+                "icon",
+                parent=xmltv_program,
+                src=icon,
             )
 
         # URL where you can find out more about the programme
         self._xmltv_element_with_text(
-            "url", program.get("url"), parent=xmltv_program,
+            "url",
+            program.get("url"),
+            parent=xmltv_program,
         )
 
         # Country where the programme was made or one of the countries in a
@@ -624,20 +622,14 @@ class Telerama:
 
         # Subtitles
         if flags.get("est_stm"):
-            self._xmltv_element(
-                "subtitles", parent=xmltv_program, type="deaf-signed"
-            )
+            self._xmltv_element("subtitles", parent=xmltv_program, type="deaf-signed")
         if flags.get("est_vost"):
-            self._xmltv_element(
-                "subtitles", parent=xmltv_program, type="onscreen"
-            )
+            self._xmltv_element("subtitles", parent=xmltv_program, type="onscreen")
 
         # Rating
         if rating := (program.get("csa_full") or [{}])[0]:
             if rating_value := rating.get("nom_long"):
-                xmltv_rating = self._xmltv_element(
-                    "rating", parent=xmltv_program
-                )
+                xmltv_rating = self._xmltv_element("rating", parent=xmltv_program)
                 self._xmltv_element_with_text(
                     "value", rating_value, parent=xmltv_rating
                 )
@@ -654,11 +646,11 @@ class Telerama:
 
         # Star rating
         if star_rating := program.get("note_telerama"):
-            xmltv_star_rating = self._xmltv_element(
-                "star-rating", parent=xmltv_program
-            )
+            xmltv_star_rating = self._xmltv_element("star-rating", parent=xmltv_program)
             self._xmltv_element_with_text(
-                "value", f"{star_rating}/5", parent=xmltv_star_rating,
+                "value",
+                f"{star_rating}/5",
+                parent=xmltv_star_rating,
             )
 
         # Review
@@ -697,9 +689,7 @@ class Telerama:
 
                 yield self._to_xmltv_program(program[0])
 
-    def _to_xmltv(
-        self, channel_ids: List[str], days: int, offset: int
-    ) -> Element:
+    def _to_xmltv(self, channel_ids: List[str], days: int, offset: int) -> Element:
         xmltv = self._xmltv_element(
             "tv",
             **{
@@ -713,9 +703,7 @@ class Telerama:
 
         xmltv_channels = {}  # type: Dict[str, Element]
         xmltv_programs = []
-        for xmltv_program in self._get_xmltv_programs(
-            channel_ids, days, offset
-        ):
+        for xmltv_program in self._get_xmltv_programs(channel_ids, days, offset):
             if xmltv_program is None:
                 continue
             channel_id = xmltv_program.get("channel")
@@ -754,82 +742,85 @@ class Telerama:
         channels = []
         programmes = []
 
-        infos = ['sub-title', 'desc', 'date', 'url', 'review', 'episode-num']
+        infos = ["sub-title", "desc", "date", "url", "review", "episode-num"]
 
         for item in xmltv_data:
             if item.tag == "channel":
                 info_channel = {}
-                info_channel['id'] = item.attrib['id']
-                info_channel['nom'] = unidecode.unidecode(item[0].text).upper()
-                info_channel['icon'] = item[1].attrib['src']
-                info_channel['url'] = item[2].text
+                info_channel["id"] = item.attrib["id"]
+                info_channel["nom"] = unidecode.unidecode(item[0].text).upper()
+                info_channel["icon"] = item[1].attrib["src"]
+                info_channel["url"] = item[2].text
                 channels.append(info_channel)
             elif item.tag == "programme":
                 info_programme = {}
-                info_programme['start'] = item.attrib['start']
-                info_programme['stop'] = item.attrib['stop']
-                info_programme['channel'] = item.attrib['channel']
+                info_programme["start"] = item.attrib["start"]
+                info_programme["stop"] = item.attrib["stop"]
+                info_programme["channel"] = item.attrib["channel"]
 
-                info_programme['audio_subtitles'] = False
+                info_programme["audio_subtitles"] = False
 
                 titles, directors, categories, actors = [], [], [], []
-                writers ,composers ,countries = [], [], []
+                writers, composers, countries = [], [], []
 
                 for info in item:
                     if info.tag in infos:
                         info_programme[info.tag] = info.text
-                    elif info.tag == 'title':
+                    elif info.tag == "title":
                         titles.append(info.text)
-                    elif info.tag == 'category':
+                    elif info.tag == "category":
                         categories.append(info.text)
-                    elif info.tag == 'credits':
+                    elif info.tag == "credits":
                         for credit in info:
-                            if credit.tag == 'director' or credit.tag == 'presenter':
+                            if credit.tag == "director" or credit.tag == "presenter":
                                 directors.append(credit.text)
-                            elif credit.tag == 'actor' or credit.tag == 'guest':
+                            elif credit.tag == "actor" or credit.tag == "guest":
                                 try:
-                                    actors.append({ 'actor': credit.text,
-                                                    'role': credit.attrib['role']
-                                                })
+                                    actors.append(
+                                        {
+                                            "actor": credit.text,
+                                            "role": credit.attrib["role"],
+                                        }
+                                    )
                                 except:
-                                    actors.append({ 'actor': credit.text })
-                            elif credit.tag == 'writer':
+                                    actors.append({"actor": credit.text})
+                            elif credit.tag == "writer":
                                 writers.append(credit.text)
-                            elif credit.tag == 'composer':
+                            elif credit.tag == "composer":
                                 composers.append(credit.text)
-                    elif info.tag == 'country':
+                    elif info.tag == "country":
                         countries.append(info.text)
-                    elif info.tag == 'rating':
+                    elif info.tag == "rating":
                         public = info[0].text
                         if public[:12] == "Tous publics":
                             age = 0
-                            info_programme['public'] = age
+                            info_programme["public"] = age
                         elif public[:12] == "Interdit aux":
                             age = int(public[22:-4])
-                            info_programme['public'] = age
-                    elif info.tag == 'subtitles':
-                        info_programme['audio_subtitles'] = True
-                    elif info.tag == 'star-rating':
+                            info_programme["public"] = age
+                    elif info.tag == "subtitles":
+                        info_programme["audio_subtitles"] = True
+                    elif info.tag == "star-rating":
                         note = info[0].text
-                        info_programme['note'] = int(note[:1])
-                    elif info.tag == 'icon':
-                        info_programme['icon'] = info.attrib['src']
+                        info_programme["note"] = int(note[:1])
+                    elif info.tag == "icon":
+                        info_programme["icon"] = info.attrib["src"]
 
-                info_programme['titles'] = titles
-                info_programme['directors'] = directors
-                info_programme['categories'] = categories
-                info_programme['actors'] = actors
-                info_programme['writers'] = writers
-                info_programme['composers'] = composers
-                info_programme['countries'] = countries
+                info_programme["titles"] = titles
+                info_programme["directors"] = directors
+                info_programme["categories"] = categories
+                info_programme["actors"] = actors
+                info_programme["writers"] = writers
+                info_programme["composers"] = composers
+                info_programme["countries"] = countries
 
                 programmes.append(info_programme)
 
-        json_data['channels'] = channels
-        json_data['programmes'] = programmes
+        json_data["channels"] = channels
+        json_data["programmes"] = programmes
 
         with open(file, "w") as write_file:
-            json.dump(json_data, write_file, ensure_ascii=False, indent = 4)
+            json.dump(json_data, write_file, ensure_ascii=False, indent=4)
 
 
 _PROGRAM = "tv_grab_fr_telerama"
@@ -919,8 +910,7 @@ def _parse_cli_args() -> Namespace:
     log_level_group.add_argument(
         "--debug",
         action="store_true",
-        help="provide more information on progress to stderr to help in"
-        "debugging",
+        help="provide more information on progress to stderr to help in" "debugging",
     )
 
     return parser.parse_args()
@@ -1006,7 +996,8 @@ def _main() -> None:
     elif args.debug:
         logging_level = logging.DEBUG
     logging.basicConfig(
-        level=logging_level, format="%(levelname)s: %(message)s",
+        level=logging_level,
+        format="%(levelname)s: %(message)s",
     )
 
     telerama = Telerama(generator=_PROGRAM, generator_url=__url__)
