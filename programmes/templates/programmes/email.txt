@@ -1,0 +1,20 @@
+Bonjour,
+
+{% for search_info in infos_mail %}
+    {% if search_info.new_prog|length == 1 %}
+        Votre recherche créée le {{ search_info.search.date_creation }} a obtenu un nouveau programme:<br />
+        {{ search_info.new_prog.0.titre }}, le {{ search_info.new_prog.0.prog.date_debut }} sur la chaîne {{ search_info.new_prog.0.chaine.nom }}: <a href="{{ programme.prog.url }}">Plus d'information</a><br />
+    {% elif search_info.new_prog|length > 1 %}
+        Votre recherche créée le {{ search_info.search.date_creation }} a obtenu de nouveaux programmes:<br />
+        {% for programme in search_info.new_prog %}
+            {{ programme.titre }}, le {{ programme.prog.date_debut }} sur la chaîne {{ programme.chaine.nom }}: Plus d'information: {{ programme.prog.url }}
+        {% endfor %}
+    {% endif %}
+    {% if search_info.old_prog|length > 0 %}
+        Pour information cette recherche a déjà donnée les programmes suivants pour les jours précédents:<br />
+            {% for programme in search_info.old_prog %}
+                {{ programme.titre }}, le {{ programme.prog.date_debut }} sur la chaîne {{ programme.chaine.nom }}: Plus d'information: {{ programme.prog.url }}
+            {% endfor %}
+    {% endif %}
+{% endfor %}
+Vous n'avez plus qu'à programmer votre enregistrement ou préparer votre popcorn! :-)
