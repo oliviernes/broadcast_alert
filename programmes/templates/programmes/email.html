@@ -7,10 +7,15 @@
     <p>Bonjour,<br />
     <br>
     {% for search_info in infos_mail %}
+    
         {% if search_info.new_prog|length == 1 %}
+            ---------------------------------------------------------------------------------------------------------<br />
             Votre <a href="http://127.0.0.1:8000/my_search/#{{ search_info.search.id }}"">recherche</a> créée le {{ search_info.search.date_creation }} a obtenu un nouveau programme:<br />
-            {{ search_info.new_prog.0.titre }}, le {{ search_info.new_prog.0.prog.date_debut }} sur la chaîne {{ search_info.new_prog.0.chaine.nom }}: <a href="{{ programme.prog.url }}">Plus d'information</a><br />
+            <br>
+            {{ search_info.new_prog.0.titre }}, le {{ search_info.new_prog.0.prog.date_debut }} sur la chaîne {{ search_info.new_prog.0.chaine.nom }}: <a href="{{ search_info.new_prog.0.prog.url }}">Plus d'information</a><br />
+            <br>
         {% elif search_info.new_prog|length > 1 %}
+            ---------------------------------------------------------------------------------------------------------<br />
             Votre <a href="http://127.0.0.1:8000/my_search/#{{ search_info.search.id }}"">recherche</a> créée le {{ search_info.search.date_creation }} a obtenu de nouveaux programmes:<br />
             <ul>
                 {% for programme in search_info.new_prog %}
@@ -18,13 +23,18 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% if search_info.old_prog|length > 0 %}
-            Pour information cette recherche a déjà donnée les programmes suivants pour les jours précédents:<br />
+        {% if search_info.old_prog|length == 1 and search_info.new_prog|length > 0 %}
+            Pour information cette recherche a déjà donnée le programme suivant pour les jours précédents:<br />
             <ul>
-                {% for programme in search_info.old_prog %}
-                    <li>{{ programme.titre }}, le {{ programme.prog.date_debut }} sur la chaîne {{ programme.chaine.nom }}: <a href="{{ programme.prog.url }}">Plus d'information</a></li>
-                {% endfor %}
+                <li>{{ search_info.old_prog.0.titre }}, le {{ search_info.old_prog.0.prog.date_debut }} sur la chaîne {{ search_info.old_prog.0.chaine.nom }}: <a href="{{ search_info.old_prog.0.prog.url }}">Plus d'information</a></li>
             </ul>
+        {% elif search_info.old_prog|length > 1 and search_info.new_prog|length > 0 %}
+            Pour information cette recherche a déjà donnée les programmes suivants pour les jours précédents:<br />
+        <ul>
+            {% for programme in search_info.old_prog %}
+                <li>{{ programme.titre }}, le {{ programme.prog.date_debut }} sur la chaîne {{ programme.chaine.nom }}: <a href="{{ programme.prog.url }}">Plus d'information</a></li>
+            {% endfor %}
+        </ul>
         {% endif %}
     {% endfor %}
     Vous n'avez plus qu'à programmer votre enregistrement ou préparer votre popcorn! :-)
