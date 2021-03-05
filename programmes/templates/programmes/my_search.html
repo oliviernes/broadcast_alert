@@ -18,7 +18,7 @@
 
     {% for search in searches %}
 
-    <p>Recherche enregistrée le: {{ search.recherche.date_creation }}</p>
+    <p id="{{ search.recherche.id }}">Recherche enregistrée le: {{ search.recherche.date_creation }}</p>
 
 
     <table class="table table-bordered table-striped table-condensed">
