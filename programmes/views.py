@@ -1,6 +1,7 @@
 """Views to manage programmes"""
 import operator
 import datetime
+import json
 
 from functools import reduce
 from django.utils.timezone import make_aware
@@ -109,6 +110,26 @@ def search(request):
             aide_sourd = form_recherche_specifique.cleaned_data["aide_sourd"]
             note = form_recherche_specifique.cleaned_data["note"]
             critique = form_recherche_specifique.cleaned_data["critique"]
+
+            info_search = {'recherche': recherche,
+                        'titre': titre,
+                        'titre_informatif': titre_informatif,
+                        'description': description,
+                        'realisateur': realisateur,
+                        'acteur': acteur,
+                        'role': role,
+                        'scenariste': scenariste,
+                        'date_realisation': date_realisation,
+                        'categorie': categorie,
+                        'serie': serie,
+                        'episode': episode,
+                        'partie': partie,
+                        'pays_realisation': pays_realisation,
+                        'public': public,
+                        'aide_sourd': aide_sourd,
+                        'note': note,
+                        'critique': critique,
+                        }
 
             if "my_search" in request.POST:
                 """To register user's searches"""
@@ -336,7 +357,9 @@ def search(request):
                         )
                         info_programmes.append(info_prog)
 
-                context = {"info_programmes": info_programmes}
+                context = {'info_search': info_search,
+                         'info_programmes': info_programmes
+                         }
                 return render(request, "programmes/results.html", context)
 
         else:

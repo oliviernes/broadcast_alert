@@ -1,8 +1,10 @@
 {% extends 'programmes/base.html' %}
 
 {% load static %}
-    
+
 {% block welcome %}
+
+
 
 <div class="row">
   <div class="col-xl-9 mx-auto">
@@ -11,13 +13,6 @@
   <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
     <form>
       <div class="form-row">
-        <!-- <form action="" method="POST">
-          {% csrf_token %}
-
-          {{ form_recherche }}
-
-          <input type="submit" value="Submit" />
-        </form> -->
         <div class="col-12 col-md-9 mb-2 mb-md-0">
           {% if info_programmes|length > 0 %}
             {% for prog in info_programmes %}
@@ -28,41 +23,41 @@
               {% if prog.titres|length > 0 %}
                 <p>Titres:</p>
                 {% for titre in prog.titres %}
-                  <p>{{ titre.nom }}</p>
+                  <p><span nom="titre">{{ titre.nom }}</span></p>
                 {% endfor %}
               {% endif %}
               {% if prog.programme.titre_informatif %}
                 <p>-------------------------------------------</p>
                 <p>Titre informatif:</p>
-                <p>{{ prog.programme.titre_informatif}}</p>
+                <p><span nom="titre_informatif">{{ prog.programme.titre_informatif}}</span></p>
               {% endif %}
               {% if prog.programme.description %}
                 <p>-------------------------------------------</p>
                 <p>Description:</p>
-                <p>{{ prog.programme.description}}</p>
+                <p><span nom="description">{{ prog.programme.description}}</span></p>
               {% endif %}
               {% if prog.realisateur|length > 0 %}
                 <p>-------------------------------------------</p>
                 <p>Réalisateurs:</p>
                 {% for realisateur in prog.realisateur %}
-                  <p>{{ realisateur.nom }}</p>
+                  <p><span nom="realisateur">{{ realisateur.nom }}</span></p>
                 {% endfor %}
               {% endif %}
               {% if prog.acteurs|length > 0 %}
                 <p>-------------------------------------------</p>
               {% for acteur in prog.acteurs %}
                 {% if acteur.role %}
-                  <p>Acteur: {{ acteur.nom }}---Rôle: {{ acteur.role }}</p>
+                  <p><span nom="acteur_role">Acteur: {{ acteur.nom }}---Rôle: {{ acteur.role }}</span></p>
                 {% else %}
-                <p>Acteur: {{ acteur.nom }}</p>
+                <p><span nom="acteur">Acteur: {{ acteur.nom }}</span></p>
                 {% endif %}
               {% endfor %}
               {% endif %}
               {% if prog.scenariste|length > 0 %}
                 <p>-------------------------------------------</p>
-                <p>Scenarites:</p>
+                <p>Scenaristes:</p>
                 {% for scenariste in prog.scenariste %}
-                  <p>{{ scenariste.nom }}</p>
+                  <p><span nom="scenariste">{{ scenariste.nom }}</span></p>
                 {% endfor %}
               {% endif %}
               {% if prog.programme.date_realisation %}
@@ -73,7 +68,7 @@
                 <p>-------------------------------------------</p>
                 <p>Categories:</p>
                 {% for categorie in prog.categories %}
-                  <p>{{ categorie.nom }}</p>
+                  <p><span nom="categorie">{{ categorie.nom }}</span></p>
                 {% endfor %}
               {% endif %}
               {% if prog.series|length > 0 %}
@@ -86,7 +81,7 @@
                 <p>-------------------------------------------</p>
                 <p>Pays de réalisation:</p>
                 {% for pays in prog.pays %}
-                  <p>{{ pays.nom }}</p>
+                  <p><span nom="pays">{{ pays.nom }}</span></p>
                 {% endfor %}
               {% endif %}
               {% if prog.programme.public %}
@@ -104,7 +99,7 @@
               {% if prog.programme.critique %}
                 <p>-------------------------------------------</p>
                 <p>critique:</p>
-                <p>{{ prog.programme.critique}}</p>
+                <p><span nom="critique">{{ prog.programme.critique}}</span></p>
               {% endif %}
             {% endfor %}
           {% else %}
@@ -118,5 +113,136 @@
     </form>
   </div>
 </div>
+
+
+<script type="text/javascript">
+  var spans = document.getElementsByTagName('span');
+  console.log(spans)
+
+  for(var i = 0; i < spans.length; i++)
+  {
+      var s = spans[i].innerHTML;
+      // console.log(spans['i'].textContent)
+      console.log(spans[i])
+      s = s.replace(/{{ info_search.recherche }}/gi, '<span class="search" style="color:green"></span>');
+      if (spans[i].getAttribute('nom') == 'titre') {
+        s = s.replace(/{{ info_search.titre }}/gi, '<span class="titre" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'titre_informatif') {
+        s = s.replace(/{{ info_search.titre_informatif }}/gi, '<span class="titre_informatif" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'description') {
+        s = s.replace(/{{ info_search.description }}/gi, '<span class="description" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'realisateur') {
+        s = s.replace(/{{ info_search.realisateur }}/gi, '<span class="realisateur" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'acteur_role') {
+        s = s.replace(/{{ info_search.acteur }}/gi, '<span class="acteur" style="color:red"></span>');
+        s = s.replace(/{{ info_search.role }}/gi, '<span class="role" style="color:red"></span>');
+        }
+      if (spans[i].getAttribute('nom') == 'acteur') {
+        s = s.replace(/{{ info_search.acteur }}/gi, '<span class="acteur" style="color:red"></span>');
+        }
+      if (spans[i].getAttribute('nom') == 'scenariste') {
+        s = s.replace(/{{ info_search.scenariste }}/gi, '<span class="scenariste" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'categorie') {
+        s = s.replace(/{{ info_search.categorie }}/gi, '<span class="categorie" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'pays') {
+        s = s.replace(/{{ info_search.pays_realisation }}/gi, '<span class="pays" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'categorie') {
+        s = s.replace(/{{ info_search.categorie }}/gi, '<span class="categorie" style="color:red"></span>');  
+        }
+      if (spans[i].getAttribute('nom') == 'critique') {
+        s = s.replace(/{{ info_search.critique }}/gi, '<span class="critique" style="color:red"></span>');  
+        }
+
+
+      spans[i].innerHTML = s;
+  }
+
+  // var ins = document.getElementsByTagName('ins');
+  var search = document.getElementsByClassName('search');
+
+  for(var i = 0; i < search.length; i++)
+  {
+      search[i].innerHTML = '{{ info_search.recherche }}'
+  }
+
+  var titre = document.getElementsByClassName('titre');
+
+  for(var i = 0; i < titre.length; i++)
+  {
+      titre[i].innerHTML = '{{ info_search.titre }}'
+  }
+
+  var titre_informatif = document.getElementsByClassName('titre_informatif');
+
+  for(var i = 0; i < titre_informatif.length; i++)
+  {
+      titre_informatif[i].innerHTML = '{{ info_search.titre_informatif }}'
+  }
+
+  var description = document.getElementsByClassName('description');
+
+  for(var i = 0; i < description.length; i++)
+  {
+      description[i].innerHTML = '{{ info_search.description }}'
+  }
+
+  var realisateur = document.getElementsByClassName('realisateur');
+
+  for(var i = 0; i < realisateur.length; i++)
+  {
+      realisateur[i].innerHTML = '{{ info_search.realisateur }}'
+  }
+
+  var acteur = document.getElementsByClassName('acteur');
+
+  for(var i = 0; i < acteur.length; i++)
+  {
+      acteur[i].innerHTML = '{{ info_search.acteur }}'
+  }
+
+  var role = document.getElementsByClassName('role');
+
+  for(var i = 0; i < role.length; i++)
+  {
+      role[i].innerHTML = '{{ info_search.role }}'
+  }
+
+  var scenariste = document.getElementsByClassName('scenariste');
+
+  for(var i = 0; i < scenariste.length; i++)
+  {
+      scenariste[i].innerHTML = '{{ info_search.scenariste }}'
+  }
+
+  var categorie = document.getElementsByClassName('categorie');
+
+  for(var i = 0; i < categorie.length; i++)
+  {
+      categorie[i].innerHTML = '{{ info_search.categorie }}'
+  }
+
+  var pays = document.getElementsByClassName('pays');
+
+  for(var i = 0; i < pays.length; i++)
+  {
+      pays[i].innerHTML = '{{ info_search.pays_realisation }}'
+  }
+
+  var critique = document.getElementsByClassName('critique');
+
+  for(var i = 0; i < critique.length; i++)
+  {
+      critique[i].innerHTML = '{{ info_search.critique }}'
+  }
+
+</script>
+
 
 {% endblock %}
