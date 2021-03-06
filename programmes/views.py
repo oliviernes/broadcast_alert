@@ -1,21 +1,14 @@
 """Views to manage programmes"""
-import operator
-import datetime
-import json
-
-from functools import reduce
-from django.utils.timezone import make_aware
 from django.shortcuts import render
-from django.db.models import Q
 from django.shortcuts import redirect
-from django.contrib.auth.models import User
+
+from .next import ProgrammesNext7D
 
 # Create your views here.
 
 from .models import (
     Categories,
     PaysRealisation,
-    Programmes,
     Chaines,
     Recherche,
     RechercheSpecifique,
@@ -224,108 +217,27 @@ def search(request):
                 """To search the programmes and display the results
                 in a new page"""
 
-                """Add a Q object to search all related fields"""
-                Q_recherche = [
-                    Q(titres__nom__unaccent__icontains=recherche),
-                    Q(titre_informatif__unaccent__icontains=recherche),
-                    Q(description__unaccent__icontains=recherche),
-                    Q(realisateur__nom__unaccent__icontains=recherche),
-                    Q(acteurs__nom__unaccent__icontains=recherche),
-                    Q(acteurs__role__unaccent__icontains=recherche),
-                    Q(scenariste__nom__unaccent__icontains=recherche),
-                    Q(categories__nom__unaccent__icontains=recherche),
-                    Q(paysrealisation__nom__unaccent__icontains=recherche),
-                    Q(critique__unaccent__icontains=recherche),
-                ]
-
-                """Add a Q list with Q objects for all related specifique recherches"""
-                Q_list = []
-
-                if titre is not None:
-                    Q_list.append(Q(titres__nom__unaccent__icontains=titre))
-
-                if titre_informatif is not None:
-                    Q_list.append(
-                        Q(titre_informatif__unaccent__icontains=titre_informatif)
-                    )
-
-                if description is not None:
-                    Q_list.append(Q(description__unaccent__icontains=description))
-
-                if realisateur is not None:
-                    Q_list.append(Q(realisateur__nom__unaccent__icontains=realisateur))
-
-                if acteur is not None:
-                    Q_list.append(Q(acteurs__nom__unaccent__icontains=acteur))
-
-                if role is not None:
-                    Q_list.append(Q(acteurs__role__unaccent__icontains=role))
-
-                if scenariste is not None:
-                    Q_list.append(Q(scenariste__nom__unaccent__icontains=scenariste))
-
-                if date_realisation is not None:
-                    Q_list.append(Q(date_realisation=date_realisation))
-
-                if categorie is not None:
-                    Q_list.append(Q(categories__nom__unaccent__icontains=categorie))
-
-                if serie is not None:
-                    Q_list.append(Q(series__serie__icontains=serie))
-
-                if episode is not None:
-                    Q_list.append(Q(series__episode__icontains=episode))
-
-                if partie is not None:
-                    Q_list.append(Q(series__partie__icontains=partie))
-
-                if pays_realisation is not None:
-                    Q_list.append(
-                        Q(paysrealisation__nom__unaccent__icontains=pays_realisation)
-                    )
-
-                if public is not None:
-                    Q_list.append(Q(public__lte=public))
-
-                if aide_sourd is not None:
-                    Q_list.append(Q(aide_sourd=aide_sourd))
-
-                if note is not None:
-                    Q_list.append(Q(note__gte=note))
-
-                if critique is not None:
-                    Q_list.append(Q(critique__unaccent__icontains=critique))
-
-                if len(Q_list) > 0:
-                    programmes = Programmes.objects.filter(
-                        reduce(operator.and_, Q_list),
-                        chaines__in=[chaine.id for chaine in chaines],
-                    ).order_by("date_debut")
-
-                if recherche and len(Q_list) == 0:
-                    programmes = Programmes.objects.filter(
-                        reduce(operator.or_, Q_recherche),
-                        chaines__in=[chaine.id for chaine in chaines],
-                    ).order_by("date_debut")
-                elif recherche and len(Q_list) > 0:
-                    programmes_recherche = Programmes.objects.filter(
-                        reduce(operator.or_, Q_recherche),
-                        id__in=[prog.id for prog in programmes],
-                    ).order_by("date_debut")
-                    programmes = programmes_recherche
-                elif recherche is None and len(Q_list) == 0:
-                    programmes = []
-
-                """To remove duplicates:"""
-                programmes = list(dict.fromkeys(programmes))
-
-                programmes_7D = []
-
-                for progs in programmes:
-                    if progs.date_debut >= make_aware(datetime.datetime.now()):
-                        programmes_7D.append(progs)
-
-                programmes_7D = programmes_7D[:max_resultats]
+                programmes_7D = ProgrammesNext7D(recherche,
+                                            max_resultats,
+                                            chaines,
+                                            titre,
+                                            titre_informatif,
+                                            description,
+                                            realisateur,
+                                            acteur,
+                                            role,
+                                            scenariste,
+                                            date_realisation,
+                                            categorie,
+                                            serie,
+                                            episode,
+                                            partie,
+                                            pays_realisation,
+                                            public,
+                                            aide_sourd,
+                                            note,
+                                            critique,
+                                    ).search_7D()
 
                 info_programmes = []
 
