@@ -152,6 +152,12 @@
             <th>{{ search.recherche_specifique.critique }}</th>
           </tr>
           {% endif %}
+          <tr>
+            <th>Résultats pour les 7 prochains jours</th>
+            <th>
+              <a class="btn btn-primary" href="{% url 'my_results' my_search_id=search.recherche.id %}">Voir la programmation correspondante</a>
+            </th>
+          </tr>
         {% endif %}
 
       </thead>

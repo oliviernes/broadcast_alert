@@ -346,3 +346,108 @@ def my_search(request):
         context = {"searches": searches, "form_delete": form_delete}
 
         return render(request, "programmes/my_search.html", context)
+
+def my_results(request, my_search_id):
+
+    my_search = Recherche.objects.get(id=my_search_id)
+    max_resultats = my_search.max_resultats
+    chaines = my_search.chaines.all()
+    recherche = my_search.recherche
+
+    recherche_spe = RechercheSpecifique.objects.get(recherche_id=my_search.id)
+
+    titre = recherche_spe.titre
+    titre_informatif = recherche_spe.titre_informatif
+    description = recherche_spe.description
+    realisateur = recherche_spe.realisateur
+    acteur = recherche_spe.acteur
+    role = recherche_spe.role
+    scenariste = recherche_spe.scenariste
+    date_realisation = recherche_spe.date_realisation
+    categorie = recherche_spe.categories
+    serie = recherche_spe.serie
+    episode = recherche_spe.episode
+    partie = recherche_spe.partie
+    pays_realisation = recherche_spe.pays_realisation
+    public = recherche_spe.public
+    aide_sourd = recherche_spe.aide_sourd
+    note = recherche_spe.note
+    critique = recherche_spe.critique
+
+    info_search = {'recherche': recherche,
+                'titre': titre,
+                'titre_informatif': titre_informatif,
+                'description': description,
+                'realisateur': realisateur,
+                'acteur': acteur,
+                'role': role,
+                'scenariste': scenariste,
+                'date_realisation': date_realisation,
+                'categorie': categorie,
+                'serie': serie,
+                'episode': episode,
+                'partie': partie,
+                'pays_realisation': pays_realisation,
+                'public': public,
+                'aide_sourd': aide_sourd,
+                'note': note,
+                'critique': critique,
+                }
+
+
+    programmes_7D = ProgrammesNext7D(recherche,
+                                max_resultats,
+                                chaines,
+                                titre,
+                                titre_informatif,
+                                description,
+                                realisateur,
+                                acteur,
+                                role,
+                                scenariste,
+                                date_realisation,
+                                categorie,
+                                serie,
+                                episode,
+                                partie,
+                                pays_realisation,
+                                public,
+                                aide_sourd,
+                                note,
+                                critique,
+                        ).search_7D()
+
+    info_programmes = []
+
+    if len(programmes_7D) > 0:
+        for prog in programmes_7D:
+            info_prog = {}
+            info_prog["programme"] = prog
+            info_prog["chaine"] = prog.chaines.nom
+            info_prog["titres"] = Titres.objects.filter(
+                programmes_id=prog.id
+            )
+            info_prog["realisateur"] = Realisateur.objects.filter(
+                programmes_id=prog.id
+            )
+            info_prog["scenariste"] = Scenariste.objects.filter(
+                programmes_id=prog.id
+            )
+            info_prog["acteurs"] = Acteurs.objects.filter(
+                programmes_id=prog.id
+            )
+            info_prog["series"] = Series.objects.filter(
+                programmes_id=prog.id
+            )
+            info_prog["categories"] = Categories.objects.filter(
+                programmes__id=prog.id
+            )
+            info_prog["pays"] = PaysRealisation.objects.filter(
+                programmes__id=prog.id
+            )
+            info_programmes.append(info_prog)
+
+    context = {'info_search': info_search,
+                'info_programmes': info_programmes
+                }
+    return render(request, "programmes/results.html", context)
