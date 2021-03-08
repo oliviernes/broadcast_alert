@@ -44,7 +44,7 @@ import pdb
 
 
 def search(request):
-
+    """Display search results for the next 7 days and save user's searches."""
     if request.method == "POST":
         form_recherche = RechercheForm(request.POST)
         form_bouquet = BouquetTvForm(request.POST)
@@ -303,7 +303,7 @@ def my_search(request):
     """Display user's recorded searches and delete selected searches"""
     user_id = request.user.id
 
-    recherches = Recherche.objects.filter(utilisateur_id=user_id)
+    recherches = Recherche.objects.filter(utilisateur_id=user_id).order_by("-date_creation")
 
     searches = []
 
