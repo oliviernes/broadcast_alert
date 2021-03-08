@@ -12,26 +12,21 @@
   <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
       {% csrf_token %}
 
-      <input type="submit" name="delete" value="Supprimer les recherches sélectionnées" />
-
-
     {% for search in searches %}
 
     <div id="div{{ search.recherche.id }}">
 
     <p>Recherche enregistrée le: {{ search.recherche.date_creation }}</p>
 
+    <button class="btn btn-primary btn-delete" id="delete{{ search.recherche.id }}" data-object-id="{{ search.recherche.id }}" onclick="deleteFunction{{ search.recherche.id }}()">Supprimer cette recherche</button>
+
+    <br />
+
+    <div></div>
+
     <table class="table table-bordered table-striped table-condensed">
 
         <thead>
-        <tr>
-        <th>Selectionner pour suppression:</th>
-        <th><input type="checkbox" value="{{ search.recherche.id }}" name="choices"></input></th>
-        </tr>
-        <tr>
-          <th>Supprimer cette recherche:</th>
-          <th><button class="btn btn-primary" id="delete{{ search.recherche.id }}" data-object-id="{{ search.recherche.id }}" onclick="deleteFunction{{ search.recherche.id }}()">Supprimer cette recherche</button></th>
-        </tr> 
         <tr>
           <th>Nombre de résultat maximum</th>
           <th>{{ search.recherche.max_resultats }}</th>

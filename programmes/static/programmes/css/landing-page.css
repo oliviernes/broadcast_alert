@@ -191,3 +191,9 @@ footer.footer {
   from {opacity: 0;}
   to {opacity:1 ;}
 }
+
+/* ######## my custom CSS ############ */
+
+.btn-delete{
+  margin-bottom:10px;
+}
