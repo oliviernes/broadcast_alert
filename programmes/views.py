@@ -1,6 +1,8 @@
 """Views to manage programmes"""
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
 from .next import ProgrammesNext7D
 
@@ -330,24 +332,30 @@ def my_search(request):
                 }
             )
 
-    if request.method == "POST":
-        form_delete = DeleteForm(request.POST)
+    # if request.method == "POST":
+    #     form_delete = DeleteForm(request.POST)
 
-        if form_delete.is_valid() and "delete" in request.POST:
-            for selected_search in form_delete.cleaned_data["choices"]:
-                selected_search.delete()
+    #     if form_delete.is_valid() and "delete" in request.POST:
+    #         for selected_search in form_delete.cleaned_data["choices"]:
+    #             selected_search.delete()
 
-            return redirect("my_search")
-        else:
-            return redirect("my_search")
-    else:
-        form_delete = DeleteForm()
+    #         return redirect("my_search")
+    #     else:
+    #         return redirect("my_search")
+    # else:
+    #     form_delete = DeleteForm()
 
-        context = {"searches": searches, "form_delete": form_delete}
+    #     context = {"searches": searches, "form_delete": form_delete}
 
-        return render(request, "programmes/my_search.html", context)
+    #     return render(request, "programmes/my_search.html", context)
+
+    context = {"searches": searches}
+
+    return render(request, "programmes/my_search.html", context)
+
 
 def my_results(request, my_search_id):
+    """Display user's matching programmes for recorded searches the next 7 days"""
 
     my_search = Recherche.objects.get(id=my_search_id)
     max_resultats = my_search.max_resultats
@@ -451,3 +459,15 @@ def my_results(request, my_search_id):
                 'info_programmes': info_programmes
                 }
     return render(request, "programmes/results.html", context)
+
+def delete(request, pk):
+    # breakpoint()
+    item = Recherche.objects.get(id=pk)
+    item.delete()
+
+    if request.is_ajax():
+        data = {
+                'my_data': "data_to_give_to_fetch"
+        }
+        return JsonResponse(data)
+

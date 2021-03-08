@@ -10,7 +10,6 @@
   </div>
 
   <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-    <form action="." method="POST">
       {% csrf_token %}
 
       <input type="submit" name="delete" value="Supprimer les recherches sélectionnées" />
@@ -18,8 +17,9 @@
 
     {% for search in searches %}
 
-    <p id="{{ search.recherche.id }}">Recherche enregistrée le: {{ search.recherche.date_creation }}</p>
+    <div id="div{{ search.recherche.id }}">
 
+    <p>Recherche enregistrée le: {{ search.recherche.date_creation }}</p>
 
     <table class="table table-bordered table-striped table-condensed">
 
@@ -28,6 +28,10 @@
         <th>Selectionner pour suppression:</th>
         <th><input type="checkbox" value="{{ search.recherche.id }}" name="choices"></input></th>
         </tr>
+        <tr>
+          <th>Supprimer cette recherche:</th>
+          <th><button class="btn btn-primary" id="delete{{ search.recherche.id }}" data-object-id="{{ search.recherche.id }}" onclick="deleteFunction{{ search.recherche.id }}()">Supprimer cette recherche</button></th>
+        </tr> 
         <tr>
           <th>Nombre de résultat maximum</th>
           <th>{{ search.recherche.max_resultats }}</th>
@@ -159,24 +163,67 @@
             </th>
           </tr>
         {% endif %}
-
       </thead>
-
     </table>
-  
+    </div>
     {% endfor %}
-
-    </form>
- 
   </div>
 </div>
 
 {% for search in searches %}
   <script>
     function myFunction{{ search.recherche.id }}() {
-      var popup = document.getElementById("myPopup{{ search.recherche.id }}");
+      let popup = document.getElementById("myPopup{{ search.recherche.id }}");
       popup.classList.toggle("show");
     }
+    function deleteFunction{{ search.recherche.id }}() {
+          console.log("div{{ search.recherche.id }}");
+          let bouton = document.getElementById("delete{{ search.recherche.id }}");
+          // let object_id = $(this).attr('data-object-id');
+          let object_id = bouton.getAttribute('data-object-id');
+          let url = "/delete/"+ object_id;
+          fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers:{
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+            'X-CSRFToken': "{{ csrf_token }}",
+            },
+          })
+          .then(reponse => {
+            let table = document.getElementById("div{{ search.recherche.id }}");
+            $(table).fadeOut();
+          })
+          // $.ajax({
+          //   url: url,
+          //   data: {
+          //       'csrfmiddlewaretoken': "{{ csrf_token }}"
+          //   },
+          //   timeout: 2000,
+          //   type: "POST",
+          //   dataType: "json",
+          //   })
+            // }).done(
+            //   function(){alert("Deleted");}
+            // ).fail(
+            //   function(){alert("Error");}
+            // );
+          // let table = document.getElementById("div{{ search.recherche.id }}");
+          // function unfade(table) {
+          //     var op = 0.1;  // initial opacity
+          //     table.style.display = 'block';
+          //     var timer = setInterval(function () {
+          //         if (op >= 1){
+          //             clearInterval(timer);
+          //         }
+          //         table.style.opacity = op;
+          //         table.style.filter = 'alpha(opacity=' + op * 100 + ")";
+          //         op += op * 0.1;
+          //     }, 10);
+          // }
+          // $(table).fadeOut();
+        };
   </script>
 {% endfor %}
 
