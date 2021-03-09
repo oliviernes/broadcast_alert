@@ -13,7 +13,7 @@ from .models import (
     Recherche,
     RechercheSpecifique,
 )
-from .forms import DeleteForm, RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
+from .forms import RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
 from config import CHOICES
 
 import pdb
