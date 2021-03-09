@@ -8,6 +8,18 @@ from django.utils.timezone import make_aware
 
 from .models import Programmes
 
+from .models import (
+    Programmes,
+    Categories,
+    PaysRealisation,
+    Scenariste,
+    Series,
+    Titres,
+    Realisateur,
+    Acteurs,
+)
+
+
 class ProgrammesNext7D:
     """Provide programmes for the next 7 days according to user's search"""
 
@@ -161,3 +173,48 @@ class ProgrammesNext7D:
         programmes_7D = programmes_7D[:self.max_resultats]
 
         return programmes_7D
+    
+class InfoProgrammes:
+    """Generate programmes info for template context
+    """
+    def __init__(self, programmes_7D):
+        self.programmes_7D = programmes_7D
+    
+    def generate_info(self):
+
+        info_programmes = []
+
+        if len(self.programmes_7D) > 0:
+            for prog in self.programmes_7D:
+                info_prog = {}
+                info_prog["programme"] = prog
+                info_prog["chaine"] = prog.chaines.nom
+                info_prog["titres"] = Titres.objects.filter(
+                    programmes_id=prog.id
+                )
+                info_prog["realisateur"] = Realisateur.objects.filter(
+                    programmes_id=prog.id
+                )
+                info_prog["scenariste"] = Scenariste.objects.filter(
+                    programmes_id=prog.id
+                )
+                info_prog["acteurs"] = Acteurs.objects.filter(
+                    programmes_id=prog.id
+                )
+                info_prog["series"] = Series.objects.filter(
+                    programmes_id=prog.id
+                )
+                info_prog["categories"] = Categories.objects.filter(
+                    programmes__id=prog.id
+                )
+                info_prog["pays"] = PaysRealisation.objects.filter(
+                    programmes__id=prog.id
+                )
+                info_programmes.append(info_prog)
+        
+            return info_programmes
+        
+        else:
+            return info_programmes
+    
+    
