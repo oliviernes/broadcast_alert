@@ -734,6 +734,7 @@ class TestMySearch:
         self.client.login(username="lennon@thebeatles.com", password="johnpassword")
 
         response_get = self.client.get(reverse("my_search"))
+
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/my_search.html"
 
@@ -751,6 +752,7 @@ class TestMySearch:
         recherche.save()
 
         response_get = self.client.get(reverse("my_search"))
+
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/my_search.html"
 
@@ -776,8 +778,17 @@ class TestMySearch:
         recherche_specifique.save()
 
         response_get = self.client.get(reverse("my_search"))
+
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/my_search.html"
+
+######################
+#   delete view      #
+######################
+
+class TestDelete:
+
+    client = Client()
 
     @mark.django_db
     def test_delete_a_registered_search_with_connected_user(self):
@@ -838,7 +849,7 @@ class TestMySearch:
     @mark.django_db
     def test_try_delete_a_registered_search_of_an_other_user(self):
 
-        user_john = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+        User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
         user_mell = User.objects.create_user("mell", "mell@thebeatles.com", "mellpassword")
 
         recherche = Recherche(
@@ -864,3 +875,148 @@ class TestMySearch:
         assert response_post.status_code == 200
         assert len(Recherche.objects.all()) == 1
         assert response_post.templates[0].name == "programmes/not_delete.html"
+
+######################
+#   my_results view  #
+######################
+
+class TestMyResults:
+
+    client = Client()
+
+    @mark.django_db
+    def test_display_my_search_results_with_no_results(self):
+
+        user = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+        self.client.login(username="lennon@thebeatles.com", password="johnpassword")
+
+        recherche = Recherche(
+            recherche="gloire de mon père", max_resultats=3, utilisateur_id=user.id
+        )
+
+        recherche.save()
+
+        recherche_specifique = RechercheSpecifique(
+            titre="La gloire de mon père",
+            description="un film...",
+            recherche_id=recherche.id,
+        )
+
+        recherche_specifique.save()
+
+        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
+
+        assert response_get.context["info_search"]['recherche'] == "gloire de mon père"
+        assert response_get.context["info_search"]['titre'] == "La gloire de mon père"
+        assert len(response_get.context["info_programmes"]) == 0
+        assert response_get.status_code == 200
+        assert response_get.templates[0].name == "programmes/results.html"
+
+    @mark.django_db
+    def test_display_my_search_results_with_one_results(self):
+
+        user = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+        self.client.login(username="lennon@thebeatles.com", password="johnpassword")
+
+        recherche = Recherche(
+            recherche="gloire de mon père", max_resultats=3, utilisateur_id=user.id
+        )
+
+        recherche.save()
+
+        france_3 = Chaines.objects.create(id_chaine="france_3", nom="FRANCE 3")
+        france_3.save()
+
+        recherche.chaines.add(france_3.id)
+
+        recherche_specifique = RechercheSpecifique(
+            titre="La gloire de mon père",
+            description="un film de",
+            recherche_id=recherche.id,
+        )
+
+        recherche_specifique.save()
+
+        gloire = Programmes.objects.create(
+            chaines=france_3,
+            date_debut=make_aware(datetime.datetime(3021, 2, 19, 17, 10, 41)),
+            date_fin=make_aware(datetime.datetime(3022, 2, 19, 17, 10, 41)),
+            titre_informatif="Titre_pagnol",
+            description="Un film de Pagnol...",
+            date_realisation=1990,
+            public=18,
+            aide_sourd=True,
+            note=5,
+            critique="C'est trop bien",
+        )
+        gloire.save()
+
+        titre_gloire = Titres.objects.create(
+            programmes_id=gloire.id,
+            nom="La gloire de mon Père",
+        )
+        titre_gloire.save()
+
+
+        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
+
+        assert response_get.context["info_search"]['recherche'] == "gloire de mon père"
+        assert response_get.context["info_search"]['titre'] == "La gloire de mon père"
+        assert len(response_get.context["info_programmes"]) == 1
+        assert response_get.context["info_programmes"][0]['titres'][0].nom == "La gloire de mon Père"
+        assert response_get.context["info_programmes"][0]['programme'].description == "Un film de Pagnol..."
+        assert response_get.status_code == 200
+        assert response_get.templates[0].name == "programmes/results.html"
+
+    @mark.django_db
+    def test_cannot_display_my_search_results_of_an_other_user(self):
+
+        User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+        user_mell = User.objects.create_user("mell", "mell@thebeatles.com", "mellpassword")
+
+        recherche = Recherche(
+            recherche="gloire de mon père", max_resultats=3, utilisateur_id=user_mell.id
+        )
+
+        recherche.save()
+
+        recherche_specifique = RechercheSpecifique(
+            titre="La gloire de mon père",
+            description="un film...",
+            recherche_id=recherche.id,
+        )
+
+        recherche_specifique.save()
+
+        self.client.login(username="lennon@thebeatles.com", password="johnpassword")
+
+        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
+
+        assert response_get.status_code == 200
+        assert response_get.templates[0].name == "programmes/no_results.html"
+
+    @mark.django_db
+    def test_cannot_display_my_search_results_of_an_user_not_connected(self):
+
+        user_mell = User.objects.create_user("mell", "mell@thebeatles.com", "mellpassword")
+
+        recherche = Recherche(
+            recherche="gloire de mon père", max_resultats=3, utilisateur_id=user_mell.id
+        )
+
+        recherche.save()
+
+        recherche_specifique = RechercheSpecifique(
+            titre="La gloire de mon père",
+            description="un film...",
+            recherche_id=recherche.id,
+        )
+
+        recherche_specifique.save()
+
+        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
+
+        assert response_get.status_code == 200
+        assert response_get.templates[0].name == "programmes/auth_info.html"
