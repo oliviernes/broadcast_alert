@@ -9,15 +9,9 @@ from django.core import mail
 
 from programmes.management.commands.send_emails import Command
 from programmes.models import (
-    Categories,
-    PaysRealisation,
     Programmes,
     Chaines,
-    Scenariste,
-    Series,
     Titres,
-    Realisateur,
-    Acteurs,
     Recherche,
     RechercheSpecifique,
 )
@@ -58,6 +52,7 @@ def test_send_email_one_programme_match_one_search_of_one_user(db_feed):
         chaines_id=france_3.id,
         date_debut=make_aware(datetime.datetime.now() + timedelta(7)),
         date_fin=make_aware(datetime.datetime.now() + timedelta(8)),
+        url="https://www.programme-tv.net/programme/autre/r1549568936-pause/"
     )
     prog.save()
 
@@ -71,7 +66,11 @@ def test_send_email_one_programme_match_one_search_of_one_user(db_feed):
 
     db_feed.send_email()
 
+    # message_email = "Bonjour,"+"\n'\n '\n'\n '\n'\n '    \n'\n '"+"        Votre recherche créée le 9 mars 2021 10:27 a obtenu un nouveau \n 'programme:<br />\n'\n '        La Manon, le 16 mars 2021 10:27 sur la chaîne FRANCE 3: <a '\n 'href="">Plus d\'information</a><br />\n'\n '    \n'\n '    \n'\n '\n'\n "+"Vous n"+"'avez plus qu'à programmer votre enregistrement ou préparer votre '\n 'popcorn! :-)"
+
     assert mail.outbox[0].subject == "Un programme correspond à votre recherche!"
+    # assert mail.outbox[0].body == message_email
+
 
 @mark.django_db
 def test_send_email_two_programmes_match_one_search_of_one_user(db_feed):
