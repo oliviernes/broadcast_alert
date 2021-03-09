@@ -236,36 +236,6 @@ def search(request):
 
                 info_programmes = InfoProgrammes(programmes_7D).generate_info()
 
-                # info_programmes = []
-
-                # if len(programmes_7D) > 0:
-                #     for prog in programmes_7D:
-                #         info_prog = {}
-                #         info_prog["programme"] = prog
-                #         info_prog["chaine"] = prog.chaines.nom
-                #         info_prog["titres"] = Titres.objects.filter(
-                #             programmes_id=prog.id
-                #         )
-                #         info_prog["realisateur"] = Realisateur.objects.filter(
-                #             programmes_id=prog.id
-                #         )
-                #         info_prog["scenariste"] = Scenariste.objects.filter(
-                #             programmes_id=prog.id
-                #         )
-                #         info_prog["acteurs"] = Acteurs.objects.filter(
-                #             programmes_id=prog.id
-                #         )
-                #         info_prog["series"] = Series.objects.filter(
-                #             programmes_id=prog.id
-                #         )
-                #         info_prog["categories"] = Categories.objects.filter(
-                #             programmes__id=prog.id
-                #         )
-                #         info_prog["pays"] = PaysRealisation.objects.filter(
-                #             programmes__id=prog.id
-                #         )
-                #         info_programmes.append(info_prog)
-
                 context = {'info_search': info_search,
                          'info_programmes': info_programmes
                          }
@@ -326,23 +296,6 @@ def my_search(request):
                     "chaines_string": chaines_string,
                 }
             )
-
-    # if request.method == "POST":
-    #     form_delete = DeleteForm(request.POST)
-
-    #     if form_delete.is_valid() and "delete" in request.POST:
-    #         for selected_search in form_delete.cleaned_data["choices"]:
-    #             selected_search.delete()
-
-    #         return redirect("my_search")
-    #     else:
-    #         return redirect("my_search")
-    # else:
-    #     form_delete = DeleteForm()
-
-    #     context = {"searches": searches, "form_delete": form_delete}
-
-    #     return render(request, "programmes/my_search.html", context)
 
     context = {"searches": searches}
 
@@ -422,35 +375,6 @@ def my_results(request, my_search_id):
 
     info_programmes = InfoProgrammes(programmes_7D).generate_info()
 
-    # info_programmes = []
-
-    # if len(programmes_7D) > 0:
-    #     for prog in programmes_7D:
-    #         info_prog = {}
-    #         info_prog["programme"] = prog
-    #         info_prog["chaine"] = prog.chaines.nom
-    #         info_prog["titres"] = Titres.objects.filter(
-    #             programmes_id=prog.id
-    #         )
-    #         info_prog["realisateur"] = Realisateur.objects.filter(
-    #             programmes_id=prog.id
-    #         )
-    #         info_prog["scenariste"] = Scenariste.objects.filter(
-    #             programmes_id=prog.id
-    #         )
-    #         info_prog["acteurs"] = Acteurs.objects.filter(
-    #             programmes_id=prog.id
-    #         )
-    #         info_prog["series"] = Series.objects.filter(
-    #             programmes_id=prog.id
-    #         )
-    #         info_prog["categories"] = Categories.objects.filter(
-    #             programmes__id=prog.id
-    #         )
-    #         info_prog["pays"] = PaysRealisation.objects.filter(
-    #             programmes__id=prog.id
-    #         )
-    #         info_programmes.append(info_prog)
 
     context = {'info_search': info_search,
                 'info_programmes': info_programmes
