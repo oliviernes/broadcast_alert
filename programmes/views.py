@@ -4,21 +4,14 @@ from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
-from .next import ProgrammesNext7D
+from .next import ProgrammesNext7D, InfoProgrammes
 
 # Create your views here.
 
 from .models import (
-    Categories,
-    PaysRealisation,
     Chaines,
     Recherche,
     RechercheSpecifique,
-    Scenariste,
-    Series,
-    Titres,
-    Realisateur,
-    Acteurs,
 )
 from .forms import DeleteForm, RechercheForm, RechercheSpecifiqueForm, BouquetTvForm
 from config import CHOICES
@@ -241,35 +234,37 @@ def search(request):
                                             critique,
                                     ).search_7D()
 
-                info_programmes = []
+                info_programmes = InfoProgrammes(programmes_7D).generate_info()
 
-                if len(programmes_7D) > 0:
-                    for prog in programmes_7D:
-                        info_prog = {}
-                        info_prog["programme"] = prog
-                        info_prog["chaine"] = prog.chaines.nom
-                        info_prog["titres"] = Titres.objects.filter(
-                            programmes_id=prog.id
-                        )
-                        info_prog["realisateur"] = Realisateur.objects.filter(
-                            programmes_id=prog.id
-                        )
-                        info_prog["scenariste"] = Scenariste.objects.filter(
-                            programmes_id=prog.id
-                        )
-                        info_prog["acteurs"] = Acteurs.objects.filter(
-                            programmes_id=prog.id
-                        )
-                        info_prog["series"] = Series.objects.filter(
-                            programmes_id=prog.id
-                        )
-                        info_prog["categories"] = Categories.objects.filter(
-                            programmes__id=prog.id
-                        )
-                        info_prog["pays"] = PaysRealisation.objects.filter(
-                            programmes__id=prog.id
-                        )
-                        info_programmes.append(info_prog)
+                # info_programmes = []
+
+                # if len(programmes_7D) > 0:
+                #     for prog in programmes_7D:
+                #         info_prog = {}
+                #         info_prog["programme"] = prog
+                #         info_prog["chaine"] = prog.chaines.nom
+                #         info_prog["titres"] = Titres.objects.filter(
+                #             programmes_id=prog.id
+                #         )
+                #         info_prog["realisateur"] = Realisateur.objects.filter(
+                #             programmes_id=prog.id
+                #         )
+                #         info_prog["scenariste"] = Scenariste.objects.filter(
+                #             programmes_id=prog.id
+                #         )
+                #         info_prog["acteurs"] = Acteurs.objects.filter(
+                #             programmes_id=prog.id
+                #         )
+                #         info_prog["series"] = Series.objects.filter(
+                #             programmes_id=prog.id
+                #         )
+                #         info_prog["categories"] = Categories.objects.filter(
+                #             programmes__id=prog.id
+                #         )
+                #         info_prog["pays"] = PaysRealisation.objects.filter(
+                #             programmes__id=prog.id
+                #         )
+                #         info_programmes.append(info_prog)
 
                 context = {'info_search': info_search,
                          'info_programmes': info_programmes
@@ -300,7 +295,7 @@ def search(request):
 
 
 def my_search(request):
-    """Display user's recorded searches and delete selected searches"""
+    """Display user's recorded searches"""
     user_id = request.user.id
 
     recherches = Recherche.objects.filter(utilisateur_id=user_id).order_by("-date_creation")
@@ -425,35 +420,37 @@ def my_results(request, my_search_id):
                                 critique,
                         ).search_7D()
 
-    info_programmes = []
+    info_programmes = InfoProgrammes(programmes_7D).generate_info()
 
-    if len(programmes_7D) > 0:
-        for prog in programmes_7D:
-            info_prog = {}
-            info_prog["programme"] = prog
-            info_prog["chaine"] = prog.chaines.nom
-            info_prog["titres"] = Titres.objects.filter(
-                programmes_id=prog.id
-            )
-            info_prog["realisateur"] = Realisateur.objects.filter(
-                programmes_id=prog.id
-            )
-            info_prog["scenariste"] = Scenariste.objects.filter(
-                programmes_id=prog.id
-            )
-            info_prog["acteurs"] = Acteurs.objects.filter(
-                programmes_id=prog.id
-            )
-            info_prog["series"] = Series.objects.filter(
-                programmes_id=prog.id
-            )
-            info_prog["categories"] = Categories.objects.filter(
-                programmes__id=prog.id
-            )
-            info_prog["pays"] = PaysRealisation.objects.filter(
-                programmes__id=prog.id
-            )
-            info_programmes.append(info_prog)
+    # info_programmes = []
+
+    # if len(programmes_7D) > 0:
+    #     for prog in programmes_7D:
+    #         info_prog = {}
+    #         info_prog["programme"] = prog
+    #         info_prog["chaine"] = prog.chaines.nom
+    #         info_prog["titres"] = Titres.objects.filter(
+    #             programmes_id=prog.id
+    #         )
+    #         info_prog["realisateur"] = Realisateur.objects.filter(
+    #             programmes_id=prog.id
+    #         )
+    #         info_prog["scenariste"] = Scenariste.objects.filter(
+    #             programmes_id=prog.id
+    #         )
+    #         info_prog["acteurs"] = Acteurs.objects.filter(
+    #             programmes_id=prog.id
+    #         )
+    #         info_prog["series"] = Series.objects.filter(
+    #             programmes_id=prog.id
+    #         )
+    #         info_prog["categories"] = Categories.objects.filter(
+    #             programmes__id=prog.id
+    #         )
+    #         info_prog["pays"] = PaysRealisation.objects.filter(
+    #             programmes__id=prog.id
+    #         )
+    #         info_programmes.append(info_prog)
 
     context = {'info_search': info_search,
                 'info_programmes': info_programmes
