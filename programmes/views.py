@@ -459,12 +459,31 @@ def my_results(request, my_search_id):
 
 def delete(request, pk):
     # breakpoint()
-    item = Recherche.objects.get(id=pk)
-    item.delete()
 
-    if request.is_ajax():
-        data = {
-                'my_data': "data_to_give_to_fetch"
-        }
-        return JsonResponse(data)
+    if request.user.is_authenticated:
 
+        user_id = request.user.id
+
+        recherches = Recherche.objects.filter(utilisateur_id=user_id)
+
+        search_ids = []
+
+        for search in recherches:
+            search_ids.append(search.id)
+
+        if pk in search_ids:
+        
+            item = Recherche.objects.get(id=pk)
+            item.delete()
+
+            if request.is_ajax():
+                data = {
+                        'my_data': "data_to_give_to_fetch"
+                }
+                return JsonResponse(data)
+            else:
+                return render(request, "programmes/welcome.html")
+        else:
+            return render(request, "programmes/not_delete.html")
+    else:
+        return render(request, "programmes/auth_info.html")
