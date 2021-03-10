@@ -33,8 +33,9 @@
           {% csrf_token %}
 
         </div>
-        {{ form_recherche_specifique }}
-
+        <div class='col-lg-12 col-md-12 spec-columns'>
+          {{ form_recherche_specifique|crispy }}
+        </div>
         <input class="btn btn-primary" type="submit" value="Chercher pour les 7 prochains jours" />
         <input class="btn btn-primary" type="submit" name="my_search" value="Enregistrer la recherche" />
 

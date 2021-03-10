@@ -39,6 +39,10 @@ header.masthead2 {
   column-count: 4;
 }
 
+.spec-columns {
+  column-count: 3;
+}
+
 header.masthead .overlay {
   position: absolute;
   background-color: #212529;
