@@ -18,13 +18,25 @@ h6 {
   font-weight: 700;
 }
 
-header.masthead {
+/* header.masthead {
   position: relative;
   background-color: #343a40;
   background: url("../img/bg-masthead.jpg") no-repeat center center;
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;
+} */
+
+header.masthead2 {
+  position: relative;
+  background-color: #3b5369;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+.card-columns {
+  column-count: 4;
 }
 
 header.masthead .overlay {

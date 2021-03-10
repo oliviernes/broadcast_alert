@@ -3,6 +3,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+
 {% block welcome %}
 
 <div class="row">
@@ -14,41 +15,31 @@
 
       </form>
       <form action="results/" method="POST">
-        <input type="submit" value="Chercher (recherche rapide)" />
-        <input type="submit" name="my_search" value="Enregistrer la recherche" />
+        <input class="btn btn-primary" type="submit" value="Chercher pour les 7 prochains jours" />
+        <input class="btn btn-primary" type="submit" name="my_search" value="Enregistrer la recherche" />
 
         <div class='row'>
           {% for field in form_recherche %}
-              <div class='col-lg-12 col-md-12'>
-                {{ field|as_crispy_field }}
-              </div>
+              {% if field.label == "Chaines tv" %}
+                <div class='col-lg-12 col-md-12 card-columns'>
+                  {{ field|as_crispy_field }}
+                </div>
+              {% else %}
+                <div class='col-lg-12 col-md-12'>
+                  {{ field|as_crispy_field }}
+                </div>
+              {% endif %}
           {% endfor %}
           {% csrf_token %}
 
         </div>
         {{ form_recherche_specifique }}
 
-        <input type="submit" value="Chercher (recherche rapide)" />
-        <input type="submit" name="my_search" value="Enregistrer la recherche" />
+        <input class="btn btn-primary" type="submit" value="Chercher pour les 7 prochains jours" />
+        <input class="btn btn-primary" type="submit" name="my_search" value="Enregistrer la recherche" />
 
       </form>
-      <!-- <form action="results/" method="POST">
-        {% csrf_token %}
-
-
-        <input type="submit" value="Chercher (recherche spécifique)" />
-        <input type="submit" value="Enregistrer la recherche spécifique" />
-
-      </form> -->
-
     </div>
-        <!-- <div class="col-12 col-md-9 mb-2 mb-md-0">
-        <input class="form-control form-control-lg" placeholder="Entrez votre recherche..." action="{% url 'results' %}" method="get" name="query">
-      </div>
-      <div class="col-12 col-md-3">
-        <button type="submit" class="btn btn-block btn-lg btn-primary" href="{% url 'results' %}" method="get">Cherche ton programme!</button>
-        <a class="btn btn-primary" href="{% url 'results' %}">results</a>
-      </div> -->
   </div>
 
 {% endblock %}
