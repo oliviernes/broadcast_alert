@@ -243,10 +243,11 @@ def search(request):
                 return render(request, "programmes/results.html", context)
 
         else:
+            messages.add_message(request, messages.INFO, form_recherche.errors)
             return redirect("welcome")
 
     else:
-        # breakpoint()
+        storage = get_messages(request)
         form_bouquet = BouquetTvForm()
         form_recherche = RechercheForm()
         form_recherche_specifique = RechercheSpecifiqueForm()
@@ -258,6 +259,7 @@ def search(request):
                 "form_bouquet": form_bouquet,
                 "form_recherche": form_recherche,
                 "form_recherche_specifique": form_recherche_specifique,
+                "messages": storage                
             },
         )
 
