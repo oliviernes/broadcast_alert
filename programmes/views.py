@@ -39,6 +39,7 @@ import pdb
 def search(request):
     """Display search results for the next 7 days and save user's searches."""
     if request.method == "POST":
+        # breakpoint()
         form_recherche = RechercheForm(request.POST)
         form_bouquet = BouquetTvForm(request.POST)
         form_recherche_specifique = RechercheSpecifiqueForm(request.POST)
@@ -200,11 +201,7 @@ def search(request):
                                     saved = False
                                     break
 
-                        context = {"saved": saved}
-
-                        return render(
-                            request, "programmes/registered_info.html", context
-                        )
+                        return redirect("save", saved)
 
                 return redirect("login")
 
@@ -242,13 +239,10 @@ def search(request):
                 return render(request, "programmes/results.html", context)
 
         else:
-            form_bouquet = BouquetTvForm()
-            form_recherche = RechercheForm()
-            form_recherche_specifique = RechercheSpecifiqueForm()
-
             return redirect("welcome")
 
     else:
+        breakpoint()
         form_bouquet = BouquetTvForm()
         form_recherche = RechercheForm()
         form_recherche_specifique = RechercheSpecifiqueForm()
@@ -262,6 +256,14 @@ def search(request):
                 "form_recherche_specifique": form_recherche_specifique,
             },
         )
+
+def save(request, saved):
+    
+    context = {"saved": saved}
+    
+    return render(
+        request, "programmes/registered_info.html", context
+    )
 
 
 def my_search(request):
@@ -363,8 +365,6 @@ def my_results(request, my_search_id):
                         'critique': critique,
                         }
 
-            # breakpoint()
-            
             programmes_7D = ProgrammesNext7D(recherche,
                                         max_resultats,
                                         chaines,
@@ -386,8 +386,6 @@ def my_results(request, my_search_id):
                                         note,
                                         critique,
                                 ).search_7D()
-
-            # breakpoint()
 
             info_programmes = InfoProgrammes(programmes_7D).generate_info()
 
