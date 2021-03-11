@@ -1,8 +1,10 @@
 """Views to manage programmes"""
+from django.contrib.messages.api import get_messages
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from django.contrib import messages
 
 from .next import ProgrammesNext7D, InfoProgrammes
 
@@ -201,7 +203,9 @@ def search(request):
                                     saved = False
                                     break
 
-                        return redirect("save", saved)
+                        messages.add_message(request, messages.INFO, str(saved))
+
+                        return redirect("save")
 
                 return redirect("login")
 
@@ -242,7 +246,7 @@ def search(request):
             return redirect("welcome")
 
     else:
-        breakpoint()
+        # breakpoint()
         form_bouquet = BouquetTvForm()
         form_recherche = RechercheForm()
         form_recherche_specifique = RechercheSpecifiqueForm()
@@ -257,9 +261,15 @@ def search(request):
             },
         )
 
-def save(request, saved):
-    
-    context = {"saved": saved}
+def save(request):
+
+    storage = get_messages(request)
+    name = None
+    for message in storage:
+        name = message
+        break
+
+    context = {"saved": name.message}
     
     return render(
         request, "programmes/registered_info.html", context
