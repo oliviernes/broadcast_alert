@@ -259,7 +259,7 @@ def search(request):
                 "form_bouquet": form_bouquet,
                 "form_recherche": form_recherche,
                 "form_recherche_specifique": form_recherche_specifique,
-                "messages": storage                
+                "messages": storage
             },
         )
 
@@ -292,7 +292,7 @@ def my_search(request):
         )
         chaines_list = recherche.chaines.all().order_by("nom")
         chaines_name = [chaine.nom for chaine in chaines_list]
-        chaines_string = "-".join(chaines_name)
+        chaines_string = "\n".join(chaines_name)
 
         if len(recherche_specifique) > 0:
             searches.append(

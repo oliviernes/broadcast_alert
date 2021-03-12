@@ -29,7 +29,8 @@ h6 {
 
 header.masthead2 {
   position: relative;
-  background-color: #3b5369;
+  /* background-color: #687e92; */
+  background-color: #7ca0db;
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -42,6 +43,7 @@ header.masthead2 {
 .spec-columns {
   column-count: 3;
 }
+
 
 header.masthead .overlay {
   position: absolute;
@@ -154,7 +156,7 @@ footer.footer {
 /* Popup container -*/
 .popup {
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -165,8 +167,10 @@ footer.footer {
 /* The actual popup */
 .popup .popuptext {
   visibility: hidden;
-  width: 1100px;
-  background-color: #555;
+  /* width: 1100px; */
+  width: 400%;
+  height: 1500%;
+  background-color: rgb(207, 172, 172);
   color: #fff;
   text-align: center;
   border-radius: 6px;
@@ -175,7 +179,9 @@ footer.footer {
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  margin-left: -500px;
+  margin-left: -950px;
+  white-space: pre-line;
+  /* overflow-x: auto; */
 }
 
 /* Popup arrow */
@@ -187,7 +193,7 @@ footer.footer {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #555 transparent transparent transparent;
+  border-color: rgb(204, 170, 170) transparent transparent transparent;
 }
 
 /* Toggle this class - hide and show the popup */
@@ -208,8 +214,47 @@ footer.footer {
   to {opacity:1 ;}
 }
 
+/* ########## Modal popup ####################### */
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  z-index: 1; /* Sit on top */
+  bottom: 0;
+  left: 0;
+  width: 20%;
+  height: 400px;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(88, 204, 21);
+  text-align: center;
+  border-radius: 40px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translate(-50%,-50%);
+  -moz-transform:translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  white-space: pre-line;
+}
+
+.height-100 {
+  height: 100px;
+}
+
+
 /* ######## my custom CSS ############ */
 
 .btn-delete{
   margin-bottom:10px;
 }
+
+.hide {
+  display: none;
+}
+
+.myDIV:hover + .popup {
+  display: block;
+  color: red;
+}
+

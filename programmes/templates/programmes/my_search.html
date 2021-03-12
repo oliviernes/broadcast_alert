@@ -32,10 +32,20 @@
           <th>{{ search.recherche.max_resultats }}</th>
         </tr>
         <tr>
-          <th>Chaines</th>
-          <th><div class="popup" onclick="myFunction{{ search.recherche.id }}()">Clickez pour voir les chaînes correspondantes
-                <span class="popuptext" id="myPopup{{ search.recherche.id }}">{{ search.chaines_string }}</span>
-              </div>
+          <th>Chaînes</th>
+          <th>
+              <!-- Trigger/Open The Modal -->
+              <button class="btn btn-primary" onclick="btnFunction{{ search.recherche.id }}()">Visualiser les chaînes</button>
+              <!-- The Modal -->
+              {% if search.chaines_string|length < 100 %}
+                <div id="myModal{{ search.recherche.id }}" class="modal height-100" onclick="spanFunction{{ search.recherche.id }}()">
+                        {{ search.chaines_string }}
+                </div>
+              {% else %}
+                <div id="myModal{{ search.recherche.id }}" class="modal" onclick="spanFunction{{ search.recherche.id }}()">
+                  {{ search.chaines_string }}
+                </div>
+              {% endif %}
           </th>
         </tr>
         {% if search.recherche.recherche is not None %}
@@ -166,13 +176,25 @@
 </div>
 
 {% for search in searches %}
+  
   <script>
-    function myFunction{{ search.recherche.id }}() {
-      let popup = document.getElementById("myPopup{{ search.recherche.id }}");
-      popup.classList.toggle("show");
+
+    function btnFunction{{ search.recherche.id }}() {
+      let modal = document.getElementById('myModal{{ search.recherche.id }}')
+      modal.style.display = "block";
     }
+
+    function spanFunction{{ search.recherche.id }}() {
+      let modal = document.getElementById('myModal{{ search.recherche.id }}')
+      modal.style.display = "none";
+    }
+
+
+    // function myFunction{{ search.recherche.id }}() {
+    //   let popup = document.getElementById("myPopup{{ search.recherche.id }}");
+    //   popup.classList.toggle("show");
+    // }
     function deleteFunction{{ search.recherche.id }}() {
-          console.log("div{{ search.recherche.id }}");
           let bouton = document.getElementById("delete{{ search.recherche.id }}");
           // let object_id = $(this).attr('data-object-id');
           let object_id = bouton.getAttribute('data-object-id');
@@ -181,9 +203,9 @@
             method: 'POST',
             credentials: 'same-origin',
             headers:{
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
-            'X-CSRFToken': "{{ csrf_token }}",
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+              'X-CSRFToken': "{{ csrf_token }}",
             },
           })
           .then(reponse => {
