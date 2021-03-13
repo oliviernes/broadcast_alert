@@ -1,6 +1,9 @@
 from django.core.exceptions import NON_FIELD_ERRORS
 from django import forms
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
+
+
 from .models import BouquetTv, Recherche, RechercheSpecifique, Chaines
 
 
@@ -13,17 +16,12 @@ class RechercheForm(ModelForm):
     class Meta:
         model = Recherche
         fields = ["recherche", "max_resultats", "chaines_tv"]
-        error_messages = {
-            NON_FIELD_ERRORS: {"no_channels": "No channels have been ticked"},
+        labels = {
+            'max_resultats': _('Résultats maximum'),
         }
 
 
-# class RechercheForm(forms.Form):
-#     recherche = forms.CharField(max_length=30)
-
-
 class BouquetTvForm(ModelForm):
-    # bouquets = forms.ChoiceField(widget=forms.RadioSelect, choices=[nom.nom for nom in BouquetTv.objects.all()])
     bouquets = forms.ChoiceField(
         widget=forms.RadioSelect(attrs={"onchange": "this.form.submit();"}),
         choices=[
@@ -36,8 +34,6 @@ class BouquetTvForm(ModelForm):
         ],
     )
 
-    # bouquets = forms.ChoiceField(widget=forms.RadioSelect)
-
     class Meta:
         model = BouquetTv
         fields = ["bouquets"]
@@ -47,5 +43,7 @@ class RechercheSpecifiqueForm(ModelForm):
     class Meta:
         model = RechercheSpecifique
         exclude = ["recherche", "date_debut", "date_fin"]
-        # fields = '__all__'
-        # fields = ['titre']
+        labels = {
+            'aide_sourd': _('Sous-titres malentendants'),
+        }
+

@@ -25,26 +25,99 @@
             {% endfor %}
         </p>
         {% endif %}
+
         <div class='row'>
           {% for field in form_recherche %}
-              {% if field.label == "Chaines tv" %}
+              {% if field.name == "chaines_tv" %}
                 <div class='col-lg-12 col-md-12 card-columns'>
                   {{ field|as_crispy_field }}
                 </div>
-              {% elif field.label == "Recherche" %}
+              {% elif field.name == "recherche" %}
                 <div class='col-lg-5 col-md-5'>
-                  {{ field|as_crispy_field }}
+                  <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                    <div id="myModal{{ field.name }}" class="modal height-230">
+                      Le champs "Recherche" permet de réaliser une recherche global sur les champs suivants de la programmation: titre, titre informatif, description, réalisateur, acteur, role, scénariste, catégories, pays de réalisation et critique. Il suffit que la recherche soit présente dans un de ces champs pour qu'un programme soit sélectionné.
+                    </div>
+                  </div>
                 </div>
-              {% elif field.label == "Max resultats" %}
+              {% elif field.name == "max_resultats" %}
                 <div class='col-lg-2 col-md-2'>
-                  {{ field|as_crispy_field }}
+                  <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                    <div id="myModal{{ field.name }}" class="modal text-center height-100">
+                      Permet de limiter le nombre maximum de résultats renvoyés.
+                    </div>
+                  </div>
                 </div>
               {% endif %}
           {% endfor %}
           {% csrf_token %}
-        <div class='col-lg-12 col-md-12 spec-columns mt-4'>
-          {{ form_recherche_specifique|crispy }}
-        </div>
+          <div class='col-lg-12 col-md-12 spec-columns mt-4'>
+            {% for field in form_recherche_specifique %}
+              {% if field.name == "titre" %}
+                <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                  <div id="myModal{{ field.name }}" class="modal text-center height-100">
+                    Permet de chercher le titre d'un programme.
+                  </div>
+                </div>
+              {% elif field.name == "titre_informatif" %}
+                <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                  <div id="myModal{{ field.name }}" class="modal height-240">
+                    Permet d'affiner la rechercher d'un titre. Par exemple, vous pouvez sélectionner une recherche de l'émission "C'est pas sorcier" en le saisissant dans le champs "Titre" puis vous pouvez affiner cette recherche en saisissant le mot "serpent" dans le champs "Titre informatif", ce qui permettra de sélectionner les documentaires de l'émission "C'est pas sorcier" dont le thème contient le mot "serpent".
+                  </div>
+                </div>
+              {% elif field.name == "description" %}
+                <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                  <div id="myModal{{ field.name }}" class="modal height-100">
+                    Permet de réaliser une recherche dans la description du programme.
+                  </div>
+                </div>
+              {% elif field.name == "date_realisation" %}
+              <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                <div id="myModal{{ field.name }}" class="modal height-100">
+                  Permet de prendre en compte l'année de réalisation du programme.
+                </div>
+              </div>
+              {% elif field.name == "categories" %}
+              <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                <div id="myModal{{ field.name }}" class="modal height-120">
+                  Permet de rechercher les programmes selon leurs catégories (ex: téléfilms, dessin animé, documentaire, film, magazine...)
+                </div>
+              </div>
+              {% elif field.name == "serie" %}
+              <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                <div id="myModal{{ field.name }}" class="modal text-center height-100">
+                  Permet de préciser le numéro d'une série.
+                </div>
+              </div>
+              {% elif field.name == "episode" %}
+              <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                <div id="myModal{{ field.name }}" class="modal text-center height-100">
+                  Permet de préciser le numéro d'un épisode.
+                </div>
+              </div>
+              {% elif field.name == "partie" %}
+              <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                <div id="myModal{{ field.name }}" class="modal height-120">
+                  Permet de préciser le numéro de la partie d'un programme. Certains programmes sont diffusés en 2 ou 3 parties et il est possible de la saisir dans ce champs.
+                </div>
+              </div>
+              {% elif field.name == "public" %}
+              <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                <div id="myModal{{ field.name }}" class="modal height-120">
+                  Permet de limiter les programmes en fonction de l'âge du spectateur (exemple: saisir 10 pour obtenir les programmes qui conviennent aux enfants de 10 ans et moins).
+                </div>
+              </div>
+              {% elif field.name == "note" %}
+              <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
+                <div id="myModal{{ field.name }}" class="modal height-120">
+                  Permet de limiter les programmes en fonction de la note donnée par les critiques (exemple: saisir 3 pour obtenir une note au moins égale à 3/5). La note maximum est 5.
+                </div>
+              </div>
+              {% else %}
+                {{ field|as_crispy_field }}
+              {% endif %}
+            {% endfor %}
+          </div>
         <div class='ml-3 mt-3'>
           <input class="btn btn-primary mr-2" type="submit" value="Chercher pour les 7 prochains jours" />
           <input class="btn btn-primary" type="submit" name="my_search" value="Enregistrer la recherche" />
@@ -53,5 +126,31 @@
       </form>
     </div>
   </div>
+
+{% for field in form_recherche %}
+  <script>
+      function openFunction{{ field.name }}() {
+        let modal = document.getElementById('myModal{{ field.name }}')
+        modal.style.display = "block";
+      }
+      function closeFunction{{ field.name }}() {
+        let modal = document.getElementById('myModal{{ field.name }}')
+        modal.style.display = "none";
+      }
+  </script>
+{% endfor %}
+
+{% for field in form_recherche_specifique %}
+  <script>
+      function openFunction{{ field.name }}() {
+        let modal = document.getElementById('myModal{{ field.name }}')
+        modal.style.display = "block";
+      }
+      function closeFunction{{ field.name }}() {
+        let modal = document.getElementById('myModal{{ field.name }}')
+        modal.style.display = "none";
+      }
+  </script>
+{% endfor %}
 
 {% endblock %}
