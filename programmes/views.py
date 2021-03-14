@@ -41,7 +41,6 @@ import pdb
 def search(request):
     """Display search results for the next 7 days and save user's searches."""
     if request.method == "POST":
-        # breakpoint()
         form_recherche = RechercheForm(request.POST)
         form_bouquet = BouquetTvForm(request.POST)
         form_recherche_specifique = RechercheSpecifiqueForm(request.POST)
@@ -247,11 +246,17 @@ def search(request):
                 return render(request, "programmes/results.html", context)
 
         else:
-            messages.add_message(request, messages.INFO, form_recherche.errors)
-            return redirect("welcome")
+            return render(
+                request,
+                "programmes/welcome.html",
+                {
+                    "form_bouquet": form_bouquet,
+                    "form_recherche": form_recherche,
+                    "form_recherche_specifique": form_recherche_specifique,
+                },
+            )
 
     else:
-        storage = get_messages(request)
         form_bouquet = BouquetTvForm()
         form_recherche = RechercheForm()
         form_recherche_specifique = RechercheSpecifiqueForm()
@@ -263,7 +268,6 @@ def search(request):
                 "form_bouquet": form_bouquet,
                 "form_recherche": form_recherche,
                 "form_recherche_specifique": form_recherche_specifique,
-                "messages": storage
             },
         )
 
@@ -402,7 +406,6 @@ def my_results(request, my_search_id):
         return render(request, "programmes/auth_info.html")
 
 def delete(request, pk):
-    # breakpoint()
 
     if request.user.is_authenticated:
 

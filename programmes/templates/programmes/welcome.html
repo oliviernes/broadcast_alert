@@ -26,6 +26,26 @@
         </p>
         {% endif %}
 
+        {% if form_recherche_specifique.errors %}
+          {% for field in form_recherche_specifique %}
+              {% for error in field.errors %}
+                <div class="alert alert-danger mt-4">
+                  <p>{{ field.label }}: <strong>{{ error|escape }}</strong></p>
+                </div>
+              {% endfor %}
+          {% endfor %}
+        {% endif %}
+
+        {% if form_recherche.errors %}
+          {% for field in form_recherche %}
+              {% for error in field.errors %}
+                <div class="alert alert-danger mt-4">
+                  <p>{{ field.label }}: <strong>{{ error|escape }}</strong></p>
+                </div>
+              {% endfor %}
+          {% endfor %}
+      {% endif %}
+
         <div class='row'>
           {% for field in form_recherche %}
               {% if field.name == "chaines_tv" %}
@@ -33,7 +53,7 @@
                   {{ field|as_crispy_field }}
                 </div>
               {% elif field.name == "recherche" %}
-                <div class='col-lg-5 col-md-5'>
+                <div class='col-lg-5 col-md-5 mt-3'>
                   <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
                     <div id="myModal{{ field.name }}" class="modal height-230">
                       Le champs "Recherche" permet de réaliser une recherche global sur les champs suivants de la programmation: titre, titre informatif, description, réalisateur, acteur, role, scénariste, catégories, pays de réalisation et critique. Il suffit que la recherche soit présente dans un de ces champs pour qu'un programme soit sélectionné.
@@ -41,7 +61,7 @@
                   </div>
                 </div>
               {% elif field.name == "max_resultats" %}
-                <div class='col-lg-2 col-md-2'>
+                <div class='col-lg-2 col-md-2 mt-3'>
                   <div onmouseover="openFunction{{ field.name }}()" onmouseout="closeFunction{{ field.name }}()">{{ field|as_crispy_field }}
                     <div id="myModal{{ field.name }}" class="modal text-center height-100">
                       Permet de limiter le nombre maximum de résultats renvoyés.
