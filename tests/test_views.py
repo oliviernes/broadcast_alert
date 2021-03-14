@@ -645,7 +645,6 @@ class TestSearch:
         assert response_post.status_code == 200
         assert response_post.templates[0].name == "programmes/welcome.html"
 
-
     @mark.django_db
     def test_save_search_with_user_not_connected(self):
 
@@ -694,7 +693,6 @@ class TestSearch:
         )
         assert response_post.status_code == 200
         assert response_post.templates[0].name == "programmes/registered_info.html"
-
 
     @mark.django_db
     def test_saving_with_all_None_search_fields(self):
@@ -788,9 +786,11 @@ class TestMySearch:
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/my_search.html"
 
+
 ######################
 #   delete view      #
 ######################
+
 
 class TestDelete:
 
@@ -819,7 +819,7 @@ class TestDelete:
 
         assert len(Recherche.objects.all()) == 1
 
-        response_post = self.client.post(reverse('delete', kwargs={'pk': recherche.id}))
+        response_post = self.client.post(reverse("delete", kwargs={"pk": recherche.id}))
 
         assert response_post.status_code == 200
         assert len(Recherche.objects.all()) == 0
@@ -846,7 +846,7 @@ class TestDelete:
 
         assert len(Recherche.objects.all()) == 1
 
-        response_post = self.client.post(reverse('delete', kwargs={'pk': recherche.id}))
+        response_post = self.client.post(reverse("delete", kwargs={"pk": recherche.id}))
 
         assert response_post.status_code == 200
         assert len(Recherche.objects.all()) == 1
@@ -856,7 +856,9 @@ class TestDelete:
     def test_try_delete_a_registered_search_of_an_other_user(self):
 
         User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
-        user_mell = User.objects.create_user("mell", "mell@thebeatles.com", "mellpassword")
+        user_mell = User.objects.create_user(
+            "mell", "mell@thebeatles.com", "mellpassword"
+        )
 
         recherche = Recherche(
             recherche="gloire de mon père", max_resultats=3, utilisateur_id=user_mell.id
@@ -876,15 +878,17 @@ class TestDelete:
 
         assert len(Recherche.objects.all()) == 1
 
-        response_post = self.client.post(reverse('delete', kwargs={'pk': recherche.id}))
+        response_post = self.client.post(reverse("delete", kwargs={"pk": recherche.id}))
 
         assert response_post.status_code == 200
         assert len(Recherche.objects.all()) == 1
         assert response_post.templates[0].name == "programmes/not_delete.html"
 
+
 ######################
 #   my_results view  #
 ######################
+
 
 class TestMyResults:
 
@@ -911,10 +915,12 @@ class TestMyResults:
 
         recherche_specifique.save()
 
-        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
+        response_get = self.client.get(
+            reverse("my_results", kwargs={"my_search_id": recherche.id})
+        )
 
-        assert response_get.context["info_search"]['recherche'] == "gloire de mon père"
-        assert response_get.context["info_search"]['titre'] == "La gloire de mon père"
+        assert response_get.context["info_search"]["recherche"] == "gloire de mon père"
+        assert response_get.context["info_search"]["titre"] == "La gloire de mon père"
         assert len(response_get.context["info_programmes"]) == 0
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/results.html"
@@ -965,14 +971,21 @@ class TestMyResults:
         )
         titre_gloire.save()
 
+        response_get = self.client.get(
+            reverse("my_results", kwargs={"my_search_id": recherche.id})
+        )
 
-        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
-
-        assert response_get.context["info_search"]['recherche'] == "gloire de mon père"
-        assert response_get.context["info_search"]['titre'] == "La gloire de mon père"
+        assert response_get.context["info_search"]["recherche"] == "gloire de mon père"
+        assert response_get.context["info_search"]["titre"] == "La gloire de mon père"
         assert len(response_get.context["info_programmes"]) == 1
-        assert response_get.context["info_programmes"][0]['titres'][0].nom == "La gloire de mon Père"
-        assert response_get.context["info_programmes"][0]['programme'].description == "Un film de Pagnol..."
+        assert (
+            response_get.context["info_programmes"][0]["titres"][0].nom
+            == "La gloire de mon Père"
+        )
+        assert (
+            response_get.context["info_programmes"][0]["programme"].description
+            == "Un film de Pagnol..."
+        )
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/results.html"
 
@@ -980,7 +993,9 @@ class TestMyResults:
     def test_cannot_display_my_search_results_of_an_other_user(self):
 
         User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
-        user_mell = User.objects.create_user("mell", "mell@thebeatles.com", "mellpassword")
+        user_mell = User.objects.create_user(
+            "mell", "mell@thebeatles.com", "mellpassword"
+        )
 
         recherche = Recherche(
             recherche="gloire de mon père", max_resultats=3, utilisateur_id=user_mell.id
@@ -998,7 +1013,9 @@ class TestMyResults:
 
         self.client.login(username="lennon@thebeatles.com", password="johnpassword")
 
-        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
+        response_get = self.client.get(
+            reverse("my_results", kwargs={"my_search_id": recherche.id})
+        )
 
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/no_results.html"
@@ -1006,7 +1023,9 @@ class TestMyResults:
     @mark.django_db
     def test_cannot_display_my_search_results_of_an_user_not_connected(self):
 
-        user_mell = User.objects.create_user("mell", "mell@thebeatles.com", "mellpassword")
+        user_mell = User.objects.create_user(
+            "mell", "mell@thebeatles.com", "mellpassword"
+        )
 
         recherche = Recherche(
             recherche="gloire de mon père", max_resultats=3, utilisateur_id=user_mell.id
@@ -1022,7 +1041,9 @@ class TestMyResults:
 
         recherche_specifique.save()
 
-        response_get = self.client.get(reverse("my_results", kwargs={'my_search_id': recherche.id}))
+        response_get = self.client.get(
+            reverse("my_results", kwargs={"my_search_id": recherche.id})
+        )
 
         assert response_get.status_code == 200
         assert response_get.templates[0].name == "programmes/auth_info.html"

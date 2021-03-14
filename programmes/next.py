@@ -23,27 +23,29 @@ from .models import (
 class ProgrammesNext7D:
     """Provide programmes for the next 7 days according to user's search"""
 
-    def __init__(self,
-                recherche,
-                max_resultats,
-                chaines,
-                titre,
-                titre_informatif,
-                description,
-                realisateur,
-                acteur,
-                role,
-                scenariste,
-                date_realisation,
-                categorie,
-                serie,
-                episode,
-                partie,
-                pays_realisation,
-                public,
-                aide_sourd,
-                note,
-                critique):
+    def __init__(
+        self,
+        recherche,
+        max_resultats,
+        chaines,
+        titre,
+        titre_informatif,
+        description,
+        realisateur,
+        acteur,
+        role,
+        scenariste,
+        date_realisation,
+        categorie,
+        serie,
+        episode,
+        partie,
+        pays_realisation,
+        public,
+        aide_sourd,
+        note,
+        critique,
+    ):
         self.recherche = recherche
         self.max_resultats = max_resultats
         self.chaines = chaines
@@ -170,16 +172,17 @@ class ProgrammesNext7D:
             if progs.date_debut >= make_aware(datetime.datetime.now()):
                 programmes_7D.append(progs)
 
-        programmes_7D = programmes_7D[:self.max_resultats]
+        programmes_7D = programmes_7D[: self.max_resultats]
 
         return programmes_7D
-    
+
+
 class InfoProgrammes:
-    """Generate programmes info for template context
-    """
+    """Generate programmes info for template context"""
+
     def __init__(self, programmes_7D):
         self.programmes_7D = programmes_7D
-    
+
     def generate_info(self):
 
         info_programmes = []
@@ -189,21 +192,15 @@ class InfoProgrammes:
                 info_prog = {}
                 info_prog["programme"] = prog
                 info_prog["chaine"] = prog.chaines.nom
-                info_prog["titres"] = Titres.objects.filter(
-                    programmes_id=prog.id
-                )
+                info_prog["titres"] = Titres.objects.filter(programmes_id=prog.id)
                 info_prog["realisateur"] = Realisateur.objects.filter(
                     programmes_id=prog.id
                 )
                 info_prog["scenariste"] = Scenariste.objects.filter(
                     programmes_id=prog.id
                 )
-                info_prog["acteurs"] = Acteurs.objects.filter(
-                    programmes_id=prog.id
-                )
-                info_prog["series"] = Series.objects.filter(
-                    programmes_id=prog.id
-                )
+                info_prog["acteurs"] = Acteurs.objects.filter(programmes_id=prog.id)
+                info_prog["series"] = Series.objects.filter(programmes_id=prog.id)
                 info_prog["categories"] = Categories.objects.filter(
                     programmes__id=prog.id
                 )
@@ -211,10 +208,8 @@ class InfoProgrammes:
                     programmes__id=prog.id
                 )
                 info_programmes.append(info_prog)
-        
+
             return info_programmes
-        
+
         else:
             return info_programmes
-    
-    

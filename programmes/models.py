@@ -99,7 +99,9 @@ class Compositeurs(models.Model):
 
 class Recherche(models.Model):
     recherche = models.CharField(max_length=200, null=True, blank=True)
-    max_resultats = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)])
+    max_resultats = models.SmallIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(20)]
+    )
     programmes = models.ManyToManyField(Programmes)
     chaines = models.ManyToManyField(Chaines)
     date_creation = models.DateTimeField(auto_now=True)

@@ -1,4 +1,3 @@
-from django.core.exceptions import NON_FIELD_ERRORS
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
@@ -16,7 +15,7 @@ class RechercheForm(ModelForm):
         model = Recherche
         fields = ["recherche", "max_resultats", "chaines_tv"]
         labels = {
-            'max_resultats': _('Résultats maximum'),
+            "max_resultats": _("Résultats maximum"),
         }
 
 
@@ -41,7 +40,7 @@ class BouquetTvForm(ModelForm):
 class RechercheSpecifiqueForm(ModelForm):
 
     NOTE_CHOICES = [
-        (0, '----'),
+        (0, "----"),
         (1, 1),
         (2, 2),
         (3, 3),
@@ -55,5 +54,5 @@ class RechercheSpecifiqueForm(ModelForm):
         model = RechercheSpecifique
         exclude = ["recherche", "date_debut", "date_fin"]
         labels = {
-            'aide_sourd': _('Sous-titres malentendants'),
+            "aide_sourd": _("Sous-titres malentendants"),
         }

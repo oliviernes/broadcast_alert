@@ -21,6 +21,7 @@ from programmes.models import (
 def db_feed():
     return Command()
 
+
 @mark.django_db
 def test_send_email_one_programme_match_one_search_of_one_user(db_feed):
 
@@ -52,7 +53,7 @@ def test_send_email_one_programme_match_one_search_of_one_user(db_feed):
         chaines_id=france_3.id,
         date_debut=make_aware(datetime.datetime.now() + timedelta(7)),
         date_fin=make_aware(datetime.datetime.now() + timedelta(8)),
-        url="https://www.programme-tv.net/programme/autre/r1549568936-pause/"
+        url="https://www.programme-tv.net/programme/autre/r1549568936-pause/",
     )
     prog.save()
 
@@ -132,6 +133,7 @@ def test_send_email_two_programmes_match_one_search_of_one_user(db_feed):
     db_feed.send_email()
 
     assert mail.outbox[0].subject == "Des programmes correspondent à votre recherche!"
+
 
 @mark.django_db
 def test_send_email_two_programmes_match_two_searches_of_one_user(db_feed):

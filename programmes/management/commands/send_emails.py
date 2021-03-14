@@ -12,6 +12,7 @@ from programmes.models import Programmes, Recherche, Chaines
 
 import pdb
 
+
 class Command(BaseCommand):
     help = "Search programmes in the database meeting requirements"
 
@@ -37,45 +38,64 @@ class Command(BaseCommand):
                         if len(titres) > 0:
                             titre = titres[0].nom
                             # if prog.date_debut > make_aware(datetime.datetime.now() + timedelta(6)):
-                            if prog.date_debut > make_aware(datetime.datetime.now() + timedelta(5)):
-                                new_prog.append({'prog': prog,
-                                                'chaine': Chaines.objects.get(id=prog.chaines_id),
-                                                'titre': titre
-                                                })
+                            if prog.date_debut > make_aware(
+                                datetime.datetime.now() + timedelta(0)
+                            ):
+                                new_prog.append(
+                                    {
+                                        "prog": prog,
+                                        "chaine": Chaines.objects.get(
+                                            id=prog.chaines_id
+                                        ),
+                                        "titre": titre,
+                                    }
+                                )
                                 email_to_send = True
-                            if make_aware(datetime.datetime.now()) < prog.date_debut < make_aware(datetime.datetime.now()) + timedelta(5):
-                                old_prog.append({'prog': prog,
-                                                'chaine': Chaines.objects.get(id=prog.chaines_id),
-                                                'titre': titre
-                                })
+                            if (
+                                make_aware(datetime.datetime.now())
+                                < prog.date_debut
+                                < make_aware(datetime.datetime.now()) + timedelta(0)
+                            ):
+                                old_prog.append(
+                                    {
+                                        "prog": prog,
+                                        "chaine": Chaines.objects.get(
+                                            id=prog.chaines_id
+                                        ),
+                                        "titre": titre,
+                                    }
+                                )
                 # if search.date_creation < make_aware(datetime.datetime.now() - timedelta(7)):
                 if search.date_creation < make_aware(datetime.datetime.now()):
-                    infos_search = { "search": search,
-                        'new_prog': new_prog,
-                        'old_prog': old_prog
+                    infos_search = {
+                        "search": search,
+                        "new_prog": new_prog,
+                        "old_prog": old_prog,
                     }
                     infos_mail.append(infos_search)
 
             if email_to_send:
                 if len(infos_mail) == 1:
-                    if len(infos_mail[0]['new_prog']) == 1:
+                    if len(infos_mail[0]["new_prog"]) == 1:
                         subject = "Un programme correspond à votre recherche!"
-                    elif len(infos_mail[0]['new_prog']) > 1:
+                    elif len(infos_mail[0]["new_prog"]) > 1:
                         subject = "Des programmes correspondent à votre recherche!"
                 elif len(infos_mail) > 1:
                     subject = "Des programmes correspondent à vos recherches!"
 
-                context = { 'infos_mail': infos_mail }
+                context = {"infos_mail": infos_mail}
 
-                from_email, to = 'popular.crazy2@gmail.com', user.email,
+                from_email, to = (
+                    "popular.crazy2@gmail.com",
+                    user.email,
+                )
 
-                text_content = render_to_string('programmes/email.txt', context)
-                html_content = render_to_string('programmes/email.html', context)
+                text_content = render_to_string("programmes/email.txt", context)
+                html_content = render_to_string("programmes/email.html", context)
                 msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
 
-
     def handle(self, *args, **options):
-        
+
         self.send_email()

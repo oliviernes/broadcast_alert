@@ -99,29 +99,30 @@ def search(request):
             public = form_recherche_specifique.cleaned_data["public"]
             aide_sourd = form_recherche_specifique.cleaned_data["aide_sourd"]
             note = form_recherche_specifique.cleaned_data["note"]
-            if note == '0':
-                note=None
+            if note == "0":
+                note = None
             critique = form_recherche_specifique.cleaned_data["critique"]
 
-            info_search = {'recherche': recherche,
-                        'titre': titre,
-                        'titre_informatif': titre_informatif,
-                        'description': description,
-                        'realisateur': realisateur,
-                        'acteur': acteur,
-                        'role': role,
-                        'scenariste': scenariste,
-                        'date_realisation': date_realisation,
-                        'categorie': categorie,
-                        'serie': serie,
-                        'episode': episode,
-                        'partie': partie,
-                        'pays_realisation': pays_realisation,
-                        'public': public,
-                        'aide_sourd': aide_sourd,
-                        'note': note,
-                        'critique': critique,
-                        }
+            info_search = {
+                "recherche": recherche,
+                "titre": titre,
+                "titre_informatif": titre_informatif,
+                "description": description,
+                "realisateur": realisateur,
+                "acteur": acteur,
+                "role": role,
+                "scenariste": scenariste,
+                "date_realisation": date_realisation,
+                "categorie": categorie,
+                "serie": serie,
+                "episode": episode,
+                "partie": partie,
+                "pays_realisation": pays_realisation,
+                "public": public,
+                "aide_sourd": aide_sourd,
+                "note": note,
+                "critique": critique,
+            }
 
             if "my_search" in request.POST:
                 """To register user's searches"""
@@ -216,33 +217,35 @@ def search(request):
                 """To search the programmes and display the results
                 in a new page"""
 
-                programmes_7D = ProgrammesNext7D(recherche,
-                                            max_resultats,
-                                            chaines,
-                                            titre,
-                                            titre_informatif,
-                                            description,
-                                            realisateur,
-                                            acteur,
-                                            role,
-                                            scenariste,
-                                            date_realisation,
-                                            categorie,
-                                            serie,
-                                            episode,
-                                            partie,
-                                            pays_realisation,
-                                            public,
-                                            aide_sourd,
-                                            note,
-                                            critique,
-                                    ).search_7D()
+                programmes_7D = ProgrammesNext7D(
+                    recherche,
+                    max_resultats,
+                    chaines,
+                    titre,
+                    titre_informatif,
+                    description,
+                    realisateur,
+                    acteur,
+                    role,
+                    scenariste,
+                    date_realisation,
+                    categorie,
+                    serie,
+                    episode,
+                    partie,
+                    pays_realisation,
+                    public,
+                    aide_sourd,
+                    note,
+                    critique,
+                ).search_7D()
 
                 info_programmes = InfoProgrammes(programmes_7D).generate_info()
 
-                context = {'info_search': info_search,
-                         'info_programmes': info_programmes
-                         }
+                context = {
+                    "info_search": info_search,
+                    "info_programmes": info_programmes,
+                }
                 return render(request, "programmes/results.html", context)
 
         else:
@@ -276,7 +279,9 @@ def my_search(request):
     """Display user's recorded searches"""
     user_id = request.user.id
 
-    recherches = Recherche.objects.filter(utilisateur_id=user_id).order_by("-date_creation")
+    recherches = Recherche.objects.filter(utilisateur_id=user_id).order_by(
+        "-date_creation"
+    )
 
     searches = []
 
@@ -351,59 +356,59 @@ def my_results(request, my_search_id):
             note = recherche_spe.note
             critique = recherche_spe.critique
 
-            info_search = {'recherche': recherche,
-                        'titre': titre,
-                        'titre_informatif': titre_informatif,
-                        'description': description,
-                        'realisateur': realisateur,
-                        'acteur': acteur,
-                        'role': role,
-                        'scenariste': scenariste,
-                        'date_realisation': date_realisation,
-                        'categorie': categorie,
-                        'serie': serie,
-                        'episode': episode,
-                        'partie': partie,
-                        'pays_realisation': pays_realisation,
-                        'public': public,
-                        'aide_sourd': aide_sourd,
-                        'note': note,
-                        'critique': critique,
-                        }
+            info_search = {
+                "recherche": recherche,
+                "titre": titre,
+                "titre_informatif": titre_informatif,
+                "description": description,
+                "realisateur": realisateur,
+                "acteur": acteur,
+                "role": role,
+                "scenariste": scenariste,
+                "date_realisation": date_realisation,
+                "categorie": categorie,
+                "serie": serie,
+                "episode": episode,
+                "partie": partie,
+                "pays_realisation": pays_realisation,
+                "public": public,
+                "aide_sourd": aide_sourd,
+                "note": note,
+                "critique": critique,
+            }
 
-            programmes_7D = ProgrammesNext7D(recherche,
-                                        max_resultats,
-                                        chaines,
-                                        titre,
-                                        titre_informatif,
-                                        description,
-                                        realisateur,
-                                        acteur,
-                                        role,
-                                        scenariste,
-                                        date_realisation,
-                                        categorie,
-                                        serie,
-                                        episode,
-                                        partie,
-                                        pays_realisation,
-                                        public,
-                                        aide_sourd,
-                                        note,
-                                        critique,
-                                ).search_7D()
+            programmes_7D = ProgrammesNext7D(
+                recherche,
+                max_resultats,
+                chaines,
+                titre,
+                titre_informatif,
+                description,
+                realisateur,
+                acteur,
+                role,
+                scenariste,
+                date_realisation,
+                categorie,
+                serie,
+                episode,
+                partie,
+                pays_realisation,
+                public,
+                aide_sourd,
+                note,
+                critique,
+            ).search_7D()
 
             info_programmes = InfoProgrammes(programmes_7D).generate_info()
 
-
-            context = {'info_search': info_search,
-                        'info_programmes': info_programmes
-                        }
+            context = {"info_search": info_search, "info_programmes": info_programmes}
             return render(request, "programmes/results.html", context)
         else:
             return render(request, "programmes/no_results.html")
     else:
         return render(request, "programmes/auth_info.html")
+
 
 def delete(request, pk):
 
@@ -419,14 +424,12 @@ def delete(request, pk):
             search_ids.append(search.id)
 
         if pk in search_ids:
-        
+
             item = Recherche.objects.get(id=pk)
             item.delete()
 
             if request.is_ajax():
-                data = {
-                        'my_data': "data_to_give_to_fetch"
-                }
+                data = {"my_data": "data_to_give_to_fetch"}
                 return JsonResponse(data)
             else:
                 return render(request, "programmes/welcome.html")

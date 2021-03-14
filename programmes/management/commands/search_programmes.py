@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from programmes.models import Recherche, RechercheSpecifique
 from programmes.next import ProgrammesNext7D
 
+
 class Command(BaseCommand):
     help = "Search programmes in the database meeting requirements"
 
@@ -35,28 +36,28 @@ class Command(BaseCommand):
             note = recherche_spe.note
             critique = recherche_spe.critique
 
-
-            programmes_7D = ProgrammesNext7D(recherche,
-                                        max_resultats,
-                                        chaines,
-                                        titre,
-                                        titre_informatif,
-                                        description,
-                                        realisateur,
-                                        acteur,
-                                        role,
-                                        scenariste,
-                                        date_realisation,
-                                        categorie,
-                                        serie,
-                                        episode,
-                                        partie,
-                                        pays_realisation,
-                                        public,
-                                        aide_sourd,
-                                        note,
-                                        critique,
-                                ).search_7D()
+            programmes_7D = ProgrammesNext7D(
+                recherche,
+                max_resultats,
+                chaines,
+                titre,
+                titre_informatif,
+                description,
+                realisateur,
+                acteur,
+                role,
+                scenariste,
+                date_realisation,
+                categorie,
+                serie,
+                episode,
+                partie,
+                pays_realisation,
+                public,
+                aide_sourd,
+                note,
+                critique,
+            ).search_7D()
 
             for prog in programmes_7D:
                 search.programmes.add(prog.id)
