@@ -3,7 +3,6 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 
-
 from .models import BouquetTv, Recherche, RechercheSpecifique, Chaines
 
 
@@ -40,10 +39,21 @@ class BouquetTvForm(ModelForm):
 
 
 class RechercheSpecifiqueForm(ModelForm):
+
+    NOTE_CHOICES = [
+        (0, '----'),
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+    ]
+
+    note = forms.ChoiceField(choices=NOTE_CHOICES, required=False)
+
     class Meta:
         model = RechercheSpecifique
         exclude = ["recherche", "date_debut", "date_fin"]
         labels = {
             'aide_sourd': _('Sous-titres malentendants'),
         }
-

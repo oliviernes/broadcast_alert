@@ -100,6 +100,8 @@ def search(request):
             public = form_recherche_specifique.cleaned_data["public"]
             aide_sourd = form_recherche_specifique.cleaned_data["aide_sourd"]
             note = form_recherche_specifique.cleaned_data["note"]
+            if note == '0':
+                note=None
             critique = form_recherche_specifique.cleaned_data["critique"]
 
             info_search = {'recherche': recherche,
