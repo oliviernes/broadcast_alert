@@ -260,11 +260,12 @@ class TestSearch:
                 "recherche": "La gloire de mon Père",
                 "chaines_tv": id_france_3,
                 "max_resultats": 4,
+                "note": 0,
             }
         )
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 200
         assert len(response_post.context["info_programmes"]) == 0
@@ -294,11 +295,12 @@ class TestSearch:
                 "recherche": "La gloire de mon Père",
                 "chaines_tv": id_france_3,
                 "max_resultats": 4,
+                "note": 0,
             }
         )
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 200
         assert len(response_post.context["info_programmes"]) == 1
@@ -392,7 +394,7 @@ class TestSearch:
         )
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 200
         assert len(response_post.context["info_programmes"]) == 1
@@ -529,7 +531,7 @@ class TestSearch:
         )
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 200
         assert len(response_post.context["info_programmes"]) == 1
@@ -590,10 +592,10 @@ class TestSearch:
         france_3.save()
         id_france_3 = france_3.id
 
-        data = urlencode({"chaines_tv": id_france_3, "max_resultats": 4})
+        data = urlencode({"chaines_tv": id_france_3, "max_resultats": 4, "note": 0})
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 200
         assert len(response_post.context["info_programmes"]) == 0
@@ -613,7 +615,7 @@ class TestSearch:
         data = urlencode({"bouquets": 2})
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
 
         assert response_post.status_code == 200
@@ -625,7 +627,7 @@ class TestSearch:
         data = urlencode({"bouquets": 6})
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
 
         assert response_post.status_code == 200
@@ -637,10 +639,12 @@ class TestSearch:
         data = urlencode({"bouquets": 7})
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
 
-        assert response_post.status_code == 302
+        assert response_post.status_code == 200
+        assert response_post.templates[0].name == "programmes/welcome.html"
+
 
     @mark.django_db
     def test_save_search_with_user_not_connected(self):
@@ -659,7 +663,7 @@ class TestSearch:
         )
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 302
 
@@ -686,10 +690,11 @@ class TestSearch:
         )
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 200
         assert response_post.templates[0].name == "programmes/registered_info.html"
+
 
     @mark.django_db
     def test_saving_with_all_None_search_fields(self):
@@ -707,11 +712,12 @@ class TestSearch:
                 "chaines_tv": id_france_3,
                 "max_resultats": 4,
                 "my_search": ["Enregistrer la recherche"],
+                "note": 0,
             }
         )
 
         response_post = self.client.post(
-            reverse("results"), data, content_type="application/x-www-form-urlencoded"
+            reverse("welcome"), data, content_type="application/x-www-form-urlencoded"
         )
         assert response_post.status_code == 200
         assert response_post.templates[0].name == "programmes/no_search.html"
