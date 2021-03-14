@@ -203,9 +203,11 @@ def search(request):
                                     saved = False
                                     break
 
-                        messages.add_message(request, messages.INFO, str(saved))
+                        context = {"saved": saved}
 
-                        return redirect("save")
+                        return render(
+                            request, "programmes/registered_info.html", context
+                        )
 
                 return redirect("login")
 
@@ -262,20 +264,6 @@ def search(request):
                 "messages": storage
             },
         )
-
-def save(request):
-
-    storage = get_messages(request)
-    name = None
-    for message in storage:
-        name = message
-        break
-
-    context = {"saved": name.message}
-    
-    return render(
-        request, "programmes/registered_info.html", context
-    )
 
 
 def my_search(request):
