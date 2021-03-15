@@ -103,8 +103,14 @@ def search(request):
                 note = None
             critique = form_recherche_specifique.cleaned_data["critique"]
 
+            chaines_list = chaines.order_by("nom")
+            chaines_name = [chaine.nom for chaine in chaines_list]
+            chaines_string = "\n".join(chaines_name)
+
             info_search = {
                 "recherche": recherche,
+                "max_resultats": max_resultats,
+                "chaines_string": chaines_string,
                 "titre": titre,
                 "titre_informatif": titre_informatif,
                 "description": description,
@@ -113,7 +119,7 @@ def search(request):
                 "role": role,
                 "scenariste": scenariste,
                 "date_realisation": date_realisation,
-                "categorie": categorie,
+                "categories": categorie,
                 "serie": serie,
                 "episode": episode,
                 "partie": partie,
@@ -356,8 +362,14 @@ def my_results(request, my_search_id):
             note = recherche_spe.note
             critique = recherche_spe.critique
 
+            chaines_list = chaines.order_by("nom")
+            chaines_name = [chaine.nom for chaine in chaines_list]
+            chaines_string = "\n".join(chaines_name)
+
             info_search = {
                 "recherche": recherche,
+                "max_resultats": max_resultats,
+                "chaines_string": chaines_string,
                 "titre": titre,
                 "titre_informatif": titre_informatif,
                 "description": description,
@@ -366,7 +378,7 @@ def my_results(request, my_search_id):
                 "role": role,
                 "scenariste": scenariste,
                 "date_realisation": date_realisation,
-                "categorie": categorie,
+                "categories": categorie,
                 "serie": serie,
                 "episode": episode,
                 "partie": partie,

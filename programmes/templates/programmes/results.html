@@ -8,8 +8,155 @@
 
 <div class="row">
   <div class="col-xl-9 mx-auto">
-    <h1 class="mb-5">Build a landing page for your business or project and generate more leads!</h1>
+    <h1 class="mb-5">Votre recherche:</h1>
   </div>
+
+  <div class="col-lg-12 col-md-10 col-lg-8 col-xl-7 mx-auto">
+    <table class="table table-bordered table-striped table-condensed">
+      <thead>
+        <tr>
+          <th>Nombre de résultat maximum</th>
+          <th>{{ info_search.max_resultats }}</th>
+        </tr>
+        <tr>
+          <th>Chaînes</th>
+          <th>
+              <!-- Trigger/Open The Modal -->
+              <button class="btn btn-primary" onclick="btnFunction()">Visualiser les chaînes</button>
+              <!-- The Modal -->
+              {% if info_search.chaines_string|length < 100 %}
+                <div id="myModal" class="modal width-20p text-center height-100" onclick="closeFunction()">
+                  {{ info_search.chaines_string }}
+                </div>
+              {% else %}
+                <div id="myModal" class="modal width-20p text-center" onclick="closeFunction()">
+                  {{ info_search.chaines_string }}
+                </div>
+              {% endif %}
+          </th>
+        </tr>
+        {% if info_search.recherche is not None %}
+          <tr>
+            <th>Recherche</th>
+            <th>{{ info_search.recherche }}</th>
+          </tr>
+        {% endif %}
+        {% if info_search is not None %}
+          {% if info_search.titre is not None %}
+          <tr>
+            <th>Titre:</th>
+            <th>{{ info_search.titre }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.titre_informatif is not None %}
+          <tr>
+            <th>Titre informatif</th>
+            <th>{{ info_search.titre_informatif }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.description is not None %}
+          <tr>
+            <th>Description:</th>
+            <th>{{ info_search.description }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.realisateur is not None %}
+          <tr>
+            <th>Realisateur:</th>
+            <th>{{ info_search.realisateur }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.acteur is not None %}
+          <tr>
+            <th>Acteur:</th>
+            <th>{{ info_search.acteur }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.role is not None %}
+          <tr>
+            <th>Rôle:</th>
+            <th>{{ info_search.role }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.scenariste is not None %}
+          <tr>
+            <th>Scenariste:</th>
+            <th>{{ info_search.scenariste }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.date_realisation is not None %}
+          <tr>
+            <th>Date de réalisation:</th>
+            <th>{{ info_search.date_realisation }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.categories is not None %}
+          <tr>
+            <th>Categorie:</th>
+            <th>{{ info_search.categories }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.serie is not None %}
+          <tr>
+            <th>Serie:</th>
+            <th>{{ info_search.serie }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.episode is not None %}
+          <tr>
+            <th>Episode:</th>
+            <th>{{ info_search.episode }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.partie is not None %}
+          <tr>
+            <th>Partie:</th>
+            <th>{{ info_search.partie }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.pays_realisation is not None %}
+          <tr>
+            <th>Pays de réalisation:</th>
+            <th>{{ info_search.pays_realisation }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.public is not None %}
+          <tr>
+            <th>Public:</th>
+            <th>{{ info_search.public }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.aide_sourd is not None %}
+          <tr>
+            <th>Sous titres malentendants:</th>
+            {% if info_search.aide_sourd %}
+              <th>Oui</th>
+            {% else %}
+              <th>Non</th>
+            {% endif %}
+          </tr>
+          {% endif %}
+          {% if info_search.note is not None %}
+          <tr>
+            <th>Note:</th>
+            <th>{{ info_search.note }}</th>
+          </tr>
+          {% endif %}
+          {% if info_search.critique is not None %}
+          <tr>
+            <th>Critique:</th>
+            <th>{{ info_search.critique }}</th>
+          </tr>
+          {% endif %}
+        {% endif %}
+      </thead>
+    </table>
+  </div>
+
+  <div class="col-xl-9 mx-auto">
+    <h1 class="mb-5">Les résultats de votre recherche:</h1>
+  </div>
+
   <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
     <form>
       <div class="form-row">
@@ -86,11 +233,11 @@
               {% endif %}
               {% if prog.programme.public %}
                 <p>-------------------------------------------</p>
-                <p>public: {{ prog.programme.public}} ans</p>
+                <p>Public: {{ prog.programme.public}} ans</p>
               {% endif %}
               {% if prog.programme.aide_sourd %}
                 <p>-------------------------------------------</p>
-                <p>sous-titres malentendants: Oui</p>
+                <p>Sous-titres malentendants: Oui</p>
               {% endif %}
               {% if prog.programme.note %}
                 <p>-------------------------------------------</p>
@@ -98,7 +245,7 @@
               {% endif %}
               {% if prog.programme.critique %}
                 <p>-------------------------------------------</p>
-                <p>critique:</p>
+                <p>Critique:</p>
                 <p><span nom="critique">{{ prog.programme.critique}}</span></p>
               {% endif %}
             {% endfor %}
@@ -116,7 +263,7 @@
 
 
 <script type="text/javascript">
-  var spans = document.getElementsByTagName('span');
+  let spans = document.getElementsByTagName('span');
   console.log(spans)
 
   for(var i = 0; i < spans.length; i++)
@@ -164,8 +311,7 @@
       spans[i].innerHTML = s;
   }
 
-  // var ins = document.getElementsByTagName('ins');
-  var search = document.getElementsByClassName('search');
+  let search = document.getElementsByClassName('search');
 
   for(var i = 0; i < search.length; i++)
   {
@@ -240,6 +386,16 @@
   for(var i = 0; i < critique.length; i++)
   {
       critique[i].innerHTML = '{{ info_search.critique }}'
+  }
+
+  function btnFunction() {
+    let modal = document.getElementById('myModal')
+    modal.style.display = "block";
+  }
+
+  function closeFunction() {
+    let modal = document.getElementById('myModal')
+    modal.style.display = "none";
   }
 
 </script>
