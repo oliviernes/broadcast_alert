@@ -295,13 +295,10 @@
         s = s.replace(/{{ info_search.scenariste }}/gi, '<span class="scenariste" style="color:red"></span>');  
         }
       if (spans[i].getAttribute('nom') == 'categorie') {
-        s = s.replace(/{{ info_search.categorie }}/gi, '<span class="categorie" style="color:red"></span>');  
+        s = s.replace(/{{ info_search.categories }}/gi, '<span class="categorie" style="color:red"></span>');
         }
       if (spans[i].getAttribute('nom') == 'pays') {
         s = s.replace(/{{ info_search.pays_realisation }}/gi, '<span class="pays" style="color:red"></span>');  
-        }
-      if (spans[i].getAttribute('nom') == 'categorie') {
-        s = s.replace(/{{ info_search.categorie }}/gi, '<span class="categorie" style="color:red"></span>');  
         }
       if (spans[i].getAttribute('nom') == 'critique') {
         s = s.replace(/{{ info_search.critique }}/gi, '<span class="critique" style="color:red"></span>');  
