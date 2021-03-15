@@ -266,9 +266,9 @@
   let spans = document.getElementsByTagName('span');
   console.log(spans)
 
-  for(var i = 0; i < spans.length; i++)
+  for(let i = 0; i < spans.length; i++)
   {
-      var s = spans[i].innerHTML;
+      let s = spans[i].innerHTML;
       // console.log(spans['i'].textContent)
       console.log(spans[i])
       s = s.replace(/{{ info_search.recherche }}/gi, '<span class="search" style="color:green"></span>');
@@ -310,77 +310,77 @@
 
   let search = document.getElementsByClassName('search');
 
-  for(var i = 0; i < search.length; i++)
+  for(let i = 0; i < search.length; i++)
   {
       search[i].innerHTML = '{{ info_search.recherche }}'
   }
 
-  var titre = document.getElementsByClassName('titre');
+  let titre = document.getElementsByClassName('titre');
 
-  for(var i = 0; i < titre.length; i++)
+  for(let i = 0; i < titre.length; i++)
   {
       titre[i].innerHTML = '{{ info_search.titre }}'
   }
 
-  var titre_informatif = document.getElementsByClassName('titre_informatif');
+  let titre_informatif = document.getElementsByClassName('titre_informatif');
 
-  for(var i = 0; i < titre_informatif.length; i++)
+  for(let i = 0; i < titre_informatif.length; i++)
   {
       titre_informatif[i].innerHTML = '{{ info_search.titre_informatif }}'
   }
 
-  var description = document.getElementsByClassName('description');
+  let description = document.getElementsByClassName('description');
 
-  for(var i = 0; i < description.length; i++)
+  for(let i = 0; i < description.length; i++)
   {
       description[i].innerHTML = '{{ info_search.description }}'
   }
 
-  var realisateur = document.getElementsByClassName('realisateur');
+  let realisateur = document.getElementsByClassName('realisateur');
 
-  for(var i = 0; i < realisateur.length; i++)
+  for(let i = 0; i < realisateur.length; i++)
   {
       realisateur[i].innerHTML = '{{ info_search.realisateur }}'
   }
 
-  var acteur = document.getElementsByClassName('acteur');
+  let acteur = document.getElementsByClassName('acteur');
 
-  for(var i = 0; i < acteur.length; i++)
+  for(let i = 0; i < acteur.length; i++)
   {
       acteur[i].innerHTML = '{{ info_search.acteur }}'
   }
 
-  var role = document.getElementsByClassName('role');
+  let role = document.getElementsByClassName('role');
 
-  for(var i = 0; i < role.length; i++)
+  for(let i = 0; i < role.length; i++)
   {
       role[i].innerHTML = '{{ info_search.role }}'
   }
 
-  var scenariste = document.getElementsByClassName('scenariste');
+  let scenariste = document.getElementsByClassName('scenariste');
 
-  for(var i = 0; i < scenariste.length; i++)
+  for(let i = 0; i < scenariste.length; i++)
   {
       scenariste[i].innerHTML = '{{ info_search.scenariste }}'
   }
 
-  var categorie = document.getElementsByClassName('categorie');
+  let categorie = document.getElementsByClassName('categorie');
 
-  for(var i = 0; i < categorie.length; i++)
+  for(let i = 0; i < categorie.length; i++)
   {
       categorie[i].innerHTML = '{{ info_search.categorie }}'
   }
 
-  var pays = document.getElementsByClassName('pays');
+  let pays = document.getElementsByClassName('pays');
 
-  for(var i = 0; i < pays.length; i++)
+  for(let i = 0; i < pays.length; i++)
   {
       pays[i].innerHTML = '{{ info_search.pays_realisation }}'
   }
 
-  var critique = document.getElementsByClassName('critique');
+  let critique = document.getElementsByClassName('critique');
 
-  for(var i = 0; i < critique.length; i++)
+  for(let i = 0; i < critique.length; i++)
   {
       critique[i].innerHTML = '{{ info_search.critique }}'
   }
