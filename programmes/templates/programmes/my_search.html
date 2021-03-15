@@ -38,11 +38,11 @@
               <button class="btn btn-primary" onclick="btnFunction{{ search.recherche.id }}()">Visualiser les chaînes</button>
               <!-- The Modal -->
               {% if search.chaines_string|length < 100 %}
-                <div id="myModal{{ search.recherche.id }}" class="modal width-20p text-center height-100" onclick="closeFunction{{ search.recherche.id }}()">
+                <div id="myModal{{ search.recherche.id }}" class="modal width-300 text-center height-100" onclick="closeFunction{{ search.recherche.id }}()">
                         {{ search.chaines_string }}
                 </div>
               {% else %}
-                <div id="myModal{{ search.recherche.id }}" class="modal width-20p text-center" onclick="closeFunction{{ search.recherche.id }}()">
+                <div id="myModal{{ search.recherche.id }}" class="modal width-300 text-center" onclick="closeFunction{{ search.recherche.id }}()">
                   {{ search.chaines_string }}
                 </div>
               {% endif %}
