@@ -271,129 +271,82 @@
       let s = spans[i].innerHTML;
       console.log(spans[i])
       console.log(s)
-      let string_no_accent_low_case = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let rech = "{{ info_search.recherche }}";
-      let rech_nalc = rech.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let titre = "{{ info_search.titre }}"
-      let titre_nalc = titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let titre_inf = "{{ info_search.titre_informatif }}"
-      let titre_inf_nalc = titre_inf.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let desc = "{{ info_search.description }}"
-      let desc_nalc = desc.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let real = "{{ info_search.realisateur }}"
-      let real_nalc = real.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let actor_role = "{{ info_search.acteur }}"
-      let actor_role_nalc = actor_role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let role = "{{ info_search.role }}"
-      let role_nalc = role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let actor = "{{ info_search.acteur }}"
-      let actor_nalc = actor.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let scena = "{{ info_search.scenariste }}"
-      let scena_nalc = scena.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let categ = "{{ info_search.categories }}"
-      let categ_nalc = categ.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let pays = "{{ info_search.pays_realisation }}"
-      let pays_nalc = pays.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let criti = "{{ info_search.critique }}"
-      let criti_nalc = criti.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
-      // let rech_placed = false
+      let rech = "{{ info_search.recherche }}"
       if (rech.length > 0) {
-        let position = string_no_accent_low_case.indexOf(rech_nalc);
-        let length = rech_nalc.length;
-        if (position !== -1) {
-          let position_end = position + length;
-          s = s.substring(0, position) + '<span class="search" style="color:green"></span>' + s.substring(position_end, s.length);
-          // rech_placed = true
-        }
+        const barerech = rech.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        console.log(barerech)
+        const regrech =  new RegExp(barerech,'gi');
+        console.log(regrech)
+        s = s.replace(regrech, '<span class="search" style="color:green"></span>');
       }
-      if (spans[i].getAttribute('nom') == 'titre' && rech_nalc != titre_nalc ) {
-        let position_titre = string_no_accent_low_case.indexOf(titre_nalc);
-        let length_titre = titre_nalc.length;
+      if (spans[i].getAttribute('nom') == 'titre') {
+        let titre = "{{ info_search.titre }}"
+        console.log(titre)
+        const bare_titre = titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        console.log(bare_titre)
+        const reg_titre =  new RegExp(bare_titre,'gi');
+        console.log(reg_titre)
+        s = s.replace(reg_titre, '<span class="titre" style="color:red"></span>');
+        }
         console.log(s)
-        if (position_titre !== -1) {
-          let position_titre_end = position_titre + length_titre;
-          s = s.substring(0, position_titre) + '<span class="titre" style="color:red"></span>' + s.substring(position_titre_end, s.length);
-        }
-      }
       if (spans[i].getAttribute('nom') == 'titre_informatif') {
-        let position_titre_inf = string_no_accent_low_case.indexOf(titre_inf_nalc);
-        let length_titre_inf = titre_inf_nalc.length;
-        if (position_titre_inf !== -1) {
-          let position_titre_inf_end = position_titre_inf + length_titre_inf;
-          s = s.substring(0, position_titre_inf) + '<span class="titre_informatif" style="color:red"></span>' + s.substring(position_titre_inf_end, s.length);
+        let titre_inf = "{{ info_search.titre_informatif }}"
+        let bare_titre_inf = titre_inf.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_titre_inf =  new RegExp(bare_titre_inf,'gi');
+        s = s.replace(reg_titre_inf, '<span class="titre_informatif" style="color:red"></span>');
         }
-      }
       if (spans[i].getAttribute('nom') == 'description') {
-        let position_desc = string_no_accent_low_case.indexOf(desc_nalc);
-        let length_desc = desc_nalc.length;
-        if (position_desc !== -1) {
-          let position_desc_end = position_desc + length_desc;
-          s = s.substring(0, position_desc) + '<span class="description" style="color:red"></span>' + s.substring(position_desc_end, s.length);
-        }
+        let desc = "{{ info_search.description }}"
+        let bare_desc = desc.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_desc =  new RegExp(bare_desc,'gi');
+        s = s.replace(reg_desc, '<span class="description" style="color:red"></span>');
         }
       if (spans[i].getAttribute('nom') == 'realisateur') {
-        let position_real = string_no_accent_low_case.indexOf(real_nalc);
-        let length_real = real_nalc.length;
-        if (position_real !== -1) {
-          let position_real_end = position_real + length_real;
-          s = s.substring(0, position_real) + '<span class="realisateur" style="color:red"></span>' + s.substring(position_real_end, s.length);
+        let real = "{{ info_search.realisateur }}"
+        let bare_real = real.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_real =  new RegExp(bare_real,'gi');
+        s = s.replace(reg_real, '<span class="realisateur" style="color:red"></span>');
         }
-      }
       if (spans[i].getAttribute('nom') == 'acteur_role') {
-        let position_actor_role = string_no_accent_low_case.indexOf(actor_role_nalc);
-        let length_actor_role = actor_role_nalc.length;
-        if (position_actor_role !== -1) {
-          let position_actor_role_end = position_actor_role + length_actor_role;
-          s = s.substring(0, position_actor_role) + '<span class="acteur" style="color:red"></span>' + s.substring(position_actor_role_end, s.length);
+        let actor = "{{ info_search.acteur }}"
+        let bare_actor = actor.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_actor =  new RegExp(bare_actor,'gi');
+        s = s.replace(reg_actor, '<span class="acteur" style="color:red"></span>');
+        let role = "{{ info_search.role }}"
+        let bare_role = role.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_role =  new RegExp(bare_role,'gi');
+        s = s.replace(reg_role, '<span class="role" style="color:red"></span>');
         }
-        let position_role = string_no_accent_low_case.indexOf(role_nalc);
-        let length_role = role_nalc.length;
-        if (position_role !== -1) {
-          let position_role_end = position_role + length_role;
-          s = s.substring(0, position_role) + '<span class="role" style="color:red"></span>' + s.substring(position_role_end, s.length);
-        }
-      }
       if (spans[i].getAttribute('nom') == 'acteur') {
-        let position_actor = string_no_accent_low_case.indexOf(actor_nalc);
-        let length_actor = actor_nalc.length;
-        if (position_actor !== -1) {
-          let position_actor_end = position_actor + length_actor;
-          s = s.substring(0, position_actor) + '<span class="acteur" style="color:red"></span>' + s.substring(position_actor_end, s.length);
-        }
+        let actor = "{{ info_search.acteur }}"
+        let bare_actor = actor.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_actor =  new RegExp(bare_actor,'gi');
+        s = s.replace(reg_actor, '<span class="acteur" style="color:red"></span>');
       }
       if (spans[i].getAttribute('nom') == 'scenariste') {
-        let position_scena = string_no_accent_low_case.indexOf(scena_nalc);
-        let length_scena = scena_nalc.length;
-        if (position_scena !== -1) {
-          let position_scena_end = position_scena + length_scena;
-          s = s.substring(0, position_scena) + '<span class="scenariste" style="color:red"></span>' + s.substring(position_scena_end, s.length);
+        let scena = "{{ info_search.scenariste }}"
+        let bare_scena = scena.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_scena =  new RegExp(bare_scena,'gi');
+        s = s.replace(reg_scena, '<span class="scenariste" style="color:red"></span>');  
         }
-      }
       if (spans[i].getAttribute('nom') == 'categorie') {
-        let position_categ = string_no_accent_low_case.indexOf(categ_nalc);
-        let length_categ = categ_nalc.length;
-        if (position_categ !== -1) {
-          let position_categ_end = position_categ + length_categ;
-          s = s.substring(0, position_categ) + '<span class="categorie" style="color:red"></span>' + s.substring(position_categ_end, s.length);
+        let categ = "{{ info_search.categories }}"
+        let bare_categ = categ.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_categ =  new RegExp(bare_categ,'gi');
+        s = s.replace(reg_categ, '<span class="categorie" style="color:red"></span>');
         }
-      }
       if (spans[i].getAttribute('nom') == 'pays') {
-        let position_pays = string_no_accent_low_case.indexOf(pays_nalc);
-        let length_pays = pays_nalc.length;
-        if (position_pays !== -1) {
-          let position_pays_end = position_pays + length_pays;
-          s = s.substring(0, position_pays) + '<span class="pays" style="color:red"></span>' + s.substring(position_pays_end, s.length);
+        let pays = "{{ info_search.pays_realisation }}"
+        let bare_pays = pays.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_pays =  new RegExp(bare_pays,'gi');
+        s = s.replace(reg_pays, '<span class="pays" style="color:red"></span>');  
         }
-      }
       if (spans[i].getAttribute('nom') == 'critique') {
-        let position_criti = string_no_accent_low_case.indexOf(criti_nalc);
-        let length_criti = criti_nalc.length;
-        if (position_criti !== -1) {
-          let position_criti_end = position_criti + length_criti;
-          s = s.substring(0, position_criti) + '<span class="critique" style="color:red"></span>' + s.substring(position_criti_end, s.length);
+        let criti = "{{ info_search.critique }}"
+        let bare_criti = criti.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        const reg_criti =  new RegExp(bare_criti,'gi');
+        s = s.replace(reg_criti, '<span class="critique" style="color:red"></span>');  
         }
-      }
       console.log(s)
       spans[i].innerHTML = s;
   }
