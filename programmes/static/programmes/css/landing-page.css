@@ -27,7 +27,8 @@ h6 {
   padding-bottom: 8rem;
 } */
 
-header.masthead2 {
+
+section.masthead2 {
   position: relative;
   /* background-color: #687e92; */
   background-color: #7ca0db;
@@ -35,6 +36,7 @@ header.masthead2 {
   padding-top: 8rem;
   padding-bottom: 8rem;
 }
+
 
 .card-columns {
   column-count: 4;
