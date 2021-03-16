@@ -274,40 +274,20 @@
       let string_no_accent_low_case = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
       let rech = "{{ info_search.recherche }}";
       let rech_nalc = rech.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let titre = "{{ info_search.titre }}"
-      let titre_nalc = titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let titre_inf = "{{ info_search.titre_informatif }}"
-      let titre_inf_nalc = titre_inf.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let desc = "{{ info_search.description }}"
-      let desc_nalc = desc.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let real = "{{ info_search.realisateur }}"
-      let real_nalc = real.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let actor_role = "{{ info_search.acteur }}"
-      let actor_role_nalc = actor_role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let role = "{{ info_search.role }}"
-      let role_nalc = role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let actor = "{{ info_search.acteur }}"
-      let actor_nalc = actor.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let scena = "{{ info_search.scenariste }}"
-      let scena_nalc = scena.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let categ = "{{ info_search.categories }}"
-      let categ_nalc = categ.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let pays = "{{ info_search.pays_realisation }}"
-      let pays_nalc = pays.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      let criti = "{{ info_search.critique }}"
-      let criti_nalc = criti.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-      // let rech_placed = false
+      let rech_placed = false
       if (rech.length > 0) {
         let position = string_no_accent_low_case.indexOf(rech_nalc);
         let length = rech_nalc.length;
         if (position !== -1) {
           let position_end = position + length;
           s = s.substring(0, position) + '<span class="search" style="color:green"></span>' + s.substring(position_end, s.length);
-          // rech_placed = true
+          rech_placed = true
         }
       }
-      if (spans[i].getAttribute('nom') == 'titre' && rech_nalc != titre_nalc ) {
+      if (spans[i].getAttribute('nom') == 'titre' && rech_placed === false) {
+        let titre = "{{ info_search.titre }}"
+        let titre_nalc = titre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_titre = string_no_accent_low_case.indexOf(titre_nalc);
         let length_titre = titre_nalc.length;
         console.log(s)
@@ -316,7 +296,9 @@
           s = s.substring(0, position_titre) + '<span class="titre" style="color:red"></span>' + s.substring(position_titre_end, s.length);
         }
       }
-      if (spans[i].getAttribute('nom') == 'titre_informatif') {
+      if (spans[i].getAttribute('nom') == 'titre_informatif' && rech_placed === false) {
+        let titre_inf = "{{ info_search.titre_informatif }}"
+        let titre_inf_nalc = titre_inf.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_titre_inf = string_no_accent_low_case.indexOf(titre_inf_nalc);
         let length_titre_inf = titre_inf_nalc.length;
         if (position_titre_inf !== -1) {
@@ -324,7 +306,9 @@
           s = s.substring(0, position_titre_inf) + '<span class="titre_informatif" style="color:red"></span>' + s.substring(position_titre_inf_end, s.length);
         }
       }
-      if (spans[i].getAttribute('nom') == 'description') {
+      if (spans[i].getAttribute('nom') == 'description' && rech_placed === false) {
+        let desc = "{{ info_search.description }}"
+        let desc_nalc = desc.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_desc = string_no_accent_low_case.indexOf(desc_nalc);
         let length_desc = desc_nalc.length;
         if (position_desc !== -1) {
@@ -332,7 +316,9 @@
           s = s.substring(0, position_desc) + '<span class="description" style="color:red"></span>' + s.substring(position_desc_end, s.length);
         }
         }
-      if (spans[i].getAttribute('nom') == 'realisateur') {
+      if (spans[i].getAttribute('nom') == 'realisateur' && rech_placed === false) {
+        let real = "{{ info_search.realisateur }}"
+        let real_nalc = real.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_real = string_no_accent_low_case.indexOf(real_nalc);
         let length_real = real_nalc.length;
         if (position_real !== -1) {
@@ -340,21 +326,33 @@
           s = s.substring(0, position_real) + '<span class="realisateur" style="color:red"></span>' + s.substring(position_real_end, s.length);
         }
       }
-      if (spans[i].getAttribute('nom') == 'acteur_role') {
+      if (spans[i].getAttribute('nom') == 'acteur_role' && rech_placed === false) {
+        let actor_role = "{{ info_search.acteur }}"
+        let actor_role_nalc = actor_role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_actor_role = string_no_accent_low_case.indexOf(actor_role_nalc);
         let length_actor_role = actor_role_nalc.length;
+        let actor_placed = false
         if (position_actor_role !== -1) {
           let position_actor_role_end = position_actor_role + length_actor_role;
           s = s.substring(0, position_actor_role) + '<span class="acteur" style="color:red"></span>' + s.substring(position_actor_role_end, s.length);
+          string_no_accent_low_case_role = string_no_accent_low_case.substring(0, position_actor_role) + '<span class="acteur" style="color:red"></span>' + string_no_accent_low_case.substring(position_actor_role_end, s.length)
+          actor_placed = true
         }
-        let position_role = string_no_accent_low_case.indexOf(role_nalc);
-        let length_role = role_nalc.length;
-        if (position_role !== -1) {
-          let position_role_end = position_role + length_role;
-          s = s.substring(0, position_role) + '<span class="role" style="color:red"></span>' + s.substring(position_role_end, s.length);
+        console.log(actor_placed)
+        if (actor_placed === true) {
+          let role = "{{ info_search.role }}"
+          let role_nalc = role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          let position_role = string_no_accent_low_case_role.indexOf(role_nalc);
+          let length_role = role_nalc.length;
+          if (position_role !== -1) {
+            let position_role_end = position_role + length_role;
+            s = s.substring(0, position_role) + '<span class="role" style="color:red"></span>' + s.substring(position_role_end, s.length);
+          }
         }
       }
-      if (spans[i].getAttribute('nom') == 'acteur') {
+      if (spans[i].getAttribute('nom') == 'acteur' && rech_placed === false) {
+        let actor = "{{ info_search.acteur }}"
+        let actor_nalc = actor.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_actor = string_no_accent_low_case.indexOf(actor_nalc);
         let length_actor = actor_nalc.length;
         if (position_actor !== -1) {
@@ -362,7 +360,9 @@
           s = s.substring(0, position_actor) + '<span class="acteur" style="color:red"></span>' + s.substring(position_actor_end, s.length);
         }
       }
-      if (spans[i].getAttribute('nom') == 'scenariste') {
+      if (spans[i].getAttribute('nom') == 'scenariste' && rech_placed === false) {
+        let scena = "{{ info_search.scenariste }}"
+        let scena_nalc = scena.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_scena = string_no_accent_low_case.indexOf(scena_nalc);
         let length_scena = scena_nalc.length;
         if (position_scena !== -1) {
@@ -370,7 +370,10 @@
           s = s.substring(0, position_scena) + '<span class="scenariste" style="color:red"></span>' + s.substring(position_scena_end, s.length);
         }
       }
-      if (spans[i].getAttribute('nom') == 'categorie') {
+      if (spans[i].getAttribute('nom') == 'categorie' && rech_placed === false) {
+        let categ = "{{ info_search.categories }}"
+        console.log(categ)
+        let categ_nalc = categ.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_categ = string_no_accent_low_case.indexOf(categ_nalc);
         let length_categ = categ_nalc.length;
         if (position_categ !== -1) {
@@ -378,7 +381,9 @@
           s = s.substring(0, position_categ) + '<span class="categorie" style="color:red"></span>' + s.substring(position_categ_end, s.length);
         }
       }
-      if (spans[i].getAttribute('nom') == 'pays') {
+      if (spans[i].getAttribute('nom') == 'pays' && rech_placed === false) {
+        let pays = "{{ info_search.pays_realisation }}"
+        let pays_nalc = pays.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_pays = string_no_accent_low_case.indexOf(pays_nalc);
         let length_pays = pays_nalc.length;
         if (position_pays !== -1) {
@@ -386,7 +391,9 @@
           s = s.substring(0, position_pays) + '<span class="pays" style="color:red"></span>' + s.substring(position_pays_end, s.length);
         }
       }
-      if (spans[i].getAttribute('nom') == 'critique') {
+      if (spans[i].getAttribute('nom') == 'critique' && rech_placed === false) {
+        let criti = "{{ info_search.critique }}"
+        let criti_nalc = criti.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         let position_criti = string_no_accent_low_case.indexOf(criti_nalc);
         let length_criti = criti_nalc.length;
         if (position_criti !== -1) {
@@ -458,7 +465,7 @@
 
   for(let i = 0; i < categorie.length; i++)
   {
-      categorie[i].innerHTML = '{{ info_search.categorie }}'
+      categorie[i].innerHTML = '{{ info_search.categories }}'
   }
 
   let pays = document.getElementsByClassName('pays');
